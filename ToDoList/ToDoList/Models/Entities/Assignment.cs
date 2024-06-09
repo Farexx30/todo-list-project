@@ -18,7 +18,7 @@ namespace ToDoList.Models.Entities
 
         //Relacja z Userem (relacja 1 do wielu):
         public Guid UserId { get; set; } //Klucz obcy to tabeli User.
-        public User? User { get; set; }
+        public User User { get; set; } = null!;
 
         //Relacja z Category (relacja wiele do wielu):
         public ICollection<Category> Categories { get; set; } = [];

@@ -20,6 +20,5 @@ namespace ToDoList.Models.Entities
 
         //Relacja z Assignment (relacja wiele do wielu):
         public ICollection<Assignment> Assignments { get; set; } = [];
-
     }
 }
