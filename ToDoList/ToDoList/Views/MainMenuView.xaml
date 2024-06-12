@@ -54,7 +54,7 @@
                 FontSize="64"
                 Foreground="#101728"
                 FontWeight="Bold"
-                VerticalContentAlignment="Center">
+                FontFamily="Bahnschrift Bold">
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
@@ -77,7 +77,7 @@
                 FontSize="64"
                 Foreground="#101728"
                 FontWeight="Bold"
-                VerticalContentAlignment="Center">
+                FontFamily="Bahnschrift Bold">
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />

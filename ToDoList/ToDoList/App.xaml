@@ -8,7 +8,7 @@
         <Color x:Key="BackgroundLightBlue">#0D1B4F</Color>
         <Color x:Key="ButtonPink">#FF3C5F</Color>
         <Color x:Key="ButtonPurple">#9340FF</Color>
-        <Color x:Key="BorderLightBlue">#0D1B4B</Color>
-        <Color x:Key="BorderDarkBlue">#101728</Color>
+        <Color x:Key="BorderLightBlue">#152B7D</Color>
+        <Color x:Key="BorderDarkBlue">#132155</Color>
     </Application.Resources>
 </Application>
