@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Color x:Key="BackgroundDarkBlue">#101728</Color>
-        <Color x:Key="BackgroundLightBlue">#0D1B4F</Color>
+        <Color x:Key="BackgroundLightBlue">#190E68</Color>
         <Color x:Key="ButtonPink">#FF3C5F</Color>
         <Color x:Key="ButtonPurple">#9340FF</Color>
         <Color x:Key="BorderLightBlue">#152B7D</Color>
