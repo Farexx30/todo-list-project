@@ -1,0 +1,627 @@
+﻿<UserControl x:Class="ToDoList.Views.MainAppView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ToDoList.Views"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d"
+         d:DesignHeight="800" 
+         d:DesignWidth="1440">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.Background>
+        <RadialGradientBrush GradientOrigin="1,1"  
+                     Center="1,1" 
+                     RadiusX="1" 
+                     RadiusY="1" MappingMode="RelativeToBoundingBox">
+            <!--Center i Origin mają współrzędne X,Y w zakresie 0-1, stąd te dane-->
+            <GradientStop Color="{StaticResource BackgroundLightBlue}" Offset="0"/>
+            <GradientStop Color="{StaticResource BackgroundDarkBlue}" Offset="1"/>
+
+        </RadialGradientBrush>
+    </UserControl.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.RowSpan="10"
+                    BorderThickness="0"
+                    Opacity="0.8"
+                    Margin="-30,0,0,0"
+                    CornerRadius="30">
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" 
+                             Center="0.5,0.5" 
+                             RadiusX="1" 
+                             RadiusY="1" >
+                        <GradientStop Color="{StaticResource BorderDarkBlue}" 
+                          Offset="0.0" />
+                        <GradientStop Color="{StaticResource BackgroundLightBlue}" 
+                          Offset="1.0" />
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border Grid.Row="0"
+                    Background="#101728"
+                    Margin="5,8,8,5"
+                    CornerRadius="20"/>
+            <Image Source="../Images/Logo.png"
+                   HorizontalAlignment="Left"
+                   Margin="20,15,15,15"/>
+            <Label Content="T o&#10;d o&#10;l i s t"
+                   Foreground="White"
+                   FontSize="15"
+                   VerticalAlignment="Center"
+                   Margin="70,0,150,0"
+                   FontWeight="Bold"/>
+            <Label Content="12-06-2024"
+                   Foreground="White"
+                   FontSize="24"
+                   VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   Margin="115,0,14,0"
+                   FontWeight="Light"/>
+            <Border Grid.Row="1"
+                    Grid.RowSpan="4"
+                    Background="#101728"
+                    Margin="5,0,5,0"
+                    CornerRadius="20"/>
+            <Button Grid.Row="1"
+                    Content="Dzisiejszy dzień"
+                    Foreground="White"
+                    FontSize="28"
+                    Margin="10,10,10,0"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent"  
+                                BorderThickness="0" 
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Left" 
+                                              VerticalAlignment="Center"
+                                              Margin="10,0,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border Grid.Row="1"
+                    Background="White"
+                    Height="1"
+                    Margin="20,0,20,0"
+                    VerticalAlignment="Bottom"/>
+            <Button Grid.Row="2"
+                    Content="Ważne"
+                    Foreground="White"
+                    FontSize="28"
+                    
+                    Margin="10,5,10,5"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent"  
+                                BorderThickness="0" 
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Left" 
+                                              VerticalAlignment="Center"
+                                              Margin="10,0,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border Grid.Row="2"
+                    Background="White"
+                    Height="1"
+                    Margin="20,0,20,0"
+                    VerticalAlignment="Bottom"/>
+            <Button Grid.Row="3"
+                    Content="Zaplanowane"
+                    Foreground="White"
+                    FontSize="28"
+                    
+                    Margin="10,5,10,5"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent"  
+                                BorderThickness="0" 
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Left" 
+                                              VerticalAlignment="Center"
+                                              Margin="10,0,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border Grid.Row="3"
+                    Background="White"
+                    Height="1"
+                    Margin="20,0,20,0"
+                    VerticalAlignment="Bottom"/>
+            <Button Grid.Row="4"
+                    Content="Pozostałe"
+                    Foreground="White"
+                    FontSize="28"
+                    
+                    Margin="8,0,8,8"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent"  
+                                BorderThickness="0" 
+                                CornerRadius="35">
+                            <ContentPresenter HorizontalAlignment="Left" 
+                                              VerticalAlignment="Center"
+                                              Margin="10,0,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border Grid.Row="5"
+                    Grid.RowSpan="3"
+                    Background="#101728"
+                    Margin="5"
+                    CornerRadius="20"/>
+            <Border Grid.Row="5"
+                    Background="#1D1B4D"
+                    Margin="15,15,15,0"
+                    Opacity="0.9"
+                    CornerRadius="10">
+                <ListBox Grid.Row="5"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         Foreground="White"
+                         
+                         Padding="10"
+                         FontSize="24">
+                    <ListBox.Resources>
+                        <Style TargetType="{x:Type ScrollBar}" 
+                               BasedOn="{StaticResource ScrollBarStyle}"/>
+                    </ListBox.Resources>
+                    <ListBoxItem>Przykład 1</ListBoxItem>
+                    <ListBoxItem>Przykład 2</ListBoxItem>
+                    <ListBoxItem>Przykład 3</ListBoxItem>
+                    <ListBoxItem>Przykład 4</ListBoxItem>
+                    <ListBoxItem>Przykład 5</ListBoxItem>
+                    <ListBoxItem>Przykład 6</ListBoxItem>
+                    <ListBoxItem>Przykład 7</ListBoxItem>
+                    <ListBoxItem>Przykład 8</ListBoxItem>
+                    <ListBoxItem>Przykład 9</ListBoxItem>
+                    <ListBoxItem>Przykład 10</ListBoxItem>
+                    <ListBoxItem>Przykład 11</ListBoxItem>
+                </ListBox>
+            </Border>
+            <Button Grid.Row="6"
+                    Content="Dodaj kategorię"
+                    Foreground="White"
+                    FontSize="24"
+                    Margin="15,10,15,0"
+                    FontWeight="Bold"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#1D1B4D"  
+                                BorderThickness="0" 
+                                CornerRadius="25">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Grid.Row="7"
+                    Content="Usuń kategorię"
+                    Foreground="White"
+                    FontSize="24"
+                    Margin="15,10,15,15"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#1D1B4D"  
+                                BorderThickness="0" 
+                                CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Grid.Row="8"
+                    Content="Wyloguj"
+                    Foreground="White"
+                    FontSize="24"
+                    FontWeight="Light"
+                    Margin="10,5,10,10"
+                    BorderThickness="0">        
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#101728"  
+                                BorderThickness="0" 
+                                CornerRadius="20">      
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"
+                                              />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Witaj, "
+                   Foreground="White"
+                   FontSize="32"
+                   Margin="15"
+                   
+                   VerticalContentAlignment="Bottom"/>
+            <Label Content="WWWWWWWWWWWWWWWWWWWW"
+                   Foreground="White"
+                   FontSize="32"
+                   Margin="105, 15, 15, 15"
+                   
+                   VerticalContentAlignment="Bottom"/>
+            <Label Grid.Row="1" 
+                   Content="Zadania do wykonania: "
+                   Foreground="White"
+                   FontSize="22"
+                   Margin="15,0,400,0"/>
+
+            <Label Grid.Row="1" 
+                   Content="Aktualna kategoria "
+                   Foreground="White"
+                   
+                   FontSize="22"
+                   BorderThickness="0"
+                   Margin="350,-5,15,-5"
+                   HorizontalContentAlignment="Right"
+                   VerticalContentAlignment="Center"/>
+
+            <Border Grid.Row="2"
+                    Margin="15"
+                    CornerRadius="10">
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" 
+                                             Center="0.5,0.5" 
+                                             RadiusX="1" 
+                                             RadiusY="1" 
+                                             Opacity="0.9">
+                        <GradientStop Color="{StaticResource BorderDarkBlue}" 
+                                              Offset="0.0" />
+                        <GradientStop Color="{StaticResource BackgroundLightBlue}" 
+                                              Offset="1.0" />
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+            <ListBox Grid.Row="2"
+                     FontSize="26"
+                     Margin="20"
+                     BorderThickness="0"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Foreground="White"
+                     
+                     FontWeight="Light"
+                     Background="Transparent"
+                     >
+                <ListBox.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
+                </ListBox.Resources>
+                <ListBoxItem>WWWWWWWWWWWWWWWWWWWWWWWWWWWWW</ListBoxItem>
+                <ListBoxItem>Przykład 2</ListBoxItem>
+                <ListBoxItem>Przykład 3</ListBoxItem>
+                <ListBoxItem>Przykład 4</ListBoxItem>
+                <ListBoxItem>Przykład 5</ListBoxItem>
+                <ListBoxItem>Przykład 6</ListBoxItem>
+                <ListBoxItem>Przykład 7</ListBoxItem>
+                <ListBoxItem>Przykład 8</ListBoxItem>
+                <ListBoxItem>Przykład 9</ListBoxItem>
+                <ListBoxItem>Przykład 10</ListBoxItem>
+                <ListBoxItem>Przykład 11</ListBoxItem>
+                <ListBoxItem>Przykład 12</ListBoxItem>
+                <ListBoxItem>Przykład 13</ListBoxItem>
+            </ListBox>
+
+            <Border Grid.Row="3"
+                    Margin="15,5,15,15"
+                    CornerRadius="10">
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" 
+                                             Center="0.5,0.5" 
+                                             RadiusX="1" 
+                                             RadiusY="1" 
+                                             Opacity="0.9">
+                        <GradientStop Color="{StaticResource BorderDarkBlue}" 
+                                              Offset="0.0" />
+                        <GradientStop Color="{StaticResource BackgroundLightBlue}" 
+                                              Offset="1.0" />
+                    </RadialGradientBrush>
+                </Border.Background>
+                <TextBox Background="Transparent"
+                         Padding="10"
+                         Text="Treść zadania do dodania"
+                         Foreground="White"
+                         
+                         FontWeight="Light"
+                         Margin="55,0,0,0"
+                         FontSize="26"
+                         VerticalAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         BorderThickness="0"/>
+            </Border>
+            <Button Grid.Row="3"
+                    Margin="25,15,654,25"
+                    Content="+"
+                    Foreground="White"
+                    FontSize="36"
+                    FontFamily="Bahnschrift"
+                    FontWeight="ExtraLight"
+                    VerticalContentAlignment="Top">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.8">
+                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
+                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="34">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Label Grid.Row="4" 
+                   Content="Wykonane zadania: "
+                   Foreground="White"
+                   
+                   FontSize="22"
+                   Margin="15,0,0,0"/>
+            <Border Grid.Row="5"
+                    Margin="15"
+                    CornerRadius="10">      
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" 
+                                         Center="0.5,0.5" 
+                                         RadiusX="1" 
+                                         RadiusY="1" 
+                                         Opacity="0.9">
+                        <GradientStop Color="{StaticResource BorderDarkBlue}" 
+                                        Offset="0.0" />
+                        <GradientStop Color="{StaticResource BackgroundLightBlue}" 
+                                        Offset="1.0" />
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+            <ListBox Grid.Row="5"
+                     FontSize="26"
+                     Margin="20"
+                     BorderThickness="0"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     Foreground="White"
+                     
+                     FontWeight="Light"
+                     Background="Transparent">
+                <ListBox.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" 
+                            BasedOn="{StaticResource ScrollBarStyle}"/>
+                </ListBox.Resources>
+                <ListBoxItem>Przykład 1</ListBoxItem>
+                <ListBoxItem>Przykład 2</ListBoxItem>
+                <ListBoxItem>Przykład 3</ListBoxItem>
+                <ListBoxItem>Przykład 4</ListBoxItem>
+                <ListBoxItem>Przykład 5</ListBoxItem>
+                <ListBoxItem>Przykład 6</ListBoxItem>
+                <ListBoxItem>Przykład 7</ListBoxItem>
+                <ListBoxItem>Przykład 8</ListBoxItem>
+                <ListBoxItem>Przykład 9</ListBoxItem>
+                <ListBoxItem>Przykład 10</ListBoxItem>
+                <ListBoxItem>Przykład 11</ListBoxItem>
+                <ListBoxItem>Przykład 12</ListBoxItem>
+                <ListBoxItem>Przykład 13</ListBoxItem>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.8*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.RowSpan="10"
+                    BorderThickness="0"
+                    Opacity="0.8"
+                    Margin="0,0,-30,0"
+                    CornerRadius="30">  
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" 
+                 Center="0.5,0.5" 
+                 RadiusX="1" 
+                 RadiusY="1" >
+                        <GradientStop Color="{StaticResource BorderDarkBlue}" Offset="0.0" />
+                        <GradientStop Color="{StaticResource BackgroundLightBlue}" Offset="1.0" />
+                    </RadialGradientBrush>
+                </Border.Background>
+                
+            </Border>
+            <Border Grid.Row="0"
+                    Grid.RowSpan="4"
+                    Background="#101728"
+                    Margin="8"
+                    CornerRadius="20"/>
+            <TextBox Text="WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+                     Background="Transparent"
+                     Foreground="White"
+                     FontSize="28"
+                     Padding="15"
+                     TextWrapping="Wrap"
+                     MaxLines="2"
+                     BorderThickness="0"
+                     VerticalContentAlignment="Center"
+                     />
+            <Border Background="White"
+                    Height="1"
+                    VerticalAlignment="Bottom"
+                    Margin="40,0,40,0"/>
+            <syncfusion:CheckListBox Grid.Row="1"
+                                     Background="Transparent"
+                                     Foreground="White"
+                                     FontSize="22"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     BorderThickness="0"
+                                     Margin="20,10,20,5"
+                                     >
+                <syncfusion:CheckListBox.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
+                </syncfusion:CheckListBox.Resources>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem1"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+            </syncfusion:CheckListBox>
+            <Border Grid.Row="2"
+                    Margin="15,5,15,15"
+                    CornerRadius="15">
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" 
+                                         Center="0.5,0.5" 
+                                         RadiusX="1" 
+                                         RadiusY="1" 
+                                         Opacity="0.9">
+                        <GradientStop Color="{StaticResource BorderDarkBlue}" 
+                                  Offset="0.0" />
+                        <GradientStop Color="{StaticResource BackgroundLightBlue}" 
+                                  Offset="1.0" />
+                    </RadialGradientBrush>
+                </Border.Background>
+                <TextBox Background="Transparent"
+                         Padding="10"
+                         Text="Treść kroku do dodania"
+                         Foreground="White"
+                         
+                         FontWeight="Light"
+                         Margin="50,0,0,0"
+                         FontSize="26"
+                         VerticalAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         BorderThickness="0"/>
+            </Border>
+            <Button Grid.Row="2"
+                    Margin="25,15,379,25"
+                    Content="+"
+                    FontFamily="Bahnschrift"
+                    Foreground="White"
+                    FontSize="40"
+                    Padding="-20"
+                    VerticalContentAlignment="Center"
+                    FontWeight="Light">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.8">
+                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
+                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="34">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Grid.Row="3"
+                    Content="Usuń krok zadania"
+                    Foreground="White"
+                    FontSize="24"
+                    Margin="15,-5,15,15"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#1D1B4D"  
+                    BorderThickness="0" 
+                    CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Background="#101728"
+                        Margin="8,5,8,0"
+                        CornerRadius="20"/>
+                <Label Grid.Row="0" 
+                       Content="Termin wykonania"
+                       Foreground="White"
+                       FontSize="24"
+                       Margin="15,15,15,0"/>
+                <CheckBox Grid.Row="0"
+                          Margin="220,25,15,0"
+                          Style="{StaticResource CheckBoxToSwitch}"
+                          IsChecked="True"/>
+                <DatePicker Grid.Row="2"
+                            Margin="20,10,15,0" 
+                            SelectedDateFormat="Long" FontSize="22"
+                            BorderThickness="0"/>
+            </Grid>
+            <Button Grid.Row="8"
+                    Content="Usuń zadanie"
+                    Foreground="White"
+                    FontSize="24"
+                    Margin="15"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#101728"  
+                                BorderThickness="0" 
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+        </Grid>
+    </Grid>
+
+
+</UserControl>
