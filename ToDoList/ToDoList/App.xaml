@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ToDoList" 
              xmlns:viewModels="clr-namespace:ToDoList.ViewModels" 
-             xmlns:views="clr-namespace:ToDoList.Views"
-             StartupUri="MainWindow.xaml">
+             xmlns:views="clr-namespace:ToDoList.Views">
     <Application.Resources>
         <DataTemplate DataType="{x:Type TypeName=viewModels:MainMenuViewModel}">
             <views:MainMenuView/>

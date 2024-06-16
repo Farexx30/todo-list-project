@@ -36,8 +36,9 @@ namespace ToDoList.Configurations
             {
                 DataContext = provider.GetRequiredService<MainViewModel>()
             });
-            
+
             //Rejestracja ViewModelów:
+            services.AddTransient<MainViewModel>();
             services.AddTransient<MainMenuViewModel>();
             services.AddTransient<RegisterViewModel>();
             services.AddTransient<LoginViewModel>();
