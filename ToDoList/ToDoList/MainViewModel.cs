@@ -28,13 +28,13 @@ namespace ToDoList
         {
             _navigationService = navigationService;
 
-            NavigateToMainMenuCommand = new RelayCommand(NavigateToMainMenu, _ => true);
+            NavigateToMainMenuCommand = new RelayCommand(GoToMainMenu, _ => true);
 
             Initialize();
         }
 
-        private void Initialize() => NavigateToMainMenu(this);
+        private void Initialize() => GoToMainMenu(this);
 
-        private void NavigateToMainMenu(object obj) => NavigationService.NavigateTo<MainMenuViewModel>();
+        private void GoToMainMenu(object obj) => NavigationService.NavigateTo<MainMenuViewModel>();
     }
 }
