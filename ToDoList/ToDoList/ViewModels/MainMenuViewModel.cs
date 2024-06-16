@@ -8,5 +8,6 @@ namespace ToDoList.ViewModels
 {
     public class MainMenuViewModel
     {
+
     }
 }
