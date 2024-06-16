@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using ToDoList.Models;
+using ToDoList.ViewModels;
+using ToDoList.Views;
 
 namespace ToDoList.Configurations
 {
@@ -26,9 +28,20 @@ namespace ToDoList.Configurations
 
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            //Register DbContext:
+            //Rejestracja DbContext:
             services.AddDbContext<ToDoListDbContext>(
                 options => options.UseSqlServer(ConfigurationManager.ConnectionStrings["toDoListDatabase"].ConnectionString));
+
+
+            services.AddSingleton(provider => new MainWindow
+            {
+                DataContext = provider.GetRequiredService<MainMenuViewModel>()
+            });
+
+            services.AddTransient<MainMenuViewModel>();
+            services.AddTransient<RegisterViewModel>();
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<MainAppViewModel>();
 
             return services;
         }
