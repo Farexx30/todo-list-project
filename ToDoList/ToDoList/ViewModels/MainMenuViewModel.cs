@@ -21,8 +21,8 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand NavigateToLoginCommand { get; set; } = null!;
-        public RelayCommand NavigateToRegisterCommand { get; set; } = null!;
+        public RelayCommand NavigateToLoginCommand { get; set; }
+        public RelayCommand NavigateToRegisterCommand { get; set; }
 
         public MainMenuViewModel(INavigationService navigationService)
         {
@@ -32,7 +32,7 @@ namespace ToDoList.ViewModels
             NavigateToRegisterCommand = new RelayCommand(GoToRegister, _ => true);
         }
 
-        private void GoToLogin(object obj) => _navigationService.NavigateTo<LoginViewModel>();
-        private void GoToRegister(object obj) => _navigationService.NavigateTo<RegisterViewModel>();
+        private void GoToLogin(object obj) => NavigationService.NavigateTo<LoginViewModel>();
+        private void GoToRegister(object obj) => NavigationService.NavigateTo<RegisterViewModel>();
     }
 }

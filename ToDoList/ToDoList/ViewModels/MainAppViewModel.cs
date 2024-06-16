@@ -21,7 +21,7 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand NavigateToMainMenuCommand { get; set; } = null!;
+        public RelayCommand NavigateToMainMenuCommand { get; set; }
 
         public MainAppViewModel(INavigationService navigationService)
         {
@@ -30,6 +30,6 @@ namespace ToDoList.ViewModels
             NavigateToMainMenuCommand = new RelayCommand(GoToMainMenu, _ => true);
         }
 
-        private void GoToMainMenu(object obj) => _navigationService.NavigateTo<MainMenuViewModel>();
+        private void GoToMainMenu(object obj) => NavigationService.NavigateTo<MainMenuViewModel>();
     }
 }

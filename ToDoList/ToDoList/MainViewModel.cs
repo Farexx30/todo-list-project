@@ -22,19 +22,15 @@ namespace ToDoList
             }
         }
 
-        public RelayCommand NavigateToMainMenuCommand { get; set; } = null!;
-
         public MainViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
 
-            NavigateToMainMenuCommand = new RelayCommand(GoToMainMenu, _ => true);
-
             Initialize();
         }
 
-        private void Initialize() => GoToMainMenu(this);
+        private void Initialize() => GoToMainMenu();
 
-        private void GoToMainMenu(object obj) => NavigationService.NavigateTo<MainMenuViewModel>();
+        private void GoToMainMenu() => NavigationService.NavigateTo<MainMenuViewModel>();
     }
 }
