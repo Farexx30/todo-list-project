@@ -16,9 +16,8 @@ namespace ToDoList
             var builder = DIConfiguration.CreateHostBuilder().Build();
             DIConfiguration.ServiceProvider = builder.Services;
 
-           //var mainWindow = DIConfiguration.ServiceProvider.GetRequiredService<MainWindow>();
-           //mainWindow.Show();
+            var mainWindow = DIConfiguration.ServiceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
         }
     }
-
 }
