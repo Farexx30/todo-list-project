@@ -1,9 +1,26 @@
 ﻿<Application x:Class="ToDoList.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ToDoList"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:ToDoList" 
+             xmlns:viewModels="clr-namespace:ToDoList.ViewModels" 
+             xmlns:views="clr-namespace:ToDoList.Views">
     <Application.Resources>
+        <DataTemplate DataType="{x:Type TypeName=viewModels:MainMenuViewModel}">
+            <views:MainMenuView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type TypeName=viewModels:RegisterViewModel}">
+            <views:RegisterView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type TypeName=viewModels:LoginViewModel}">
+            <views:LoginView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type TypeName=viewModels:MainAppViewModel}">
+            <views:MainAppView/>
+        </DataTemplate>
+
         <Color x:Key="BackgroundDarkBlue">#101728</Color>
         <Color x:Key="BackgroundLightBlue">#190E68</Color>
         <Color x:Key="ButtonPink">#FF3C5F</Color>

@@ -253,7 +253,8 @@
                     FontSize="24"
                     FontWeight="Light"
                     Margin="10,5,10,10"
-                    BorderThickness="0">        
+                    BorderThickness="0"
+                    Command="{Binding Path=NavigateToMainMenuCommand}">        
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="#101728"  
