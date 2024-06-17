@@ -254,7 +254,7 @@
                     FontWeight="Light"
                     Margin="10,5,10,10"
                     BorderThickness="0"
-                    Command="{Binding Path=NavigateToMainMenuCommand}">        
+                    Command="{Binding Path=LogOutCommand}">        
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="#101728"  
@@ -283,7 +283,7 @@
                    Margin="15"
                    
                    VerticalContentAlignment="Bottom"/>
-            <Label Content="WWWWWWWWWWWWWWWWWWWW"
+            <Label Content="{Binding Username}"
                    Foreground="White"
                    FontSize="32"
                    Margin="105, 15, 15, 15"

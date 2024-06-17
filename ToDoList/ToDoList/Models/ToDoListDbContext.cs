@@ -35,25 +35,19 @@ namespace ToDoList.Models
                 .HasForeignKey(fk => fk.AssignmentId);
 
                 builder.Property(a => a.Name)
-                .HasColumnType("varchar(100)")
+                .HasColumnType("nvarchar(100)")
                 .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<Entities.User>(builder =>
-            {
-                builder.Property(u => u.Name)
-                .HasColumnType("varchar(30)")
+            modelBuilder.Entity<Entities.User>()
+                .Property(u => u.Name)
+                .HasColumnType("nvarchar(30)")
                 .HasMaxLength(30);
-
-                builder.Property(u => u.Password)
-                .HasColumnType("varchar(32)")
-                .HasMaxLength(32);
-            });
 
             modelBuilder.Entity<Category>(builder =>
             {
                 builder.Property(c => c.Name)
-                .HasColumnType("varchar(15)")
+                .HasColumnType("nvarchar(15)")
                 .HasMaxLength(15);
 
                 builder.HasData(new Category() { Id = 1, Name = "Dom", IsBuiltIn = true },
@@ -64,7 +58,7 @@ namespace ToDoList.Models
             
             modelBuilder.Entity<AssignmentStep>()
                 .Property(a => a.Name)
-                .HasColumnType("varchar(50)")
+                .HasColumnType("nvarchar(50)")
                 .HasMaxLength(50);
 
             modelBuilder.Entity<CategoryAssignment>()
