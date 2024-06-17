@@ -9,7 +9,7 @@ namespace ToDoList.MappingProfiles
         public ToDoListMappingProfile()
         {
             CreateMap<User, UserDto>();
-            CreateMap<RegisterUserDto, User>();
+            CreateMap<RegisterOrLoginUserDto, User>();
 
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();

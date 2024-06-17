@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Models.Dtos
 {
-    public class RegisterUserDto
+    public class RegisterOrLoginUserDto
     {
         public string Name { get; set; } = null!;
         public string Password { get; set; } = null!;
