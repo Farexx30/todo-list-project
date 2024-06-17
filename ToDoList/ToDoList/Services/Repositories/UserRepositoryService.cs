@@ -32,18 +32,16 @@ namespace ToDoList.Services.Repositories
         public UserDto? LoginUser(RegisterOrLoginUserDto loginUserDto)
         {
             var user = _dbContext.Users
-                .FirstOrDefault(u => u.Name == loginUserDto.Name);
+                .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower());
 
             if (user == null)
             {
-                MessageBox.Show("Niepoprawny username lub haslo");
                 return null;
             }
 
             var isPasswordCorrect = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginUserDto.Password);
             if (isPasswordCorrect == PasswordVerificationResult.Failed)
             {
-                MessageBox.Show("Niepoprawny username lub haslo");
                 return null;
             }
 
@@ -58,7 +56,6 @@ namespace ToDoList.Services.Repositories
 
             if (isUsernameInUse) 
             {
-                MessageBox.Show("Taki uzytkownik juz istnieje");
                 return null;
             }
 
