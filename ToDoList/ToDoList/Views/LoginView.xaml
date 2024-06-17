@@ -118,7 +118,7 @@
         <TextBox Grid.Row="5"
                  Grid.Column="3"
                  Background="Transparent"
-                 Text="{Binding Username}"
+                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                  Foreground="White"
                  VerticalAlignment="Center"
                  FontSize="32"
@@ -145,7 +145,7 @@
         <TextBox Grid.Row="7"
                  Grid.Column="3"
                  Background="Transparent"
-                 Text="{Binding Password}"
+                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                  Foreground="White"
                  VerticalAlignment="Center"
                  FontSize="32"
@@ -192,7 +192,7 @@
                     FontWeight="Bold"
                     FontFamily="Bahnschrift Bold"
                     Margin="0,-7,0,-7"
-                    Command="{Binding Path=NavigateToMainAppCommand}">
+                    Command="{Binding Path=LoginCommand}">
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />

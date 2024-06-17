@@ -14,6 +14,7 @@ namespace ToDoList.ViewModels
     public class RegisterViewModel : BaseViewModel
     {
         private readonly IRegisterUserRepositoryService _registerUserRepositoryService;
+        private readonly IUserContextService _userContextService;
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -60,29 +61,39 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand NavigateToMainAppCommand { get; set; }
+        public RelayCommand RegisterCommand { get; set; }
 
-        public RegisterViewModel(INavigationService navigationService, IRegisterUserRepositoryService registerUserRepositoryService)
+        public RegisterViewModel(INavigationService navigationService, IRegisterUserRepositoryService registerUserRepositoryService, IUserContextService userContextService)
         {
-            _registerUserRepositoryService = registerUserRepositoryService;
             _navigationService = navigationService;
+            _registerUserRepositoryService = registerUserRepositoryService;
+            _userContextService = userContextService;
 
-            NavigateToMainAppCommand = new RelayCommand(GoToMainApp, _ => true);
+            RegisterCommand = new RelayCommand(Register, CanRegister);
         }
 
-        private void GoToMainApp(object obj)
+        private void Register(object obj)
         {
             var newUserDto = new RegisterOrLoginUserDto
             {
-                Name = Username,
-                Password = Password,
+                Name = Username.Trim(),
+                Password = Password.Trim(),
             };
-            var result = _registerUserRepositoryService.RegisterUser(newUserDto);
+            var loggedInUserDto = _registerUserRepositoryService.RegisterUser(newUserDto);
 
-            if (result is not null)
-            {
+            if (loggedInUserDto is not null)
+            {   
+                _userContextService.CurrentUserDto = loggedInUserDto;
                 NavigationService.NavigateTo<MainAppViewModel>();
             }
+            else
+            {
+                MessageBox.Show("Taki uzytkownik juz istnieje");
+            }
         }
+
+        private bool CanRegister(object obj) => !string.IsNullOrEmpty(Username.Trim())
+                                             && !string.IsNullOrEmpty(Password.Trim())
+                                             && Password.Trim() == PasswordConfirmation.Trim();
     }
 }

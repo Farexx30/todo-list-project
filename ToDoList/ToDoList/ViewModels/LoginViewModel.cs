@@ -14,6 +14,7 @@ namespace ToDoList.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private readonly ILoginUserRepositoryService _loginUserRepositoryService;
+        private readonly IUserContextService _userContextService;
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -48,29 +49,38 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand NavigateToMainAppCommand { get; set; }
+        public RelayCommand LoginCommand { get; set; }
 
-        public LoginViewModel(INavigationService navigationService, ILoginUserRepositoryService loginUserRepositoryService)
+        public LoginViewModel(INavigationService navigationService, ILoginUserRepositoryService loginUserRepositoryService, IUserContextService userContextService)
         {
-            _loginUserRepositoryService = loginUserRepositoryService;
             _navigationService = navigationService;
+            _loginUserRepositoryService = loginUserRepositoryService;
+            _userContextService = userContextService;
 
-            NavigateToMainAppCommand = new RelayCommand(GoToMainApp, _ => true);
+            LoginCommand = new RelayCommand(Login, CanLogin);
         }
 
-        private void GoToMainApp(object obj)
+        private void Login(object obj)
         {
             var loginUserDto = new RegisterOrLoginUserDto
             {
-                Name = Username,
-                Password = Password,
+                Name = Username.Trim(),
+                Password = Password.Trim(),
             };
-            var result = _loginUserRepositoryService.LoginUser(loginUserDto);
+            var loggedInUserDto = _loginUserRepositoryService.LoginUser(loginUserDto);
 
-            if (result is not null)
+            if (loggedInUserDto is not null)
             {
+                _userContextService.CurrentUserDto = loggedInUserDto;
                 NavigationService.NavigateTo<MainAppViewModel>();
             }
+            else
+            {
+                MessageBox.Show("Niepoprawny username lub hasło");
+            }
         }
+
+        private bool CanLogin(object obj) => !string.IsNullOrEmpty(Username.Trim())
+                                             && !string.IsNullOrEmpty(Password.Trim());
     }
 }
