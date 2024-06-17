@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Reflection;
 using ToDoList.Models;
+using ToDoList.Models.Entities;
 using ToDoList.Services;
 using ToDoList.ViewModels;
 
@@ -29,11 +31,14 @@ namespace ToDoList.Configurations
             //Rejestracja AutoMappera:
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            //Rejestracja serwisów:
+            //Rejestracja serwisów:           
             services.AddSingleton<INavigationService, NavigationService>();
 
             services.AddSingleton<Func<Type, BaseViewModel>>(provider =>
                 viewModelType => (BaseViewModel)provider.GetRequiredService(viewModelType));
+
+            //Rejestracja zależności:
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
             //Rejestracja MainWindow:
             services.AddSingleton(provider => new MainWindow
