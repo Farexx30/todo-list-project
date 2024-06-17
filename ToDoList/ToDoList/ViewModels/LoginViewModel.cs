@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ToDoList.Commands;
+using ToDoList.Models.Dtos;
 using ToDoList.Services;
+using ToDoList.Services.Repositories;
 
 namespace ToDoList.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private readonly ILoginUserRepositoryService _loginUserRepositoryService;
+        private readonly IUserContextService _userContextService;
+
         private INavigationService _navigationService;
         public INavigationService NavigationService
         {
@@ -21,15 +27,60 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand NavigateToMainAppCommand { get; set; }
-
-        public LoginViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-
-            NavigateToMainAppCommand = new RelayCommand(GoToMainApp, _ => true);
+        //Bindingi:
+        private string _username = string.Empty;
+        public string Username {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged();
+            }
         }
 
-        private void GoToMainApp(object obj) => NavigationService.NavigateTo<MainAppViewModel>();
+        private string _password = string.Empty;
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand LoginCommand { get; set; }
+
+        public LoginViewModel(INavigationService navigationService, ILoginUserRepositoryService loginUserRepositoryService, IUserContextService userContextService)
+        {
+            _navigationService = navigationService;
+            _loginUserRepositoryService = loginUserRepositoryService;
+            _userContextService = userContextService;
+
+            LoginCommand = new RelayCommand(Login, CanLogin);
+        }
+
+        private void Login(object obj)
+        {
+            var loginUserDto = new RegisterOrLoginUserDto
+            {
+                Name = Username.Trim(),
+                Password = Password.Trim(),
+            };
+            var loggedInUserDto = _loginUserRepositoryService.LoginUser(loginUserDto);
+
+            if (loggedInUserDto is not null)
+            {
+                _userContextService.CurrentUserDto = loggedInUserDto;
+                NavigationService.NavigateTo<MainAppViewModel>();
+            }
+            else
+            {
+                MessageBox.Show("Niepoprawny username lub hasło");
+            }
+        }
+
+        private bool CanLogin(object obj) => !string.IsNullOrEmpty(Username.Trim())
+                                             && !string.IsNullOrEmpty(Password.Trim());
     }
 }
