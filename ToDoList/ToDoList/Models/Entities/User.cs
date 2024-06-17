@@ -10,7 +10,7 @@ namespace ToDoList.Models.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public string Password { get; set; } = null!;
+        public string PasswordHash { get; set; } = null!;
 
         //Relacje:
 

@@ -39,16 +39,10 @@ namespace ToDoList.Models
                 .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<Entities.User>(builder =>
-            {
-                builder.Property(u => u.Name)
+            modelBuilder.Entity<Entities.User>()
+                .Property(u => u.Name)
                 .HasColumnType("varchar(30)")
                 .HasMaxLength(30);
-
-                builder.Property(u => u.Password)
-                .HasColumnType("varchar(32)")
-                .HasMaxLength(32);
-            });
 
             modelBuilder.Entity<Category>(builder =>
             {

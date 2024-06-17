@@ -7,6 +7,7 @@ using System.Reflection;
 using ToDoList.Models;
 using ToDoList.Models.Entities;
 using ToDoList.Services;
+using ToDoList.Services.Repositories;
 using ToDoList.ViewModels;
 
 namespace ToDoList.Configurations
@@ -33,6 +34,8 @@ namespace ToDoList.Configurations
 
             //Rejestracja serwisów:           
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddScoped<ILoginUserRepositoryService, UserRepositoryService>();
+            services.AddScoped<IRegisterUserRepositoryService, UserRepositoryService>();
 
             services.AddSingleton<Func<Type, BaseViewModel>>(provider =>
                 viewModelType => (BaseViewModel)provider.GetRequiredService(viewModelType));
