@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
+using System.Reflection;
 using ToDoList.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels;
@@ -24,6 +25,9 @@ namespace ToDoList.Configurations
             //Rejestracja DbContextu:
             services.AddDbContext<ToDoListDbContext>(
                 options => options.UseSqlServer(ConfigurationManager.ConnectionStrings["toDoListDatabase"].ConnectionString));
+
+            //Rejestracja AutoMappera:
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             //Rejestracja serwisów:
             services.AddSingleton<INavigationService, NavigationService>();
