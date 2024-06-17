@@ -40,7 +40,7 @@ namespace ToDoList.Services.Repositories
                 return null;
             }
 
-            var isPasswordCorrect = _passwordHasher.VerifyHashedPassword(user, user.Password, loginUserDto.Password);
+            var isPasswordCorrect = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginUserDto.Password);
             if (isPasswordCorrect == PasswordVerificationResult.Failed)
             {
                 MessageBox.Show("Niepoprawny username lub haslo");
@@ -63,7 +63,7 @@ namespace ToDoList.Services.Repositories
             }
 
             var newUser = _mapper.Map<User>(newUserDto);
-            newUser.Password = _passwordHasher.HashPassword(newUser, newUser.Password);
+            newUser.PasswordHash = _passwordHasher.HashPassword(newUser, newUserDto.Password);
 
             _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();

@@ -5,12 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using ToDoList.Commands;
+using ToDoList.Models.Dtos;
 using ToDoList.Services;
+using ToDoList.Services.Repositories;
 
 namespace ToDoList.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private readonly ILoginUserRepositoryService _loginUserRepositoryService;
+
         private INavigationService _navigationService;
         public INavigationService NavigationService
         {
@@ -46,8 +50,9 @@ namespace ToDoList.ViewModels
 
         public RelayCommand NavigateToMainAppCommand { get; set; }
 
-        public LoginViewModel(INavigationService navigationService)
+        public LoginViewModel(INavigationService navigationService, ILoginUserRepositoryService loginUserRepositoryService)
         {
+            _loginUserRepositoryService = loginUserRepositoryService;
             _navigationService = navigationService;
 
             NavigateToMainAppCommand = new RelayCommand(GoToMainApp, _ => true);
@@ -55,7 +60,17 @@ namespace ToDoList.ViewModels
 
         private void GoToMainApp(object obj)
         {
-            NavigationService.NavigateTo<MainAppViewModel>();
+            var loginUserDto = new RegisterOrLoginUserDto
+            {
+                Name = Username,
+                Password = Password,
+            };
+            var result = _loginUserRepositoryService.LoginUser(loginUserDto);
+
+            if (result is not null)
+            {
+                NavigationService.NavigateTo<MainAppViewModel>();
+            }
         }
     }
 }
