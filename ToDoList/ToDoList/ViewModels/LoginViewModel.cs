@@ -55,7 +55,6 @@ namespace ToDoList.ViewModels
 
         private void GoToMainApp(object obj)
         {
-            MessageBox.Show($"Username: {Username}, Password: {Password}");
             NavigationService.NavigateTo<MainAppViewModel>();
         }
     }
