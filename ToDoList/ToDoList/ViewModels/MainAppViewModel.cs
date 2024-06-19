@@ -109,7 +109,8 @@ namespace ToDoList.ViewModels
 
         private void CategoryChanged(object obj)
         {
-           //aktualizacja poprzedniej kategorii...
+           //aktualizacja poprzedniej kategorii... (w repo bede trzymac te pobrane juz kategorie itd).
+           //_previousCategory = Cur
         }
 
         private void LogOut(object obj)
