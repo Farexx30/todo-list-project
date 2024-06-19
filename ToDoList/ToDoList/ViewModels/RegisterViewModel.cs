@@ -84,7 +84,7 @@ namespace ToDoList.ViewModels
 
             if (loggedInUserDto is not null)
             {   
-                _userContextService.CurrentUserDto = loggedInUserDto;
+                _userContextService.CurrentUser = loggedInUserDto;
                 NavigationService.NavigateTo<MainAppViewModel>();
             }
             else

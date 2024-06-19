@@ -14,7 +14,6 @@ namespace ToDoList.ViewModels
     public class MainAppViewModel : BaseViewModel
     {
         private readonly IUserContextService _userContextService;
-        private CategoryDto? _previousCategory;
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -87,6 +86,7 @@ namespace ToDoList.ViewModels
 
 
         public ICommand CategoryChangedCommand { get; set; }
+        public ICommand AssignmentChangedCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
 
 
@@ -96,6 +96,7 @@ namespace ToDoList.ViewModels
             _userContextService = userContextService;
 
             CategoryChangedCommand = new RelayCommand(CategoryChanged, _ => true);
+            AssignmentChangedCommand = new RelayCommand(AssignmentChanged, _ => true);
             LogOutCommand = new RelayCommand(LogOut, _ => true);
 
             Initialize();
@@ -103,20 +104,26 @@ namespace ToDoList.ViewModels
 
         private void Initialize()
         {
-            Username = _userContextService.CurrentUserDto!.Name;
+            Username = _userContextService.CurrentUser!.Name;
             //Categories = ....
         }
 
         private void CategoryChanged(object obj)
         {
-           //aktualizacja poprzedniej kategorii... (w repo bede trzymac te pobrane juz kategorie itd).
-           //_previousCategory = Cur
+           //aktualizacja poprzedniej kategorii...
+           //i reszta...
+        }
+
+        private void AssignmentChanged(object obj)
+        {
+            //aktualizacja poprzedniego assignmentu...
+            //i reszta...
         }
 
         private void LogOut(object obj)
         {
-            //aktualizacja aktualnej kategorii...
-            _userContextService.CurrentUserDto = null;
+            //aktualizacja wszystkich ewentualnych pozostalosci...
+            _userContextService.CurrentUser = null;
             NavigationService.NavigateTo<MainMenuViewModel>();
         }
     }

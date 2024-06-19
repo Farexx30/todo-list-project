@@ -4,19 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Models.Dtos;
-using ToDoList.Models.Entities;
 
 namespace ToDoList.Services
 {
-    public interface ICurrentDataService
+    public interface IAssignmentContextService
     {
-        CategoryDto? CurrentCategory { get; set; }
         AssignmentDto? CurrentAssignment { get; set; }
     }
 
-    public class CurrentDataService : ICurrentDataService
+    public class AssignmentContextService : IAssignmentContextService
     {
-        public CategoryDto? CurrentCategory { get; set; }
         public AssignmentDto? CurrentAssignment { get; set; }
     }
 }

@@ -9,11 +9,11 @@ namespace ToDoList.Services
 {
     public interface IUserContextService
     {
-        UserDto? CurrentUserDto { get; set; }
+        UserDto? CurrentUser { get; set; }
     }
 
     public class UserContextService : IUserContextService
     {
-        public UserDto? CurrentUserDto { get; set; }
+        public UserDto? CurrentUser { get; set; }
     }
 }
