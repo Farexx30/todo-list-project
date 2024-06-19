@@ -25,5 +25,6 @@ namespace ToDoList.Models.Entities
 
         //Relacja z AssignmentStep (relacja 1 do wielu):
         public ICollection<AssignmentStep> AssignmentSteps { get; set; } = [];
+        public ICollection<CategoryAssignment> CategoryAssignments { get; set; } = [];
     }
 }
