@@ -40,6 +40,51 @@ namespace ToDoList.ViewModels
             }
         }
 
+        private CategoryDto? _currentCustomCategory;
+        public CategoryDto? CurrentCustomCategory
+        {
+            get => _currentCustomCategory;
+            set
+            {
+                _currentCustomCategory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<AssignmentDto> _toDoAssignments = [];
+        public ObservableCollection<AssignmentDto> ToDoAssignments
+        {
+            get => _toDoAssignments;
+            set
+            {
+                _toDoAssignments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<AssignmentDto> _completedAssignments = [];
+        public ObservableCollection<AssignmentDto> CompletedAssignments
+        {
+            get => _completedAssignments;
+            set
+            {
+                _completedAssignments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<AssignmentStepDto> _assignmentSteps = [];
+        public ObservableCollection<AssignmentStepDto> AssignmentSteps
+        {
+            get => _assignmentSteps;
+            set
+            {
+                _assignmentSteps = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public ICommand LogOutCommand { get; set; }
 
         public MainAppViewModel(INavigationService navigationService, IUserContextService userContextService)
@@ -55,6 +100,7 @@ namespace ToDoList.ViewModels
         private void Initialize()
         {
             Username = _userContextService.CurrentUserDto!.Name;
+            //Categories = ....
         }
 
         private void LogOut(object obj)
