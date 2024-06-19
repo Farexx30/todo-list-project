@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ToDoList.Commands;
+using ToDoList.Models.Dtos;
 using ToDoList.Services;
 
 namespace ToDoList.ViewModels
@@ -23,9 +26,21 @@ namespace ToDoList.ViewModels
             }
         }
 
+        //Bindingi:
         public string Username { get; private set; } = null!;
 
-        public RelayCommand LogOutCommand { get; set; }
+        private ObservableCollection<CategoryDto> _categories = [];
+        public ObservableCollection<CategoryDto> Categories
+        {
+            get => _categories;
+            set
+            {
+                _categories = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand LogOutCommand { get; set; }
 
         public MainAppViewModel(INavigationService navigationService, IUserContextService userContextService)
         {

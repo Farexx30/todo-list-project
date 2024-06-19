@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ToDoList.Commands;
 using ToDoList.Services;
 
@@ -21,8 +22,8 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand NavigateToLoginCommand { get; set; }
-        public RelayCommand NavigateToRegisterCommand { get; set; }
+        public ICommand NavigateToLoginCommand { get; set; }
+        public ICommand NavigateToRegisterCommand { get; set; }
 
         public MainMenuViewModel(INavigationService navigationService)
         {
