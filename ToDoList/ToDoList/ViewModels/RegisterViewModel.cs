@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using ToDoList.Commands;
 using ToDoList.Models.Dtos;
 using ToDoList.Services;
@@ -61,7 +62,7 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand RegisterCommand { get; set; }
+        public ICommand RegisterCommand { get; set; }
 
         public RegisterViewModel(INavigationService navigationService, IRegisterUserRepositoryService registerUserRepositoryService, IUserContextService userContextService)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using ToDoList.Commands;
 using ToDoList.Models.Dtos;
 using ToDoList.Services;
@@ -49,7 +50,7 @@ namespace ToDoList.ViewModels
             }
         }
 
-        public RelayCommand LoginCommand { get; set; }
+        public ICommand LoginCommand { get; set; }
 
         public LoginViewModel(INavigationService navigationService, ILoginUserRepositoryService loginUserRepositoryService, IUserContextService userContextService)
         {
