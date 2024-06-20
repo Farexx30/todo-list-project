@@ -14,8 +14,8 @@ namespace ToDoList.Services.Repositories
     public interface IAssignmentRepositoryService
     {
         List<AssignmentDto> GetAssignments(Guid userId, int categoryId);
-        AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, int categoryId);
-        void UpdateAssignment(Assignment updatedAssignmentDto);
+        AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId);
+        void UpdateAssignment(AssignmentDto updatedAssignmentDto);
         void DeleteAssignment(int assignmentId);
         void ShareAssignment(int assignmentId);
     }
@@ -42,9 +42,10 @@ namespace ToDoList.Services.Repositories
             return assignmentsDtos;
         }
 
-        public AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, int categoryId)
+        public AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId)
         {
             var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
+            newAssignment.UserId = userId;
             _dbContext.Assignments.Add(newAssignment);
 
             var newCategoryAssignment = new CategoryAssignment
@@ -60,15 +61,15 @@ namespace ToDoList.Services.Repositories
             return justAddedAssignmentDto;
         }
 
-        public void UpdateAssignment(Assignment updatedAssignment)
+        public void UpdateAssignment(AssignmentDto updatedAssignmentDto)
         {
             _dbContext.Assignments
-                .Where(a => a.Id == updatedAssignment.Id)
+                .Where(a => a.Id == updatedAssignmentDto.Id)
                 .ExecuteUpdate(p =>
-                 p.SetProperty(a => a.Name, updatedAssignment.Name)
-                 .SetProperty(a => a.Deadline, updatedAssignment.Deadline)
-                 .SetProperty(a => a.IsChecked, updatedAssignment.IsChecked)
-                 .SetProperty(a => a.IsImportant, updatedAssignment.IsImportant));
+                 p.SetProperty(a => a.Name, updatedAssignmentDto.Name)
+                 .SetProperty(a => a.Deadline, updatedAssignmentDto.Deadline)
+                 .SetProperty(a => a.IsChecked, updatedAssignmentDto.IsChecked)
+                 .SetProperty(a => a.IsImportant, updatedAssignmentDto.IsImportant));
         }
 
         public void DeleteAssignment(int assignmentId)
@@ -88,7 +89,7 @@ namespace ToDoList.Services.Repositories
                 var newCategoryAssignment = new CategoryAssignment
                 {
                     AssignmentId = assignmentId,
-                    CategoryId = 1 //Wiemy, że "Zadania" mają Id = 1 (możnaby też ręcznie znaleźć to Id).
+                    CategoryId = 1 //Wiemy, że "Zadania" mają Id = 1 - a raczej będą miały (możnaby też ręcznie znaleźć to Id).
                 };
                 _dbContext.CategoryAssignments.Add(newCategoryAssignment);
 

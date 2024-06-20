@@ -35,8 +35,6 @@ namespace ToDoList.Configurations
             //Rejestracja serwisów/repozytoriów:           
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IUserContextService, UserContextService>();
-            services.AddScoped<ICategoryContextService, CategoryContextService>();
-            services.AddScoped<IAssignmentContextService, AssignmentContextService>();
             services.AddScoped<ILoginUserRepositoryService, UserRepositoryService>();
             services.AddScoped<IRegisterUserRepositoryService, UserRepositoryService>();
             services.AddScoped<ICategoryRepositoryService, CategoryRepositoryService>();
