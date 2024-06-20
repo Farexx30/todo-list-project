@@ -15,7 +15,6 @@ namespace ToDoList.Models.Dtos
         public bool IsChecked { get; set; }
         public bool IsImportant { get; set; }
 
-        public Guid UserId { get; set; }
         public List<CategoryDto> Categories { get; set; } = [];
         public List<AssignmentStepDto> AssignmentSteps { get; set; } = [];
     }

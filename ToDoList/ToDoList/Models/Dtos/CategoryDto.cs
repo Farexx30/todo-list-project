@@ -12,7 +12,6 @@ namespace ToDoList.Models.Dtos
         public string Name { get; set; } = null!;
         public bool IsBuiltIn { get; set; }
 
-        public Guid? UserId { get; set; }
         public List<AssignmentDto> Assignments { get; set; } = [];
     }
 }

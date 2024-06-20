@@ -32,11 +32,15 @@ namespace ToDoList.Configurations
             //Rejestracja AutoMappera:
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            //Rejestracja serwisów:           
+            //Rejestracja serwisów/repozytoriów:           
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IUserContextService, UserContextService>();
             services.AddScoped<ILoginUserRepositoryService, UserRepositoryService>();
             services.AddScoped<IRegisterUserRepositoryService, UserRepositoryService>();
+            services.AddScoped<ICategoryRepositoryService, CategoryRepositoryService>();
+            services.AddScoped<IAssignmentRepositoryService, AssignmentRepositoryService>();
+            services.AddScoped<IAssignmentStepRepositoryService, AssignmentStepRepositoryService>();
+
 
             services.AddSingleton<Func<Type, BaseViewModel>>(provider =>
                 viewModelType => (BaseViewModel)provider.GetRequiredService(viewModelType));
