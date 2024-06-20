@@ -15,7 +15,7 @@ namespace ToDoList.Services.Repositories
     {
         List<AssignmentStep> AssignmentStepsCache { get; set; }
         List<AssignmentStepDto> GetAssignmentSteps(int assignmentId);
-        void AddAssignmentStep(AssignmentStepDto newAssignmentStepDto);
+        void AddAssignmentStep(AssignmentStepDto newAssignmentStepDto, int assignmentId);
         void UpdateAssignmentStep(AssignmentStepDto updatedAssignmentStepDto);
         void DeleteAssignmentStep(int assignmentStepId);
         void SaveAssignmentStepsChanges();
@@ -40,9 +40,10 @@ namespace ToDoList.Services.Repositories
             return assignmentStepsDtos;
         }
 
-        public void AddAssignmentStep(AssignmentStepDto newAssignmentStepDto)
+        public void AddAssignmentStep(AssignmentStepDto newAssignmentStepDto, int assignmentId)
         {
             var newAssignmentStep = _mapper.Map<AssignmentStep>(newAssignmentStepDto);
+            newAssignmentStep.AssignmentId = assignmentId;
 
             _dbContext.AssignmentSteps.Add(newAssignmentStep);
             _dbContext.SaveChanges();

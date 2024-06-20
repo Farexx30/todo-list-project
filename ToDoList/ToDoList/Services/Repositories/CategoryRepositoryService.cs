@@ -14,6 +14,7 @@ namespace ToDoList.Services.Repositories
     public interface ICategoryRepositoryService
     {
         List<CategoryDto> GetCategories(Guid userId);
+        CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId);
         void UpdateCategory(CategoryDto updatedCategoryDto);
         void DeleteCategory(int categoryId);
     }
@@ -33,6 +34,27 @@ namespace ToDoList.Services.Repositories
             var categoriesDtos = _mapper.Map<List<CategoryDto>>(categories);
             return categoriesDtos;
         }
+
+        public CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId)
+        {
+            bool isCategoryExist = _dbContext.Categories
+                .Any(c => c.Name == newCategoryDto.Name);
+
+            if (isCategoryExist)
+            {
+                return null;
+            }
+
+            var newCategory = _mapper.Map<Category>(newCategoryDto);
+            newCategory.UserId = userId;
+
+            _dbContext.Categories.Add(newCategory);
+            _dbContext.SaveChanges();
+
+            var justAddedCategoryDto = _mapper.Map<CategoryDto>(newCategory);
+            return justAddedCategoryDto;
+        }
+
         public void UpdateCategory(CategoryDto updatedCategoryDto)
         {
             _dbContext.Categories

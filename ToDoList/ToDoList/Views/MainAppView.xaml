@@ -328,7 +328,7 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      Foreground="White"
-                     
+
                      FontWeight="Light"
                      Background="Transparent"
                      >

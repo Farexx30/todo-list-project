@@ -8,10 +8,10 @@ using System.Windows.Input;
 
 namespace ToDoList.Commands
 {
-    public class RelayCommand(Action<object> execute, Predicate<object> canExecute) : ICommand
+    public class RelayCommand(Action<object> execute, Predicate<object>? canExecute = null) : ICommand
     {
         private readonly Action<object> _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        private readonly Predicate<object> _canExecute = canExecute;
+        private readonly Predicate<object>? _canExecute = canExecute;
 
         public bool CanExecute(object? parameter)
         {
