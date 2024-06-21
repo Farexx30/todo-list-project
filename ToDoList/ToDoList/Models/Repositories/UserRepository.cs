@@ -10,20 +10,20 @@ using ToDoList.Models;
 using ToDoList.Models.Dtos;
 using ToDoList.Models.Entities;
 
-namespace ToDoList.Services.Repositories
+namespace ToDoList.Models.Repositories
 {
-    public interface ILoginUserRepositoryService
+    public interface ILoginUserRepository
     {
         UserDto? LoginUser(RegisterOrLoginUserDto loginUserDto);
     }
 
-    public interface IRegisterUserRepositoryService
+    public interface IRegisterUserRepository
     {
         UserDto? RegisterUser(RegisterOrLoginUserDto newUserDto);
     }
 
 
-    public class UserRepositoryService(ToDoListDbContext dbContext, IMapper mapper, IPasswordHasher<User> passwordHasher) : ILoginUserRepositoryService, IRegisterUserRepositoryService
+    public class UserRepository(ToDoListDbContext dbContext, IMapper mapper, IPasswordHasher<User> passwordHasher) : ILoginUserRepository, IRegisterUserRepository
     {
         private readonly ToDoListDbContext _dbContext = dbContext;
         private readonly IMapper _mapper = mapper;
@@ -54,7 +54,7 @@ namespace ToDoList.Services.Repositories
             bool isUsernameInUse = _dbContext.Users
                 .Any(u => u.Name == newUserDto.Name);
 
-            if (isUsernameInUse) 
+            if (isUsernameInUse)
             {
                 return null;
             }

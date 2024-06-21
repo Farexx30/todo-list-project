@@ -9,9 +9,9 @@ using ToDoList.Models;
 using ToDoList.Models.Dtos;
 using ToDoList.Models.Entities;
 
-namespace ToDoList.Services.Repositories
+namespace ToDoList.Models.Repositories
 {
-    public interface ICategoryRepositoryService
+    public interface ICategoryRepository
     {
         List<CategoryDto> GetCategories(Guid userId);
         CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId);
@@ -19,7 +19,7 @@ namespace ToDoList.Services.Repositories
         void DeleteCategory(int categoryId);
     }
 
-    public class CategoryRepositoryService(ToDoListDbContext dbContext, IMapper mapper) : ICategoryRepositoryService
+    public class CategoryRepository(ToDoListDbContext dbContext, IMapper mapper) : ICategoryRepository
     {
         private readonly ToDoListDbContext _dbContext = dbContext;
         private readonly IMapper _mapper = mapper;
