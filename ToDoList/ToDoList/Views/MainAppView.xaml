@@ -355,7 +355,12 @@
                      VerticalContentAlignment="Center"/>
             <Label Grid.Row="2"
                    FontFamily="Segoe UI Symbol" 
-                   Content="&#xE104"/>
+                   Content="&#xE104;"
+                   Foreground="White"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontSize="22"
+                   Margin="0,0,20,0"/>
             <Border Grid.Row="3"
                     Margin="15"
                     CornerRadius="10">
