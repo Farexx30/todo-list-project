@@ -233,20 +233,44 @@
                     FontWeight="Bold"
                     FontFamily="Bahnschrift Bold"
                     Margin="0,-7,0,-7"
+                    Cursor="Hand"
                     Command="{Binding Path=RegisterCommand}">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="50">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
+                                    <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="50">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)" Duration="0:0:0.6">
+                                                            <EasingColorKeyFrame KeyTime="0:0:0.6" Value="#e70a3c"/>
+                                                        </ColorAnimationUsingKeyFrames>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[1].(GradientStop.Color)" Duration="0:0:0.3">
+                                                            <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#6e00fc"/>
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
             </Button>
         </Grid>
 
