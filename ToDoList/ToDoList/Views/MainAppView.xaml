@@ -311,6 +311,7 @@
                          FontWeight="Light"
                          Margin="55,0,0,0"
                          FontSize="23"
+                         MaxLength="28"
                          VerticalAlignment="Center"
                          VerticalContentAlignment="Center"
                          BorderThickness="0"/>
@@ -342,14 +343,16 @@
                    FontSize="20"
                    Margin="15,0,400,0"/>
 
-            <Label Grid.Row="2" 
-                   Content="Aktualna kategoria "
-                   Foreground="White"
-                   FontSize="20"
-                   BorderThickness="0"
-                   Margin="350,-5,15,-5"
-                   HorizontalContentAlignment="Right"
-                   VerticalContentAlignment="Center"/>
+            <TextBox Grid.Row="2" 
+                     Text="Aktualna kategoria "
+                     Foreground="White"
+                     FontSize="20"
+                     BorderThickness="0"
+                     MaxLength="10"
+                     Margin="350,-5,15,-5"
+                     Background="Transparent"
+                     HorizontalContentAlignment="Right"
+                     VerticalContentAlignment="Center"/>
 
             <Border Grid.Row="3"
                     Margin="15"
@@ -368,7 +371,7 @@
                 </Border.Background>
             </Border>
             <syncfusion:CheckListBox Grid.Row="3"
-                                     FontSize="26"
+                                     FontSize="25"
                                      Margin="20"
                                      BorderThickness="0"
                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -381,7 +384,7 @@
                 <syncfusion:CheckListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </syncfusion:CheckListBox.Resources>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem1"/>
+                <syncfusion:CheckListBoxItem Content="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"/>
                 <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
                 <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
                 <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
@@ -407,12 +410,12 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="Treść zadania do dodania"
+                         Text="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"
                          Foreground="White"
-                         
+                         MaxLength="28"
                          FontWeight="Light"
                          Margin="55,0,0,0"
-                         FontSize="26"
+                         FontSize="24"
                          VerticalAlignment="Center"
                          VerticalContentAlignment="Center"
                          BorderThickness="0"/>
@@ -567,7 +570,8 @@
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,0,0"
-                         FontSize="26"
+                         FontSize="22"
+                         MaxLength="17"
                          VerticalAlignment="Center"
                          VerticalContentAlignment="Center"
                          BorderThickness="0"/>
