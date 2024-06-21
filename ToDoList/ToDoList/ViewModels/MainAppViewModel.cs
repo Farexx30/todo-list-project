@@ -91,6 +91,17 @@ namespace ToDoList.ViewModels
             }
         }
 
+        private AssignmentStepDto? _currentAssignmentStep;
+        public AssignmentStepDto? CurrentAssignmentStep
+        {
+            get => _currentAssignmentStep;
+            set
+            {
+                _currentAssignmentStep = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ObservableCollection<AssignmentStepDto> _assignmentSteps = [];
         public ObservableCollection<AssignmentStepDto> AssignmentSteps
         {
@@ -103,13 +114,17 @@ namespace ToDoList.ViewModels
         }
 
 
+
         public ICommand AddCategoryCommand { get; set; }
         public ICommand UpdateCategoryCommand { get; set; }
         public ICommand DeleteCategoryCommand { get; set; }
         public ICommand AddAssignmentCommand { get; set; }
         public ICommand UpdateAssignmentCommand { get; set; }
         public ICommand DeleteAssignmentCommand { get; set; }
+        public ICommand ShareAssignmentCommand { get; set; }
         public ICommand AddAssignmentStepCommand { get; set; }
+        public ICommand UpdateAssignmentStepCommand { get; set; }
+        public ICommand DeleteAssignmentStepCommand { get; set; }
         public ICommand CategoryChangedCommand { get; set; }
         public ICommand AssignmentChangedCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
@@ -130,8 +145,11 @@ namespace ToDoList.ViewModels
             AddAssignmentCommand = new RelayCommand(AddAssignment, _ => true);
             UpdateAssignmentCommand = new RelayCommand(UpdateAssignment);
             DeleteAssignmentCommand = new RelayCommand(DeleteAssignment, _ => true);
+            ShareAssignmentCommand = new RelayCommand(ShareAssignment, _ => true);
 
             AddAssignmentStepCommand = new RelayCommand(AddAssignmentStep, _ => true);
+            UpdateAssignmentStepCommand = new RelayCommand(UpdateAssignmentStep, _ => true);
+            DeleteAssignmentStepCommand = new RelayCommand(DeleteAssignmentStep, _ => true);
 
             CategoryChangedCommand = new RelayCommand(CategoryChanged, _ => true);
             AssignmentChangedCommand = new RelayCommand(AssignmentChanged, _ => true);
@@ -192,7 +210,7 @@ namespace ToDoList.ViewModels
             };
             var newAssignmentWithIdDto = _assignmentRepo.AddAssignment(newAssignmentDto, _currentUser.Id, CurrentCategory!.Id);
 
-            //Assignments.Add(newAssignmentWithIdDto) //Bedzie binding Assignments.
+            ToDoAssignments.Add(newAssignmentWithIdDto);
         }
 
         private void UpdateAssignment(object obj)
@@ -208,8 +226,21 @@ namespace ToDoList.ViewModels
         private void DeleteAssignment(object obj)
         {
             _assignmentRepo.DeleteAssignment(CurrentAssignment!.Id);
-            //Assignments.Remove(CurrentAssignment) //Bedzie binding !!!!!!!!      <--------
+
+            if(CurrentAssignment.IsChecked)
+            {
+                CompletedAssignments.Remove(CurrentAssignment);
+            }
+            else
+            {
+                ToDoAssignments.Remove(CurrentAssignment);
+            }
             //i czy CurrentAssignment jest nullem juz ???
+        }
+
+        private void ShareAssignment(object obj)
+        {
+            _assignmentRepo.ShareAssignment(CurrentAssignment!.Id);
         }
 
         //AssignmentStep actions:
@@ -219,27 +250,44 @@ namespace ToDoList.ViewModels
             {
                 Name = "", //Bedzie binding !!!!!!!!          <--------
             };
-            _assignmentStepRepo.AddAssignmentStep(newAssignmentStepDto, CurrentAssignment!.Id);
+            var assignmentStepWithIdDto = _assignmentStepRepo.AddAssignmentStep(newAssignmentStepDto, CurrentAssignment!.Id);
+
+            AssignmentSteps.Add(assignmentStepWithIdDto);
+        }
+        private void UpdateAssignmentStep(object obj)
+        {
+            CurrentAssignmentStep!.Name = ""; // Bedzie binding !!!!!! <--------------
+            _assignmentStepRepo.UpdateAssignmentStep(CurrentAssignmentStep);
+        }
+
+        private void DeleteAssignmentStep(object obj)
+        {
+            _assignmentStepRepo.DeleteAssignmentStep(CurrentAssignmentStep!.Id);
+            AssignmentSteps.Remove(CurrentAssignmentStep);
+            //i czy tutaj już CurrentAssignmentStep bedzie null???
         }
 
         private void CategoryChanged(object obj)
         {
-            //Obsluzenie zdarzenia przejscia do innej kategorii...
+            _assignmentStepRepo.SaveAssignmentStepsChanges();
+            //i reszta... Obsluzenie zdarzenia przejscia do innej kategorii...
         }
 
         private void AssignmentChanged(object obj)
         {
-            //Obsluzenie zdarzenia przejscia do innego Assignment...
+            _assignmentStepRepo.SaveAssignmentStepsChanges();
+            //i reszta... Obsluzenie zdarzenia przejscia do innego Assignment...
         }
 
         private void LogOut(object obj)
         {
-            //aktualizacja wszystkich ewentualnych pozostalosci...
+            _assignmentStepRepo.SaveAssignmentStepsChanges();
+            //i reszta... np. aktualizacja wszystkich ewentualnych pozostalosci...
+
             _userContextService.CurrentUser = null;
             NavigationService.NavigateTo<MainMenuViewModel>();
         }
 
         //I jeszcze trzeba bedzie CanExecuty porobić oraz pokombinować z zapisem przy ewentualnym zamknieciu aplikacji.
-        //Oraz ogolnie przejrzec calosc i conieco pozmieniac w logice bazodanowej moze.
     }
 }
