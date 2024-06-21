@@ -283,7 +283,15 @@
                    FontSize="30"
                    Margin="15,15,600,10"
                    VerticalContentAlignment="Bottom"/>
-            <Label Content="{Binding Username}"
+            <Label Grid.Row="0"
+                   FontFamily="Segoe UI Symbol" 
+                   Content="&#xE104;"
+                   Foreground="White"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontSize="22"
+                   Margin="0,0,20,0"/>
+            <Label Content="WWWWWWWWWWWWWWWWWWWW"
                    Foreground="White"
                    FontSize="30"
                    Margin="105, 15, 15, 10"
@@ -433,7 +441,8 @@
                     FontFamily="Segoe UI Symbol"
                     Foreground="White"
                     FontSize="20"
-                    VerticalContentAlignment="Top">
+                    VerticalContentAlignment="Top" 
+                    Cursor="Hand">
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.8">
                         <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
