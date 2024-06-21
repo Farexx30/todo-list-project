@@ -349,11 +349,13 @@
                      FontSize="20"
                      BorderThickness="0"
                      MaxLength="10"
-                     Margin="350,-5,15,-5"
+                     Margin="350,-5,60,-5"
                      Background="Transparent"
                      HorizontalContentAlignment="Right"
                      VerticalContentAlignment="Center"/>
-
+            <Label Grid.Row="2"
+                   FontFamily="Segoe UI Symbol" 
+                   Content="&#xE104"/>
             <Border Grid.Row="3"
                     Margin="15"
                     CornerRadius="10">
