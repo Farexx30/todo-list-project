@@ -7,14 +7,14 @@ using System.Windows;
 using System.Windows.Input;
 using ToDoList.Commands;
 using ToDoList.Models.Dtos;
+using ToDoList.Models.Repositories;
 using ToDoList.Services;
-using ToDoList.Services.Repositories;
 
 namespace ToDoList.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private readonly ILoginUserRepositoryService _loginUserRepositoryService;
+        private readonly ILoginUserRepository _loginUserRepo;
         private readonly IUserContextService _userContextService;
 
         private INavigationService _navigationService;
@@ -52,10 +52,10 @@ namespace ToDoList.ViewModels
 
         public ICommand LoginCommand { get; set; }
 
-        public LoginViewModel(INavigationService navigationService, ILoginUserRepositoryService loginUserRepositoryService, IUserContextService userContextService)
+        public LoginViewModel(INavigationService navigationService, ILoginUserRepository loginUserRepo, IUserContextService userContextService)
         {
             _navigationService = navigationService;
-            _loginUserRepositoryService = loginUserRepositoryService;
+            _loginUserRepo = loginUserRepo;
             _userContextService = userContextService;
 
             LoginCommand = new RelayCommand(Login, CanLogin);
@@ -68,7 +68,7 @@ namespace ToDoList.ViewModels
                 Name = Username.Trim(),
                 Password = Password.Trim(),
             };
-            var loggedInUserDto = _loginUserRepositoryService.LoginUser(loginUserDto);
+            var loggedInUserDto = _loginUserRepo.LoginUser(loginUserDto);
 
             if (loggedInUserDto is not null)
             {

@@ -6,8 +6,8 @@ using System.Configuration;
 using System.Reflection;
 using ToDoList.Models;
 using ToDoList.Models.Entities;
+using ToDoList.Models.Repositories;
 using ToDoList.Services;
-using ToDoList.Services.Repositories;
 using ToDoList.ViewModels;
 
 namespace ToDoList.Configurations
@@ -35,11 +35,11 @@ namespace ToDoList.Configurations
             //Rejestracja serwisów/repozytoriów:           
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IUserContextService, UserContextService>();
-            services.AddScoped<ILoginUserRepositoryService, UserRepositoryService>();
-            services.AddScoped<IRegisterUserRepositoryService, UserRepositoryService>();
-            services.AddScoped<ICategoryRepositoryService, CategoryRepositoryService>();
-            services.AddScoped<IAssignmentRepositoryService, AssignmentRepositoryService>();
-            services.AddScoped<IAssignmentStepRepositoryService, AssignmentStepRepositoryService>();
+            services.AddScoped<ILoginUserRepository, UserRepository>();
+            services.AddScoped<IRegisterUserRepository, UserRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+            services.AddScoped<IAssignmentStepRepository, AssignmentStepRepository>();
 
 
             services.AddSingleton<Func<Type, BaseViewModel>>(provider =>
