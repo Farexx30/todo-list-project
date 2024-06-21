@@ -99,10 +99,20 @@
                 </RadialGradientBrush>
             </Border.Background>
         </Border>
+        <Button Grid.Column="2"
+                Grid.Row="1"
+                Margin="10,10,-40,0"
+                Background="Transparent"
+                BorderThickness="0"
+                FontFamily="Segoe UI Symbol"
+                Content="&#xE112;"
+                FontSize="50"
+                FontWeight="UltraLight"
+                Foreground="White"/>
         <Image Grid.Column="3"
                Grid.Row="1"
                Grid.RowSpan="2"
-               Margin="10" 
+               Margin="100,10,100,10" 
                Source="Images\UserIcon.png"/>
         <Label Grid.Row="4"
                Grid.Column="3"
