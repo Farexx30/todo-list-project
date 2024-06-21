@@ -132,6 +132,7 @@
                  Foreground="White"
                  VerticalAlignment="Center"
                  FontSize="32"
+                 MaxLength="20"
                  FontFamily="Bahnschrift SemiLight"
                  BorderThickness="0"
                  Margin="15,0,0,10"/>
