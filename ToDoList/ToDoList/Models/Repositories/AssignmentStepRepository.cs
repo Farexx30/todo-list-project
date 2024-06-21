@@ -25,15 +25,11 @@ namespace ToDoList.Models.Repositories
         private readonly ToDoListDbContext _dbContext = dbContext;
         private readonly IMapper _mapper = mapper;
 
-        private readonly List<AssignmentStep> _assignmentStepsCache = [];
-
         public List<AssignmentStepDto> GetAssignmentSteps(int assignmentId)
         {
             var assignmentSteps = _dbContext.AssignmentSteps
                 .Where(aStep => aStep.AssignmentId == assignmentId)
                 .ToList();
-
-            _assignmentStepsCache.AddRange(assignmentSteps);
 
             var assignmentStepsDtos = _mapper.Map<List<AssignmentStepDto>>(assignmentSteps);
             return assignmentStepsDtos;
@@ -45,7 +41,6 @@ namespace ToDoList.Models.Repositories
             newAssignmentStep.AssignmentId = assignmentId;
 
             _dbContext.AssignmentSteps.Add(newAssignmentStep);
-            _assignmentStepsCache.Add(newAssignmentStep);
 
             var justAddedAssignmentStep = _mapper.Map<AssignmentStepDto>(newAssignmentStep);
             return justAddedAssignmentStep;
@@ -53,7 +48,7 @@ namespace ToDoList.Models.Repositories
 
         public void UpdateAssignmentStep(AssignmentStepDto updatedAssignmentStepDto)
         {
-            var assignmentStepToUpdate = _assignmentStepsCache
+            var assignmentStepToUpdate = _dbContext.AssignmentSteps
                 .First(aStep => aStep.Id == updatedAssignmentStepDto.Id);
 
             assignmentStepToUpdate.Name = updatedAssignmentStepDto.Name;
@@ -61,16 +56,16 @@ namespace ToDoList.Models.Repositories
 
         public void DeleteAssignmentStep(int assignmentStepId)
         {
-            var assignmentStepToDelete = _assignmentStepsCache
+            var assignmentStepToDelete = _dbContext.AssignmentSteps
                 .First(aStep => aStep.Id == assignmentStepId);
 
-            _assignmentStepsCache.Remove(assignmentStepToDelete);
+            _dbContext.AssignmentSteps.Remove(assignmentStepToDelete);
         }
 
         public void SaveAssignmentStepsChanges()
         {
             _dbContext.SaveChanges();
-            _assignmentStepsCache.Clear();
+            _dbContext.ChangeTracker.Clear();
         }
     }
 }
