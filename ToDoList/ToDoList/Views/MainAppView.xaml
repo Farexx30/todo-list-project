@@ -367,34 +367,28 @@
                     </RadialGradientBrush>
                 </Border.Background>
             </Border>
-            <ListBox Grid.Row="3"
-                     FontSize="26"
-                     Margin="20"
-                     BorderThickness="0"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     Foreground="White"
-
-                     FontWeight="Light"
-                     Background="Transparent"
-                     >
-                <ListBox.Resources>
+            <syncfusion:CheckListBox Grid.Row="3"
+                                     FontSize="26"
+                                     Margin="20"
+                                     BorderThickness="0"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     Foreground="White"
+                                     IsSelectAllEnabled="False"
+                                     FontWeight="Light"
+                                     Background="Transparent"
+                                     >
+                <syncfusion:CheckListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
-                </ListBox.Resources>
-                <ListBoxItem>WWWWWWWWWWWWWWWWWWWWWWWWWWWWW</ListBoxItem>
-                <ListBoxItem>Przykład 2</ListBoxItem>
-                <ListBoxItem>Przykład 3</ListBoxItem>
-                <ListBoxItem>Przykład 4</ListBoxItem>
-                <ListBoxItem>Przykład 5</ListBoxItem>
-                <ListBoxItem>Przykład 6</ListBoxItem>
-                <ListBoxItem>Przykład 7</ListBoxItem>
-                <ListBoxItem>Przykład 8</ListBoxItem>
-                <ListBoxItem>Przykład 9</ListBoxItem>
-                <ListBoxItem>Przykład 10</ListBoxItem>
-                <ListBoxItem>Przykład 11</ListBoxItem>
-                <ListBoxItem>Przykład 12</ListBoxItem>
-                <ListBoxItem>Przykład 13</ListBoxItem>
-            </ListBox>
+                </syncfusion:CheckListBox.Resources>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem1"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem8"/>
+            </syncfusion:CheckListBox>
 
             <Border Grid.Row="4"
                     Margin="15,5,15,15"
@@ -466,33 +460,26 @@
                     </RadialGradientBrush>
                 </Border.Background>
             </Border>
-            <ListBox Grid.Row="6"
-                     FontSize="26"
+            <syncfusion:CheckListBox Grid.Row="6"
+                     FontSize="22"
                      Margin="20"
                      BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      Foreground="White"
-                     
+                     IsSelectAllEnabled="False"
                      FontWeight="Light"
                      Background="Transparent">
-                <ListBox.Resources>
-                    <Style TargetType="{x:Type ScrollBar}" 
-                            BasedOn="{StaticResource ScrollBarStyle}"/>
-                </ListBox.Resources>
-                <ListBoxItem>Przykład 1</ListBoxItem>
-                <ListBoxItem>Przykład 2</ListBoxItem>
-                <ListBoxItem>Przykład 3</ListBoxItem>
-                <ListBoxItem>Przykład 4</ListBoxItem>
-                <ListBoxItem>Przykład 5</ListBoxItem>
-                <ListBoxItem>Przykład 6</ListBoxItem>
-                <ListBoxItem>Przykład 7</ListBoxItem>
-                <ListBoxItem>Przykład 8</ListBoxItem>
-                <ListBoxItem>Przykład 9</ListBoxItem>
-                <ListBoxItem>Przykład 10</ListBoxItem>
-                <ListBoxItem>Przykład 11</ListBoxItem>
-                <ListBoxItem>Przykład 12</ListBoxItem>
-                <ListBoxItem>Przykład 13</ListBoxItem>
-            </ListBox>
+                <syncfusion:CheckListBox.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
+                </syncfusion:CheckListBox.Resources>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem1"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem8"/>
+            </syncfusion:CheckListBox>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -557,7 +544,7 @@
                 <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
                 <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
                 <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
+                <syncfusion:CheckListBoxItem Content="CheckListBoxItem8"/>
             </syncfusion:CheckListBox>
             <Border Grid.Row="2"
                     Margin="15,5,15,15"
@@ -578,7 +565,6 @@
                          Padding="10"
                          Text="Treść kroku do dodania"
                          Foreground="White"
-                         
                          FontWeight="Light"
                          Margin="50,0,0,0"
                          FontSize="26"
