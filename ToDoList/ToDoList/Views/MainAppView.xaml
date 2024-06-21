@@ -573,7 +573,7 @@
                          BorderThickness="0"/>
             </Border>
             <Button Grid.Row="2"
-                    Margin="25,15,379,25"
+                    Margin="24,15,379,25"
                     Content="&#xE109;"
                     FontFamily="Segoe UI Symbol"
                     Foreground="White"
