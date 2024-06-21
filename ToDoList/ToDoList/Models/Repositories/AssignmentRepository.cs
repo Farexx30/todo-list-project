@@ -9,9 +9,9 @@ using ToDoList.Models;
 using ToDoList.Models.Dtos;
 using ToDoList.Models.Entities;
 
-namespace ToDoList.Services.Repositories
+namespace ToDoList.Models.Repositories
 {
-    public interface IAssignmentRepositoryService
+    public interface IAssignmentRepository
     {
         List<AssignmentDto> GetAssignments(Guid userId, int categoryId);
         AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId);
@@ -20,7 +20,7 @@ namespace ToDoList.Services.Repositories
         void ShareAssignment(int assignmentId);
     }
 
-    public class AssignmentRepositoryService(ToDoListDbContext dbContext, IMapper mapper) : IAssignmentRepositoryService
+    public class AssignmentRepository(ToDoListDbContext dbContext, IMapper mapper) : IAssignmentRepository
     {
         private readonly ToDoListDbContext _dbContext = dbContext;
         private readonly IMapper _mapper = mapper;
