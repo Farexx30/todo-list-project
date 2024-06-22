@@ -35,31 +35,28 @@ namespace ToDoList.Models
                 .HasForeignKey(fk => fk.AssignmentId);
 
                 builder.Property(a => a.Name)
-                .HasColumnType("nvarchar(100)")
-                .HasMaxLength(100);
+                .HasColumnType("nvarchar(28)")
+                .HasMaxLength(28);
             });
 
             modelBuilder.Entity<Entities.User>()
                 .Property(u => u.Name)
-                .HasColumnType("nvarchar(30)")
-                .HasMaxLength(30);
+                .HasColumnType("nvarchar(20)")
+                .HasMaxLength(20);
 
             modelBuilder.Entity<Category>(builder =>
             {
                 builder.Property(c => c.Name)
-                .HasColumnType("nvarchar(15)")
-                .HasMaxLength(15);
+                .HasColumnType("nvarchar(10)")
+                .HasMaxLength(10);
 
-                builder.HasData(new Category() { Id = 1, Name = "Dom", IsBuiltIn = true },
-                    new Category() { Id = 2, Name = "Praca", IsBuiltIn = true },
-                    new Category() { Id = 3, Name = "Edukacja", IsBuiltIn = true },
-                    new Category() { Id = 4, Name = "Zadania", IsBuiltIn = true });
+                builder.HasData(new Category() { Id = 1, Name = "Pozostałe", IsBuiltIn = true });
             });
             
             modelBuilder.Entity<AssignmentStep>()
                 .Property(a => a.Name)
-                .HasColumnType("nvarchar(50)")
-                .HasMaxLength(50);
+                .HasColumnType("nvarchar(17)")
+                .HasMaxLength(17);
 
             modelBuilder.Entity<CategoryAssignment>()
                 .HasKey(pk => new { pk.CategoryId, pk.AssignmentId });
