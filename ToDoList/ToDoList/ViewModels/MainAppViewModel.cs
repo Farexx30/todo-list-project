@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ToDoList.Commands;
 using ToDoList.Models.Dtos;
@@ -37,7 +38,7 @@ namespace ToDoList.ViewModels
 
 
         //User bindings:
-        private string _username = null!;
+        private string _username = string.Empty;
         public string Username
         {
             get => _username;
@@ -50,7 +51,7 @@ namespace ToDoList.ViewModels
 
 
         //Category bindings:
-        private string _currentCategoryName = null!;
+        private string _currentCategoryName = string.Empty;
         public string CurrentCategoryName
         {
             get => _currentCategoryName;
@@ -61,7 +62,7 @@ namespace ToDoList.ViewModels
             }
         }
 
-        private string _newCategoryName = null!;
+        private string _newCategoryName = string.Empty;
         public string NewCategoryName
         {
             get => _newCategoryName;
@@ -91,12 +92,13 @@ namespace ToDoList.ViewModels
             {
                 _currentCategory = value;
                 OnPropertyChanged();
+                CategoryChanged();
             }
         }
 
 
         //Assignment bindings:
-        private string _currentAssignmentName = null!;
+        private string _currentAssignmentName = string.Empty;
         public string CurrentAssignmentName
         {
             get => _currentAssignmentName;
@@ -107,7 +109,7 @@ namespace ToDoList.ViewModels
             }
         }
 
-        private string _newAssignmentName = null!;
+        private string _newAssignmentName = string.Empty;
         public string NewAssignmentName
         {
             get => _newAssignmentName;
@@ -118,8 +120,8 @@ namespace ToDoList.ViewModels
             }
         }
 
-        private DateTime _assignmentDeadline;
-        public DateTime AssignmentDeadline
+        private DateOnly? _assignmentDeadline;
+        public DateOnly? AssignmentDeadline
         {
             get => _assignmentDeadline;
             set
@@ -181,12 +183,13 @@ namespace ToDoList.ViewModels
             {
                 _currentAssignment = value;
                 OnPropertyChanged();
+                AssignmentChanged();
             }
         }
 
 
         //AssignmentSteps bindings:
-        private string _currentAssignmentStepName = null!;
+        private string _currentAssignmentStepName = string.Empty;
         public string CurrentAssignmentStepName
         {
             get => _currentAssignmentStepName;
@@ -197,13 +200,24 @@ namespace ToDoList.ViewModels
             }
         }
 
-        private string _newAssignmentStepName = null!;
+        private string _newAssignmentStepName = string.Empty;
         public string NewAssignmentStepName
         {
             get => _newAssignmentStepName;
             set
             {
                 _newAssignmentStepName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isAssignmentStepChecked;
+        public bool IsAssignmentStepChecked
+        {
+            get => _isAssignmentStepChecked;
+            set
+            {
+                _isAssignmentStepChecked = value;
                 OnPropertyChanged();
             }
         }
@@ -242,8 +256,8 @@ namespace ToDoList.ViewModels
         public ICommand AddAssignmentStepCommand { get; set; }
         public ICommand UpdateAssignmentStepCommand { get; set; }
         public ICommand DeleteAssignmentStepCommand { get; set; }
-        public ICommand CategoryChangedCommand { get; set; }
-        public ICommand AssignmentChangedCommand { get; set; }
+        public ICommand CategoryNameLostFocusCommand { get; set; }
+        public ICommand AssignmentNameLostFocusCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
 
 
@@ -268,8 +282,8 @@ namespace ToDoList.ViewModels
             UpdateAssignmentStepCommand = new RelayCommand(UpdateAssignmentStep, _ => true);
             DeleteAssignmentStepCommand = new RelayCommand(DeleteAssignmentStep, _ => true);
 
-            CategoryChangedCommand = new RelayCommand(CategoryChanged, _ => true);
-            AssignmentChangedCommand = new RelayCommand(AssignmentChanged, _ => true);
+            CategoryNameLostFocusCommand = new RelayCommand(CategoryNameLostFocus);
+            AssignmentNameLostFocusCommand = new RelayCommand(AssignmentNameLostFocus);
             LogOutCommand = new RelayCommand(LogOut, _ => true);
 
             Initialize();
@@ -289,14 +303,14 @@ namespace ToDoList.ViewModels
         {
             var newCategoryDto = new CategoryDto
             {
-                Name = NewCategoryName,
+                Name = "Category",
                 IsBuiltIn = false
             };
             var newCategoryWithIdDto = _categoryRepo.AddCategory(newCategoryDto, _currentUser.Id);
 
             if (newCategoryWithIdDto is null)
             {
-                //Błąd! Kategoria o takiej nazwie juz istnieje...
+                MessageBox.Show("Taka kategoria już istnieje");
             }
             else
             {
@@ -370,6 +384,7 @@ namespace ToDoList.ViewModels
             var newAssignmentStepDto = new AssignmentStepDto
             {
                 Name = NewAssignmentStepName,
+                IsChecked = false
             };
             var assignmentStepWithIdDto = _assignmentStepRepo.AddAssignmentStep(newAssignmentStepDto, CurrentAssignment!.Id);
 
@@ -379,6 +394,7 @@ namespace ToDoList.ViewModels
         private void UpdateAssignmentStep(object obj)
         {
             CurrentAssignmentStep!.Name = CurrentAssignmentStepName;
+            CurrentAssignmentStep.IsChecked = IsAssignmentChecked;
             _assignmentStepRepo.UpdateAssignmentStep(CurrentAssignmentStep);
         }
 
@@ -391,16 +407,51 @@ namespace ToDoList.ViewModels
 
 
         //Eventy, albo cos w tym rodzaju, zobaczy sie.
-        private void CategoryChanged(object obj)
+        private void CategoryChanged()
         {
             _assignmentStepRepo.SaveAssignmentStepsChanges();
-            //i reszta... Obsluzenie zdarzenia przejscia do innej kategorii...
+
+            CurrentCategoryName = CurrentCategory!.Name;
+
+            var allAssignments = _assignmentRepo.GetAssignments(_currentUser.Id, CurrentCategory.Id);
+            ToDoAssignments = new(allAssignments.Where(a => a.IsChecked == false));
+            CompletedAssignments = new(allAssignments.Where(a => a.IsChecked == true));
         }
 
-        private void AssignmentChanged(object obj)
+        private void AssignmentChanged()
         {
             _assignmentStepRepo.SaveAssignmentStepsChanges();
-            //i reszta... Obsluzenie zdarzenia przejscia do innego Assignment...
+
+            AssignmentSteps = new(_assignmentStepRepo.GetAssignmentSteps(CurrentAssignment!.Id));
+        }
+
+
+        private void CategoryNameLostFocus(object obj)
+        {
+            MessageBox.Show("test1");
+
+            //To do Xamla na LostFocus przy konkretnym TextBox.
+            /*
+                         <i:Interaction.Triggers>
+                <i:EventTrigger EventName="LostFocus">
+                    <i:InvokeCommandAction Command="{Binding CategoryNameLostFocusCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+             */
+        }
+
+        private void AssignmentNameLostFocus(object obj)
+        {
+            MessageBox.Show("test2");
+
+            //To do Xamla na LostFocus przy konkretnym TextBox.
+            /*
+                         <i:Interaction.Triggers>
+                <i:EventTrigger EventName="LostFocus">
+                    <i:InvokeCommandAction Command="{Binding AssignmentNameLostFocusCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+             */
         }
 
         private void LogOut(object obj)

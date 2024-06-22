@@ -47,6 +47,7 @@ namespace ToDoList.Models.Repositories
             var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
             newAssignment.UserId = userId;
             _dbContext.Assignments.Add(newAssignment);
+            _dbContext.SaveChanges();
 
             var newCategoryAssignment = new CategoryAssignment
             {
@@ -54,7 +55,6 @@ namespace ToDoList.Models.Repositories
                 CategoryId = categoryId
             };
             _dbContext.CategoryAssignments.Add(newCategoryAssignment);
-
             _dbContext.SaveChanges();
 
             var justAddedAssignmentDto = _mapper.Map<AssignmentDto>(newAssignment);
