@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Models;
 
@@ -11,9 +12,11 @@ using ToDoList.Models;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    partial class ToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240623171428_CascadeDeletingAssignmentsWhenCategoryDeletedAndLongerCategoryName")]
+    partial class CascadeDeletingAssignmentsWhenCategoryDeletedAndLongerCategoryName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace ToDoList.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Assignments", (string)null);
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.AssignmentStep", b =>
@@ -77,7 +80,7 @@ namespace ToDoList.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("AssignmentSteps", (string)null);
+                    b.ToTable("AssignmentSteps");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.Category", b =>
@@ -103,7 +106,7 @@ namespace ToDoList.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -136,7 +139,7 @@ namespace ToDoList.Migrations
 
                     b.HasIndex("CategoryId1");
 
-                    b.ToTable("CategoryAssignments", (string)null);
+                    b.ToTable("CategoryAssignments");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.User", b =>
@@ -156,7 +159,7 @@ namespace ToDoList.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.Assignment", b =>

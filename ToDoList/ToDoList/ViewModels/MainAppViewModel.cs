@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using ToDoList.Commands;
 using ToDoList.Models;
@@ -263,7 +264,6 @@ namespace ToDoList.ViewModels
         public ICommand ImportantCategoryClickedCommand { get; set; }
         public ICommand PlannedCategoryClickedCommand { get; set; }
         public ICommand BuiltInCategoryClickedCommand { get; set; }
-        public ICommand CategoryNameLostFocusCommand { get; set; }
         public ICommand AssignmentNameLostFocusCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
 
@@ -289,7 +289,6 @@ namespace ToDoList.ViewModels
             UpdateAssignmentStepCommand = new RelayCommand(UpdateAssignmentStep, _ => true);
             DeleteAssignmentStepCommand = new RelayCommand(DeleteAssignmentStep, _ => true);
 
-            CategoryNameLostFocusCommand = new RelayCommand(CategoryNameLostFocus);
             AssignmentNameLostFocusCommand = new RelayCommand(AssignmentNameLostFocus);
 
             MyDayCategoryClickedCommand = new RelayCommand(MyDayCategoryClicked, _ => true);
@@ -343,14 +342,33 @@ namespace ToDoList.ViewModels
         {
             CurrentCategory!.Name = CurrentCategoryName;
             _categoryRepo.UpdateCategory(CurrentCategory);
+
+            CollectionViewSource.GetDefaultView(Categories).Refresh();
         }
 
         //Update Category:
         private void DeleteCategory(object obj)
         {
-            _categoryRepo.DeleteCategory(CurrentCategory!.Id);
+            GetConnectedAssignments(out var connectedAssignmentsIds);
+            _categoryRepo.DeleteCategory(CurrentCategory!.Id, connectedAssignmentsIds);
+
             Categories.Remove(CurrentCategory);
+            ToDoAssignments.Clear();
+            CompletedAssignments.Clear();
             //i czy CurrentCategory jest nullem juz ???
+        }
+
+        private List<int> GetConnectedAssignments(out List<int> connectedAssignmentsIds)
+        {
+            var connectedAssignments = new List<AssignmentDto>();
+            connectedAssignments.AddRange(ToDoAssignments);
+            connectedAssignments.AddRange(CompletedAssignments);
+
+            connectedAssignmentsIds = connectedAssignments
+                .Select(a => a.Id)
+                .ToList();
+
+            return connectedAssignmentsIds;
         }
 
 
@@ -393,6 +411,7 @@ namespace ToDoList.ViewModels
             {
                 ToDoAssignments.Remove(CurrentAssignment);
             }
+            AssignmentSteps.Clear();
             //i czy CurrentAssignment jest nullem juz ???
         }
 
@@ -460,23 +479,7 @@ namespace ToDoList.ViewModels
             }
         }
 
-        //LostFocuses:
-        private void CategoryNameLostFocus(object obj)
-        {
-            MessageBox.Show("CategoryNameLostFocus");
-
-            UpdateCategory(this);
-
-            //To do Xamla na LostFocus przy konkretnym TextBox.
-            /*
-                         <i:Interaction.Triggers>
-                <i:EventTrigger EventName="LostFocus">
-                    <i:InvokeCommandAction Command="{Binding CategoryNameLostFocusCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-             */
-        }
-        
+        //LostFocuses:       
         private void AssignmentNameLostFocus(object obj)
         {
             MessageBox.Show("AssignmentNameLostFocus");

@@ -17,7 +17,7 @@ namespace ToDoList.Models.Repositories
         List<CategoryDto> GetCategories(Guid userId);
         CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId);
         void UpdateCategory(CategoryDto updatedCategoryDto);
-        void DeleteCategory(int categoryId);
+        void DeleteCategory(int categoryId, List<int> connectedAssignmentsToDeleteDto);
     }
 
     public class CategoryRepository(ToDoListDbContext dbContext, IMapper mapper) : ICategoryRepository
@@ -75,12 +75,17 @@ namespace ToDoList.Models.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void DeleteCategory(int categoryId)
+        public void DeleteCategory(int categoryId, List<int> connectedAssignmentsToDeleteIds)
         {
             var categoryToDelete = _dbContext.Categories
                 .First(c => c.Id == categoryId);
 
+            var connectedAssignmentsToDelete = _dbContext.Assignments
+                .Where(a => connectedAssignmentsToDeleteIds.Contains(a.Id))
+                .ToList();
+
             _dbContext.Categories.Remove(categoryToDelete);
+            _dbContext.Assignments.RemoveRange(connectedAssignmentsToDelete);
 
             _dbContext.SaveChanges();
         }
