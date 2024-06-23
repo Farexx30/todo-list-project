@@ -48,8 +48,6 @@
     
     
     
-    
-    
     <Style x:Key="CheckBoxToSwitch" TargetType="CheckBox">
         <Setter Property="Template">
             <Setter.Value>
@@ -217,7 +215,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#190E68"/>
+                <Setter Property="Background" Value="#24345b"/>
             </Trigger>
         </Style.Triggers>
     </Style>
