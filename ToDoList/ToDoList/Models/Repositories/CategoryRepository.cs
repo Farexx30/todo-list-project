@@ -27,12 +27,14 @@ namespace ToDoList.Models.Repositories
 
         public CategoryDto GetBuiltInCategory()
         {
-            var builtInCategory = _dbContext.Categories                
+            var builtInCategory = _dbContext.Categories
+                .AsNoTracking()
                 .First(c => c.IsBuiltIn == true);
 
             var builtInCategoryDto = _mapper.Map<CategoryDto>(builtInCategory);
             return builtInCategoryDto;
         }
+
         public List<CategoryDto> GetCategories(Guid userId)
         {
             var categories = _dbContext.Categories
