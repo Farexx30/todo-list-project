@@ -92,19 +92,9 @@
                     Foreground="White"
                     FontSize="28"
                     Margin="10,10,10,0"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="Transparent"  
-                                BorderThickness="0" 
-                                CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Left" 
-                                              VerticalAlignment="Center"
-                                              Margin="10,0,0,0"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Style="{StaticResource DarkBlueButton}"/>
             <Border Grid.Row="1"
                     Background="White"
                     Height="1"
@@ -114,21 +104,10 @@
                     Content="Ważne"
                     Foreground="White"
                     FontSize="28"
-                    
+                    Cursor="Hand"
+                    Style="{StaticResource DarkBlueButton}"
                     Margin="10,5,10,5"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="Transparent"  
-                                BorderThickness="0" 
-                                CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Left" 
-                                              VerticalAlignment="Center"
-                                              Margin="10,0,0,0"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    BorderThickness="0"/>
             <Border Grid.Row="2"
                     Background="White"
                     Height="1"
@@ -138,21 +117,11 @@
                     Content="Zaplanowane"
                     Foreground="White"
                     FontSize="28"
-                    
+                    Cursor="Hand"
+                    Style="{StaticResource DarkBlueButton}"
                     Margin="10,5,10,5"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="Transparent"  
-                                BorderThickness="0" 
-                                CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Left" 
-                                              VerticalAlignment="Center"
-                                              Margin="10,0,0,0"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    BorderThickness="0"/>
+
             <Border Grid.Row="3"
                     Background="White"
                     Height="1"
@@ -162,21 +131,10 @@
                     Content="Pozostałe"
                     Foreground="White"
                     FontSize="28"
-                    
+                    Cursor="Hand"
+                    Style="{StaticResource DarkBlueButton}"
                     Margin="8,0,8,8"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="Transparent"  
-                                BorderThickness="0" 
-                                CornerRadius="35">
-                            <ContentPresenter HorizontalAlignment="Left" 
-                                              VerticalAlignment="Center"
-                                              Margin="10,0,0,0"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    BorderThickness="0"/>
             <Border Grid.Row="5"
                     Grid.RowSpan="3"
                     Background="#101728"
@@ -194,6 +152,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          Foreground="White"
                          Padding="10"
+                         Cursor="Hand"
                          FontSize="24">
                     <ListBox.Resources>
                         <Style TargetType="{x:Type ScrollBar}" 
@@ -218,35 +177,17 @@
                     FontSize="24"
                     Margin="15,10,15,0"
                     FontWeight="Bold"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="#1D1B4D"  
-                                BorderThickness="0" 
-                                CornerRadius="25">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Style="{StaticResource PurpleButton}"/>
             <Button Grid.Row="7"
                     Content="Usuń kategorię"
                     Foreground="White"
                     FontSize="24"
                     Margin="15,10,15,15"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="#1D1B4D"  
-                                BorderThickness="0" 
-                                CornerRadius="18">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Cursor="Hand"
+                    Style="{StaticResource PurpleButton}"
+                    BorderThickness="0"/>
             <Button Grid.Row="8"
                     Content="Wyloguj"
                     Foreground="White"
@@ -254,19 +195,9 @@
                     FontWeight="Light"
                     Margin="10,5,10,10"
                     BorderThickness="0"
-                    Command="{Binding Path=LogOutCommand}">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="#101728"  
-                                BorderThickness="0" 
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"
-                                              />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Cursor="Hand"
+                    Style="{StaticResource DarkBlueButton}"
+                    Command="{Binding Path=LogOutCommand}"/>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -291,11 +222,14 @@
                    VerticalAlignment="Center"
                    FontSize="22"
                    Margin="0,0,20,0"/>
-            <Label Content="{Binding Username}"
-                   Foreground="White"
-                   FontSize="29"
-                   Margin="105, 15, 60, 10"
-                   VerticalContentAlignment="Bottom"/>
+            <TextBox Text="{Binding Username}"
+                     Foreground="White"
+                     Background="Transparent"
+                     FontSize="29"
+                     Margin="105, 15, 60, 10"
+                     BorderThickness="0"
+                     Cursor="IBeam"
+                     VerticalContentAlignment="Bottom"/>
 
             <Border Grid.Row="1"
                     Margin="15,5,15,10"
@@ -320,6 +254,7 @@
                          Margin="40,0,0,0"
                          FontSize="23"
                          MaxLength="28"
+                         Cursor="IBeam"
                          VerticalAlignment="Center"
                          VerticalContentAlignment="Center"
                          BorderThickness="0"/>
@@ -343,6 +278,7 @@
                      BorderThickness="0"
                      MaxLength="11"
                      Margin="350,-5,60,-5"
+                     Cursor="IBeam"
                      Background="Transparent"
                      HorizontalContentAlignment="Right"
                      VerticalContentAlignment="Center"/>
@@ -378,7 +314,8 @@
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     Foreground="White"
                     FontWeight="Light"
-                    Background="Transparent" >
+                    Background="Transparent"
+                    Cursor="Hand">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
@@ -415,6 +352,7 @@
                          Margin="55,0,0,0"
                          FontSize="24"
                          VerticalAlignment="Center"
+                         Cursor="IBeam"
                          VerticalContentAlignment="Center"
                          BorderThickness="0"/>
             </Border>
@@ -425,21 +363,8 @@
                     Foreground="White"
                     FontSize="20"
                     VerticalContentAlignment="Top" 
-                    Cursor="Hand">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.8">
-                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="34">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Cursor="Hand"
+                    Style="{StaticResource RainbowButton34}"/>
             <Label Grid.Row="5" 
                    Content="Wykonane zadania: "
                    Foreground="White"
@@ -470,7 +395,7 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      Foreground="White"
                      FontWeight="Light"
-                     
+                     Cursor="Hand"
                      Background="Transparent">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
@@ -534,6 +459,7 @@
                      MaxLines="3"
                      Margin="60,0,20,0"
                      BorderThickness="0"
+                     Cursor="IBeam"
                      VerticalContentAlignment="Center"
                      VerticalAlignment="Center"
                      />
@@ -543,12 +469,13 @@
                     VerticalAlignment="Bottom"
                     Margin="40,0,40,0"/>
             <ListBox Grid.Row="1"
-                                     Background="Transparent"
-                                     Foreground="White"
-                                     FontSize="22"
-                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                     BorderThickness="0"
-                                     Margin="20,10,20,5">
+                    Background="Transparent"
+                    Foreground="White"
+                    FontSize="22"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    BorderThickness="0"
+                     Cursor="Hand"
+                    Margin="20,10,20,5">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
@@ -585,7 +512,8 @@
                          MaxLength="17"
                          VerticalAlignment="Center"
                          VerticalContentAlignment="Center"
-                         BorderThickness="0"/>
+                         BorderThickness="0"
+                         Cursor="IBeam"/>
             </Border>
             <Button Grid.Row="2"
                     Margin="24,15,379,25"
@@ -593,21 +521,9 @@
                     FontFamily="Segoe UI Symbol"
                     Foreground="White"
                     FontSize="20"
-                    VerticalContentAlignment="Center">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.8">
-                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="34">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    VerticalContentAlignment="Center"
+                    Style="{StaticResource RainbowButton34}"
+                    Cursor="Hand"/>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.2*"/>
@@ -626,25 +542,17 @@
                         FontFamily="Segoe UI Symbol"
                         Foreground="White"
                         FontSize="24"
-                        BorderThickness="0">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="#1D1B4D"  
-                    BorderThickness="0" 
-                    CornerRadius="35">
-                                <ContentPresenter HorizontalAlignment="Center" 
-                      VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Style="{StaticResource PurpleButton}"/>
                 <CheckBox Grid.Row="0"
                           Grid.Column="1"
                           VerticalAlignment="Center"
                           HorizontalAlignment="Left"
                           Margin="-3,0,0,0"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="False"/>
+                          IsChecked="False"
+                          Cursor="Hand"/>
                 <Label Grid.Column="2"
                        Content="Wykonano krok zadania"
                        Foreground="White"
@@ -674,6 +582,7 @@
                         CornerRadius="20"/>
                 <CheckBox Grid.Row="0"
                           Margin="15,0,0,0"
+                          Cursor="Hand"
                           VerticalAlignment="Center"
                           Style="{StaticResource CheckBoxToSwitch}"
                           IsChecked="False"/>
@@ -686,6 +595,7 @@
                 <CheckBox Grid.Row="1"
                           Margin="15,0,0,0"
                           VerticalAlignment="Center"
+                          Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
                           IsChecked="True"/>
                 <Label Grid.Row="1"
@@ -707,6 +617,7 @@
                 <CheckBox Grid.Row="2"
                           Margin="15,0,0,0"
                           VerticalAlignment="Center"
+                          Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
                           IsChecked="True"/>
                 <DatePicker Grid.Row="3"
@@ -714,25 +625,17 @@
                             Margin="20,5,15,0" 
                             SelectedDateFormat="Long" 
                             FontSize="22"
-                            BorderThickness="0"/>
+                            BorderThickness="0"
+                            Cursor="Hand"/>
             </Grid>
             <Button Grid.Row="8"
                     Content="Usuń zadanie"
                     Foreground="White"
                     FontSize="24"
                     Margin="15"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="#101728"  
-                                BorderThickness="0" 
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                  VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Cursor="Hand"
+                    Style="{StaticResource DarkBlueButton}"
+                    BorderThickness="0"/>
 
         </Grid>
     </Grid>

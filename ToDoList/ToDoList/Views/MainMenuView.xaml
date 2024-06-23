@@ -63,7 +63,7 @@
                 FontFamily="Bahnschrift Bold"
                 Cursor="Hand"
                 Command="{Binding Path=NavigateToLoginCommand}"
-                Style="{StaticResource RainbowButton}"/>
+                Style="{StaticResource RainbowButton80}"/>
         <Button Grid.Column="1"
                 Grid.Row="5"
                 Grid.ColumnSpan="2"
@@ -75,7 +75,7 @@
                 FontFamily="Bahnschrift Bold"
                 Command="{Binding Path=NavigateToRegisterCommand}"
                 Cursor="Hand"
-                Style="{StaticResource RainbowButton}"/>
+                Style="{StaticResource RainbowButton80}"/>
 
     </Grid>
 </UserControl>

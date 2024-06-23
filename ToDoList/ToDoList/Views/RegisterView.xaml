@@ -8,6 +8,14 @@
              d:DesignHeight="800" 
              d:DesignWidth="1440">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <UserControl.Background>
         <RadialGradientBrush GradientOrigin="1,1"  
                          Center="1,1" 
@@ -109,7 +117,9 @@
                 Content="&#xE112;"
                 FontSize="50"
                 FontWeight="UltraLight"
-                Foreground="White"/>
+                Foreground="White"
+                Cursor="Hand"
+                Style="{StaticResource TransparentButton}"/>
         <Image Grid.Column="3"
                Grid.Row="1"
                Grid.RowSpan="2"
@@ -136,7 +146,8 @@
                  MaxLength="20"
                  FontFamily="Bahnschrift SemiLight"
                  BorderThickness="0"
-                 Margin="15,0,0,10"/>
+                 Margin="15,0,0,10"
+                 Cursor="IBeam"/>
         <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="4"
@@ -164,7 +175,8 @@
                     MaxLength="32"
                     FontFamily="Bahnschrift SemiLight"
                     BorderThickness="0"
-                    Margin="15,0,0,10"/>
+                    Margin="15,0,0,10"
+                    Cursor="IBeam"/>
         <Border Grid.Row="7"
                 Grid.Column="3"
                 Height="4"
@@ -192,7 +204,8 @@
                      MaxLength="32"
                      FontFamily="Bahnschrift SemiLight"
                      BorderThickness="0"
-                     Margin="15,0,0,10"/>
+                     Margin="15,0,0,10"
+                     Cursor="IBeam"/>
         <Border Grid.Row="9"
                 Grid.Column="3"
                 Height="4"
@@ -234,44 +247,8 @@
                     FontFamily="Bahnschrift Bold"
                     Margin="0,-7,0,-7"
                     Cursor="Hand"
-                    Command="{Binding Path=RegisterCommand}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                                    <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="50">
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)" Duration="0:0:0.6">
-                                                            <EasingColorKeyFrame KeyTime="0:0:0.6" Value="#e70a3c"/>
-                                                        </ColorAnimationUsingKeyFrames>
-                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[1].(GradientStop.Color)" Duration="0:0:0.3">
-                                                            <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#6e00fc"/>
-                                                        </ColorAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
+                    Command="{Binding Path=RegisterCommand}"
+                    Style="{StaticResource RainbowButton50}"/>
         </Grid>
 
     </Grid>
