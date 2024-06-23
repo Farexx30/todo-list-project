@@ -32,7 +32,7 @@ namespace ToDoList.Models.Repositories
             _dbContext = dbContext;
             _mapper = mapper;
 
-            _assignmentsMethods.Add(CategoryMode.Custom, GetDbAssignments);
+            _assignmentsMethods.Add(CategoryMode.Database, GetDbAssignments);
             _assignmentsMethods.Add(CategoryMode.MyDay, GetMyDayAssignments);
             _assignmentsMethods.Add(CategoryMode.Planned, GetPlannedAssignments);
             _assignmentsMethods.Add(CategoryMode.Important, GetImportantAssignments);
