@@ -66,7 +66,7 @@
                     Background="#101728"
                     Margin="5,8,8,5"
                     CornerRadius="20"/>
-            <Image Source="../Images/Logo.png"
+            <Image Source="Images/Logo.png"
                    HorizontalAlignment="Left"
                    Margin="20,15,15,15"/>
             <Label Content="T o&#10;d o&#10;l i s t"
@@ -254,12 +254,12 @@
                     FontWeight="Light"
                     Margin="10,5,10,10"
                     BorderThickness="0"
-                    Command="{Binding Path=LogOutCommand}">        
+                    Command="{Binding Path=LogOutCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="#101728"  
                                 BorderThickness="0" 
-                                CornerRadius="20">      
+                                CornerRadius="20">
                             <ContentPresenter HorizontalAlignment="Center" 
                                               VerticalAlignment="Center"
                                               />
@@ -291,10 +291,10 @@
                    VerticalAlignment="Center"
                    FontSize="22"
                    Margin="0,0,20,0"/>
-            <Label Content="WWWWWWWWWWWWWWWWWWWW"
+            <Label Content="{Binding Username}"
                    Foreground="White"
-                   FontSize="30"
-                   Margin="105, 15, 15, 10"
+                   FontSize="29"
+                   Margin="105, 15, 60, 10"
                    VerticalContentAlignment="Bottom"/>
 
             <Border Grid.Row="1"
@@ -317,33 +317,18 @@
                          Text="Treść zadania do znyalezienia"
                          Foreground="White"
                          FontWeight="Light"
-                         Margin="55,0,0,0"
+                         Margin="40,0,0,0"
                          FontSize="23"
                          MaxLength="28"
                          VerticalAlignment="Center"
                          VerticalContentAlignment="Center"
                          BorderThickness="0"/>
             </Border>
-            <Button Grid.Row="1"
-                    Margin="20,10,660,15"
+            <Label Grid.Row="1"
+                    Margin="20,10,665,15"
                     FontFamily="Segoe UI Symbol" Content="&#xE11A;"
                     Foreground="White"
-                    FontSize="20"
-        VerticalContentAlignment="Top">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.8">
-                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="34">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    FontSize="20"/>
 
             <Label Grid.Row="2" 
                    Content="Zadania do wykonania: "
@@ -356,7 +341,7 @@
                      Foreground="White"
                      FontSize="20"
                      BorderThickness="0"
-                     MaxLength="10"
+                     MaxLength="11"
                      Margin="350,-5,60,-5"
                      Background="Transparent"
                      HorizontalContentAlignment="Right"
@@ -385,28 +370,26 @@
                     </RadialGradientBrush>
                 </Border.Background>
             </Border>
-            <syncfusion:CheckListBox Grid.Row="3"
-                                     FontSize="25"
-                                     Margin="20"
-                                     BorderThickness="0"
-                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     Foreground="White"
-                                     IsSelectAllEnabled="False"
-                                     FontWeight="Light"
-                                     Background="Transparent"
-                                     >
-                <syncfusion:CheckListBox.Resources>
+            <ListBox Grid.Row="3"
+                    FontSize="25"
+                    Margin="20"
+                    BorderThickness="0"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    Foreground="White"
+                    FontWeight="Light"
+                    Background="Transparent" >
+                <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
-                </syncfusion:CheckListBox.Resources>
-                <syncfusion:CheckListBoxItem Content="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem8"/>
-            </syncfusion:CheckListBox>
+                </ListBox.Resources>
+                <ListBoxItem Content="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem8"/>
+            </ListBox>
 
             <Border Grid.Row="4"
                     Margin="15,5,15,15"
@@ -465,7 +448,7 @@
                    Margin="15,0,0,0"/>
             <Border Grid.Row="6"
                     Margin="15"
-                    CornerRadius="10">      
+                    CornerRadius="10">
                 <Border.Background>
                     <RadialGradientBrush GradientOrigin="0.5,0.5" 
                                          Center="0.5,0.5" 
@@ -479,26 +462,30 @@
                     </RadialGradientBrush>
                 </Border.Background>
             </Border>
-            <syncfusion:CheckListBox Grid.Row="6"
+            <ListBox Grid.Row="6"
                      FontSize="22"
                      Margin="20"
                      BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      Foreground="White"
-                     IsSelectAllEnabled="False"
                      FontWeight="Light"
+                     
                      Background="Transparent">
-                <syncfusion:CheckListBox.Resources>
+                <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
-                </syncfusion:CheckListBox.Resources>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem1"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem8"/>
-            </syncfusion:CheckListBox>
+                </ListBox.Resources>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock TextDecorations="Strikethrough"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBoxItem> w</ListBoxItem>
+                <ListBoxItem> w</ListBoxItem>
+                <ListBoxItem> w</ListBoxItem>
+                <ListBoxItem> w</ListBoxItem>
+                <ListBoxItem> w</ListBoxItem>
+               </ListBox>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -514,7 +501,7 @@
                     BorderThickness="0"
                     Opacity="0.8"
                     Margin="0,0,-30,0"
-                    CornerRadius="30">  
+                    CornerRadius="30">
                 <Border.Background>
                     <RadialGradientBrush GradientOrigin="0.5,0.5" 
                  Center="0.5,0.5" 
@@ -524,13 +511,20 @@
                         <GradientStop Color="{StaticResource BackgroundLightBlue}" Offset="1.0" />
                     </RadialGradientBrush>
                 </Border.Background>
-                
+
             </Border>
             <Border Grid.Row="0"
                     Grid.RowSpan="4"
                     Background="#101728"
                     Margin="8"
                     CornerRadius="20"/>
+            <CheckBox VerticalAlignment="Center"
+                       Margin="20,0,380,0"
+                      BorderBrush="#152B7D">
+                <CheckBox.LayoutTransform>
+                    <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
+                </CheckBox.LayoutTransform>
+            </CheckBox>
             <TextBox Text="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"
                      Background="Transparent"
                      Foreground="White"
@@ -538,33 +532,34 @@
                      Padding="15"
                      TextWrapping="Wrap"
                      MaxLines="3"
+                     Margin="60,0,20,0"
                      BorderThickness="0"
                      VerticalContentAlignment="Center"
+                     VerticalAlignment="Center"
                      />
+           
             <Border Background="White"
-                    Height="1"
+                    Height="2"
                     VerticalAlignment="Bottom"
                     Margin="40,0,40,0"/>
-            <syncfusion:CheckListBox Grid.Row="1"
-                                     IsSelectAllEnabled="False"
+            <ListBox Grid.Row="1"
                                      Background="Transparent"
                                      Foreground="White"
                                      FontSize="22"
                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                                      BorderThickness="0"
-                                     Margin="20,10,20,5"
-                                     >
-                <syncfusion:CheckListBox.Resources>
+                                     Margin="20,10,20,5">
+                <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
-                </syncfusion:CheckListBox.Resources>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem1"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem2"/>
-                <syncfusion:CheckListBoxItem Content="CheckListBoxItem8"/>
-            </syncfusion:CheckListBox>
+                </ListBox.Resources>
+                <ListBoxItem Content="CheckListBoxItem1"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem2"/>
+                <ListBoxItem Content="CheckListBoxItem8"/>
+            </ListBox>
             <Border Grid.Row="2"
                     Margin="15,5,15,15"
                     CornerRadius="15">
@@ -613,23 +608,51 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Grid.Row="3"
-                    Content="Usuń krok zadania"
-                    Foreground="White"
-                    FontSize="24"
-                    Margin="15,-5,15,15"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="#1D1B4D"  
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.6*"/>
+                    <ColumnDefinition Width="3.4*"/>
+                    <ColumnDefinition Width="0.55*"/>
+                    <ColumnDefinition Width="0.2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                        Grid.Column="3"
+                        Content="&#xE107;"
+                        FontFamily="Segoe UI Symbol"
+                        Foreground="White"
+                        FontSize="24"
+                        BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="#1D1B4D"  
                     BorderThickness="0" 
-                    CornerRadius="15">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                  VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    CornerRadius="35">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <CheckBox Grid.Row="0"
+                          Grid.Column="1"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Left"
+                          Margin="-3,0,0,0"
+                          Style="{StaticResource CheckBoxToSwitch}"
+                          IsChecked="False"/>
+                <Label Grid.Column="2"
+                       Content="Wykonano krok zadania"
+                       Foreground="White"
+                       FontSize="24"
+                       Margin="3,0,0,0"
+                       VerticalAlignment="Center"/>
+            </Grid>
+            
             <Grid Grid.Row="4"
                   Grid.RowSpan="2">
                 <Grid.RowDefinitions>
@@ -642,7 +665,7 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Border Grid.Row="0"
                         Grid.RowSpan="4"
                         Grid.ColumnSpan="2"
@@ -653,7 +676,7 @@
                           Margin="15,0,0,0"
                           VerticalAlignment="Center"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="True"/>
+                          IsChecked="False"/>
                 <Label Grid.Row="0"
                        Grid.Column="1"
                        Content="Oznacz jako ważne"
@@ -673,7 +696,7 @@
                     <TextBlock>
                         Wyświetlaj w kategorii <Run FontWeight="Bold">Pozostałe</Run>
                     </TextBlock>
-                    
+
                 </Label>
                 <Label Grid.Row="2"
                        Grid.Column="1"
