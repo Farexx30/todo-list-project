@@ -95,6 +95,8 @@ namespace ToDoList.ViewModels
 
         private bool CanRegister(object obj) => !string.IsNullOrEmpty(Username.Trim())
                                              && !string.IsNullOrEmpty(Password.Trim())
-                                             && Password.Trim() == PasswordConfirmation.Trim();
+                                             && Password.Trim().Length>6
+                                             && Password.Trim() == PasswordConfirmation.Trim()
+                                             && Password.Length == PasswordConfirmation.Length;
     }
 }

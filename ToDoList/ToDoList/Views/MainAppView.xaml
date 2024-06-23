@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ToDoList.Views"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
          d:DesignHeight="800" 
          d:DesignWidth="1440">
+
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -75,13 +76,14 @@
                    VerticalAlignment="Center"
                    Margin="70,0,150,0"
                    FontWeight="Bold"/>
-            <Label Content="12-06-2024"
+            <Label Content="{x:Static sys:DateTime.Now}"
                    Foreground="White"
                    FontSize="24"
                    VerticalAlignment="Center"
                    HorizontalContentAlignment="Center"
                    Margin="115,0,14,0"
-                   FontWeight="Light"/>
+                   FontWeight="Light"
+                   ContentStringFormat="dd-MM-yyyy"/>
             <Border Grid.Row="1"
                     Grid.RowSpan="4"
                     Background="#101728"
@@ -625,7 +627,9 @@
                             SelectedDateFormat="Long" 
                             FontSize="22"
                             BorderThickness="0"
-                            Cursor="Hand"/>
+                            Cursor="Hand"
+                            DisplayDateStart="{x:Static sys:DateTime.Now}"
+                            DisplayDateEnd="01.01.2124"/>
             </Grid>
             <Button Grid.Row="8"
                     Content="Usuń zadanie"
