@@ -451,7 +451,7 @@
                     Background="#101728"
                     Margin="8"
                     CornerRadius="20"/>
-            <TextBox Text="{Binding CurrentAssignmentName}"
+            <TextBox Text="{Binding CurrentAssignment.Name}"
                      Background="Transparent"
                      Foreground="White"
                      FontSize="28"
