@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="ToDoList.Views.MainAppView"
+<UserControl x:Class="ToDoList.Views.MainAppView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ToDoList.Views"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=viewmodels:MainAppViewModel}"
              mc:Ignorable="d"
          d:DesignHeight="800" 
          d:DesignWidth="1440">
@@ -94,7 +94,8 @@
                     Margin="10,10,10,0"
                     BorderThickness="0"
                     Cursor="Hand"
-                    Style="{StaticResource DarkBlueButton}"/>
+                    Style="{StaticResource DarkBlueButton}"
+                    Command="{Binding MyDayCategoryClickedCommand}"/>
             <Border Grid.Row="1"
                     Background="White"
                     Height="1"
@@ -107,7 +108,8 @@
                     Cursor="Hand"
                     Style="{StaticResource DarkBlueButton}"
                     Margin="10,5,10,5"
-                    BorderThickness="0"/>
+                    BorderThickness="0"
+                    Command="{Binding ImportantCategoryClickedCommand}"/>
             <Border Grid.Row="2"
                     Background="White"
                     Height="1"
@@ -120,7 +122,8 @@
                     Cursor="Hand"
                     Style="{StaticResource DarkBlueButton}"
                     Margin="10,5,10,5"
-                    BorderThickness="0"/>
+                    BorderThickness="0"
+                    Command="{Binding PlannedCategoryClickedCommand}"/>
 
             <Border Grid.Row="3"
                     Background="White"
@@ -128,13 +131,14 @@
                     Margin="20,0,20,0"
                     VerticalAlignment="Bottom"/>
             <Button Grid.Row="4"
-                    Content="Pozostałe"
+                    Content="{Binding BuiltInCategory}"
                     Foreground="White"
                     FontSize="28"
                     Cursor="Hand"
                     Style="{StaticResource DarkBlueButton}"
                     Margin="8,0,8,8"
-                    BorderThickness="0"/>
+                    BorderThickness="0"
+                    Command="{Binding BuiltInCategoryClickedCommand}"/>
             <Border Grid.Row="5"
                     Grid.RowSpan="3"
                     Background="#101728"
@@ -153,22 +157,13 @@
                          Foreground="White"
                          Padding="10"
                          Cursor="Hand"
-                         FontSize="24">
+                         FontSize="24"
+                         ItemsSource="{Binding Categories}"  
+                         SelectedItem="{Binding CurrentCategory}">
                     <ListBox.Resources>
                         <Style TargetType="{x:Type ScrollBar}" 
                                BasedOn="{StaticResource ScrollBarStyle}"/>
                     </ListBox.Resources>
-                    <ListBoxItem>Przykład 1</ListBoxItem>
-                    <ListBoxItem>Przykład 2</ListBoxItem>
-                    <ListBoxItem>Przykład 3</ListBoxItem>
-                    <ListBoxItem>Przykład 4</ListBoxItem>
-                    <ListBoxItem>Przykład 5</ListBoxItem>
-                    <ListBoxItem>Przykład 6</ListBoxItem>
-                    <ListBoxItem>Przykład 7</ListBoxItem>
-                    <ListBoxItem>Przykład 8</ListBoxItem>
-                    <ListBoxItem>Przykład 9</ListBoxItem>
-                    <ListBoxItem>Przykład 10</ListBoxItem>
-                    <ListBoxItem>Przykład 11</ListBoxItem>
                 </ListBox>
             </Border>
             <Button Grid.Row="6"
@@ -179,7 +174,8 @@
                     FontWeight="Bold"
                     BorderThickness="0"
                     Cursor="Hand"
-                    Style="{StaticResource PurpleButton}"/>
+                    Style="{StaticResource PurpleButton}"
+                    Command="{Binding AddCategoryCommand}"/>
             <Button Grid.Row="7"
                     Content="Usuń kategorię"
                     Foreground="White"
@@ -187,7 +183,8 @@
                     Margin="15,10,15,15"
                     Cursor="Hand"
                     Style="{StaticResource PurpleButton}"
-                    BorderThickness="0"/>
+                    BorderThickness="0"
+                    Command="{Binding DeleteCategoryCommand}"/>
             <Button Grid.Row="8"
                     Content="Wyloguj"
                     Foreground="White"
@@ -229,7 +226,8 @@
                      Margin="105, 15, 60, 10"
                      BorderThickness="0"
                      Cursor="IBeam"
-                     VerticalContentAlignment="Center"/>
+                     VerticalContentAlignment="Center"
+                     IsReadOnly="false"/>
 
             <Border Grid.Row="1"
                     Margin="15,5,15,10"
@@ -247,7 +245,7 @@
                     </RadialGradientBrush>
                 </Border.Background>
                 <TextBox Background="Transparent"
-                         Text="Treść zadania do znyalezienia"
+                         Text="{Binding SearchPhrase}"
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,10,0"
@@ -271,7 +269,7 @@
                    Margin="15,0,400,0"/>
 
             <TextBox Grid.Row="2" 
-                     Text="Aktualna kategoria "
+                     Text="{Binding CurrentCategoryName}"
                      Foreground="White"
                      FontSize="20"
                      BorderThickness="0"
@@ -280,7 +278,14 @@
                      Cursor="IBeam"
                      Background="Transparent"
                      HorizontalContentAlignment="Right"
-                     VerticalContentAlignment="Center"/>
+                     VerticalContentAlignment="Center"
+                     IsReadOnly="false">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="LostFocus">
+                        <i:InvokeCommandAction Command="{Binding UpdateCategoryCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
             <Label Grid.Row="2"
                    FontFamily="Segoe UI Symbol" 
                    Content="&#xE104;"
@@ -314,17 +319,12 @@
                     Foreground="White"
                     FontWeight="Light"
                     Background="Transparent"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    ItemsSource="{Binding ToDoAssignments}"  
+                    SelectedItem="{Binding CurrentAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
-                <ListBoxItem Content="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem8"/>
             </ListBox>
 
             <Border Grid.Row="4"
@@ -344,7 +344,7 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+                         Text="{Binding NewAssignmentName}"
                          Foreground="White"
                          MaxLength="28"
                          FontWeight="Light"
@@ -363,7 +363,8 @@
                     FontSize="20"
                     VerticalContentAlignment="Top" 
                     Cursor="Hand"
-                    Style="{StaticResource RainbowButton34}"/>
+                    Style="{StaticResource RainbowButton34}"
+                    Command="{Binding AddAssignmentCommand}"/>
             <Label Grid.Row="5" 
                    Content="Wykonane zadania: "
                    Foreground="White"
@@ -395,21 +396,13 @@
                      Foreground="White"
                      FontWeight="Light"
                      Cursor="Hand"
-                     Background="Transparent">
+                     Background="Transparent"
+                     ItemsSource="{Binding CompletedAssignments}"  
+                     SelectedItem="{Binding CurrentAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock TextDecorations="Strikethrough"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBoxItem> w</ListBoxItem>
-                <ListBoxItem> w</ListBoxItem>
-                <ListBoxItem> w</ListBoxItem>
-                <ListBoxItem> w</ListBoxItem>
-                <ListBoxItem> w</ListBoxItem>
-               </ListBox>
+            </ListBox>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -443,13 +436,14 @@
                     Margin="8"
                     CornerRadius="20"/>
             <CheckBox VerticalAlignment="Center"
-                       Margin="20,0,380,0"
-                      BorderBrush="#152B7D">
+                      Margin="20,0,380,0"
+                      BorderBrush="#152B7D"
+                      IsChecked="{Binding IsAssignmentChecked}">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
                 </CheckBox.LayoutTransform>
             </CheckBox>
-            <TextBox Text="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+            <TextBox Text="{Binding CurrentAssignment.Name}"
                      Background="Transparent"
                      Foreground="White"
                      FontSize="24"
@@ -461,8 +455,14 @@
                      Cursor="IBeam"
                      VerticalContentAlignment="Center"
                      VerticalAlignment="Center"
-                     />
-           
+                     IsReadOnly="false">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="LostFocus">
+                        <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+
             <Border Background="White"
                     Height="2"
                     VerticalAlignment="Bottom"
@@ -473,18 +473,13 @@
                     FontSize="22"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     BorderThickness="0"
-                     Cursor="Hand"
-                    Margin="20,10,20,5">
+                    Cursor="Hand"
+                    Margin="20,10,20,5"
+                    ItemsSource="{Binding AssignmentSteps}"  
+                    SelectedItem="{Binding CurrentAssignmentStep}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
-                <ListBoxItem Content="CheckListBoxItem1"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem8"/>
             </ListBox>
             <Border Grid.Row="2"
                     Margin="15,5,15,15"
@@ -503,7 +498,7 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="Treść kroku do dodania"
+                         Text="{Binding NewAssignmentStepName}"
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,0,0"
@@ -522,7 +517,8 @@
                     FontSize="20"
                     VerticalContentAlignment="Center"
                     Style="{StaticResource RainbowButton34}"
-                    Cursor="Hand"/>
+                    Cursor="Hand"
+                    Command="{Binding AddAssignmentStepCommand}"/>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.2*"/>
@@ -543,14 +539,15 @@
                         FontSize="24"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Style="{StaticResource PurpleButton}"/>
+                        Style="{StaticResource PurpleButton}"
+                        Command="{Binding DeleteAssignmentStepCommand}"/>
                 <CheckBox Grid.Row="0"
                           Grid.Column="1"
                           VerticalAlignment="Center"
                           HorizontalAlignment="Left"
                           Margin="-3,0,0,0"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="False"
+                          IsChecked="{Binding IsAssignmentStepChecked}"
                           Cursor="Hand"/>
                 <Label Grid.Column="2"
                        Content="Wykonano krok zadania"
@@ -559,7 +556,7 @@
                        Margin="3,0,0,0"
                        VerticalAlignment="Center"/>
             </Grid>
-            
+
             <Grid Grid.Row="4"
                   Grid.RowSpan="2">
                 <Grid.RowDefinitions>
@@ -584,7 +581,8 @@
                           Cursor="Hand"
                           VerticalAlignment="Center"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="False"/>
+                          IsChecked="{Binding IsAssignmentImportant}"/>
+
                 <Label Grid.Row="0"
                        Grid.Column="1"
                        Content="Oznacz jako ważne"
@@ -596,7 +594,7 @@
                           VerticalAlignment="Center"
                           Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="True"/>
+                          IsChecked="{Binding IsAssignmentShared}"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Foreground="White"
@@ -618,14 +616,21 @@
                           VerticalAlignment="Center"
                           Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="True"/>
+                          IsChecked="{Binding IsDateEnabled}"/>
                 <DatePicker Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="20,5,15,0" 
                             SelectedDateFormat="Long" 
                             FontSize="22"
                             BorderThickness="0"
-                            Cursor="Hand"/>
+                            Cursor="Hand"
+                            SelectedDate="{Binding AssignmentDeadline}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="LostFocus">
+                            <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DatePicker>
             </Grid>
             <Button Grid.Row="8"
                     Content="Usuń zadanie"
@@ -634,10 +639,9 @@
                     Margin="15"
                     Cursor="Hand"
                     Style="{StaticResource DarkBlueButton}"
-                    BorderThickness="0"/>
+                    BorderThickness="0"
+                    Command="{Binding DeleteAssignmentCommand}"/>
 
         </Grid>
     </Grid>
-
-
 </UserControl>

@@ -13,5 +13,7 @@ namespace ToDoList.Models.Dtos
         public bool IsBuiltIn { get; set; }
 
         public List<AssignmentDto> Assignments { get; set; } = [];
+
+        public override string ToString() => Name;
     }
 }
