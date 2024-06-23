@@ -211,9 +211,9 @@
             </Grid.RowDefinitions>
             <Label Content="Witaj, "
                    Foreground="White"
-                   FontSize="30"
-                   Margin="15,15,600,10"
-                   VerticalContentAlignment="Bottom"/>
+                   FontSize="29"
+                   Margin="15,15,610,10"
+                   VerticalContentAlignment="Center"/>
             <Label Grid.Row="0"
                    FontFamily="Segoe UI Symbol" 
                    Content="&#xE104;"
@@ -229,7 +229,7 @@
                      Margin="105, 15, 60, 10"
                      BorderThickness="0"
                      Cursor="IBeam"
-                     VerticalContentAlignment="Bottom"/>
+                     VerticalContentAlignment="Center"/>
 
             <Border Grid.Row="1"
                     Margin="15,5,15,10"
@@ -247,11 +247,10 @@
                     </RadialGradientBrush>
                 </Border.Background>
                 <TextBox Background="Transparent"
-                         Padding="10"
                          Text="Treść zadania do znyalezienia"
                          Foreground="White"
                          FontWeight="Light"
-                         Margin="40,0,0,0"
+                         Margin="50,0,10,0"
                          FontSize="23"
                          MaxLength="28"
                          Cursor="IBeam"
@@ -260,7 +259,7 @@
                          BorderThickness="0"/>
             </Border>
             <Label Grid.Row="1"
-                    Margin="20,10,665,15"
+                    Margin="20,10,655,15"
                     FontFamily="Segoe UI Symbol" Content="&#xE11A;"
                     Foreground="White"
                     FontSize="20"/>
@@ -357,7 +356,7 @@
                          BorderThickness="0"/>
             </Border>
             <Button Grid.Row="4"
-                    Margin="20,10,648,20"
+                    Margin="20,10,645,20"
                     Content="&#xE109;"
                     FontFamily="Segoe UI Symbol"
                     Foreground="White"
