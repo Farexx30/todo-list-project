@@ -25,6 +25,9 @@ namespace ToDoList.ViewModels
 
         private UserDto _currentUser = null!;
         private CategoryMode _categoryMode = CategoryMode.MyDay;
+        AssignmentDto? _clickedAssignment = null;
+        bool _isCurrentlySetting = false;
+        
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -52,6 +55,18 @@ namespace ToDoList.ViewModels
             }
         }
 
+        //Search phrase:
+        private string _searchPhrase = string.Empty;
+        public string SearchPhrase
+        {
+            get => _searchPhrase;
+            set
+            {
+                _searchPhrase = value;
+                OnPropertyChanged();
+            }
+        }
+        
 
         //Category bindings:
 
@@ -143,6 +158,8 @@ namespace ToDoList.ViewModels
             {
                 _isAssignmentChecked = value;
                 OnPropertyChanged();
+
+                if(!_isCurrentlySetting) UpdateAssignment(this);
             }
         }
 
@@ -154,9 +171,33 @@ namespace ToDoList.ViewModels
             {
                 _isAssignmentImportant = value;
                 OnPropertyChanged();
+                if (!_isCurrentlySetting) UpdateAssignment(this);
             }
         }
 
+        private bool _isAssignmentShared;
+        public bool IsAssignmentShared
+        {
+            get => _isAssignmentShared;
+            set
+            {
+                _isAssignmentShared = value;
+                OnPropertyChanged();
+                if (!_isCurrentlySetting) UpdateAssignment(this);
+            }
+        }
+
+        private bool _isDateEnabled;
+        public bool IsDateEnabled
+        {
+            get => _isDateEnabled;
+            set
+            {
+                _isDateEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private ObservableCollection<AssignmentDto> _toDoAssignments = [];
         public ObservableCollection<AssignmentDto> ToDoAssignments
         {
@@ -193,17 +234,6 @@ namespace ToDoList.ViewModels
 
 
         //AssignmentSteps bindings:
-        private string _currentAssignmentStepName = string.Empty;
-        public string CurrentAssignmentStepName
-        {
-            get => _currentAssignmentStepName;
-            set
-            {
-                _currentAssignmentStepName = value;
-                OnPropertyChanged();
-            }
-        }
-
         private string _newAssignmentStepName = string.Empty;
         public string NewAssignmentStepName
         {
@@ -223,6 +253,7 @@ namespace ToDoList.ViewModels
             {
                 _isAssignmentStepChecked = value;
                 OnPropertyChanged();
+                if(!_isCurrentlySetting) UpdateAssignmentStep(this);
             }
         }
 
@@ -245,6 +276,7 @@ namespace ToDoList.ViewModels
             {
                 _currentAssignmentStep = value;
                 OnPropertyChanged();
+                AssignmentStepChanged();
             }
         }
 
@@ -256,7 +288,6 @@ namespace ToDoList.ViewModels
         public ICommand AddAssignmentCommand { get; set; }
         public ICommand UpdateAssignmentCommand { get; set; }
         public ICommand DeleteAssignmentCommand { get; set; }
-        public ICommand ShareAssignmentCommand { get; set; }
         public ICommand AddAssignmentStepCommand { get; set; }
         public ICommand UpdateAssignmentStepCommand { get; set; }
         public ICommand DeleteAssignmentStepCommand { get; set; }
@@ -264,7 +295,6 @@ namespace ToDoList.ViewModels
         public ICommand ImportantCategoryClickedCommand { get; set; }
         public ICommand PlannedCategoryClickedCommand { get; set; }
         public ICommand BuiltInCategoryClickedCommand { get; set; }
-        public ICommand AssignmentNameLostFocusCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
 
 
@@ -283,13 +313,10 @@ namespace ToDoList.ViewModels
             AddAssignmentCommand = new RelayCommand(AddAssignment, _ => true);
             UpdateAssignmentCommand = new RelayCommand(UpdateAssignment);
             DeleteAssignmentCommand = new RelayCommand(DeleteAssignment, _ => true);
-            ShareAssignmentCommand = new RelayCommand(ShareAssignment, _ => true);
 
             AddAssignmentStepCommand = new RelayCommand(AddAssignmentStep, _ => true);
             UpdateAssignmentStepCommand = new RelayCommand(UpdateAssignmentStep, _ => true);
             DeleteAssignmentStepCommand = new RelayCommand(DeleteAssignmentStep, _ => true);
-
-            AssignmentNameLostFocusCommand = new RelayCommand(AssignmentNameLostFocus);
 
             MyDayCategoryClickedCommand = new RelayCommand(MyDayCategoryClicked, _ => true);
             ImportantCategoryClickedCommand = new RelayCommand(ImportantCategoryClicked, _ => true);
@@ -341,9 +368,12 @@ namespace ToDoList.ViewModels
         private void UpdateCategory(object obj)
         {
             CurrentCategory!.Name = CurrentCategoryName;
-            _categoryRepo.UpdateCategory(CurrentCategory);
+            bool result = _categoryRepo.UpdateCategory(CurrentCategory, _currentUser.Id);
 
-            CollectionViewSource.GetDefaultView(Categories).Refresh();
+            if (result)
+            {
+                CollectionViewSource.GetDefaultView(Categories).Refresh();
+            }
         }
 
         //Update Category:
@@ -384,18 +414,41 @@ namespace ToDoList.ViewModels
             var newAssignmentWithIdDto = _assignmentRepo.AddAssignment(newAssignmentDto, _currentUser.Id, CurrentCategory!.Id);
 
             ToDoAssignments.Add(newAssignmentWithIdDto);
+            CurrentAssignment = newAssignmentWithIdDto;
         }
 
         //Update Assignment:
         private void UpdateAssignment(object obj)
         {
-            CurrentAssignment!.Deadline = AssignmentDeadline is not null 
-                ? DateOnly.FromDateTime(AssignmentDeadline.Value) 
-                : null;
+            if (IsDateEnabled)
+            {
+                CurrentAssignment!.Deadline = AssignmentDeadline is not null
+                    ? AssignmentDeadline.Value
+                    : null;
+            }
+            else
+            {
+                CurrentAssignment!.Deadline = null;
+            }
             CurrentAssignment.IsChecked = IsAssignmentChecked;
             CurrentAssignment.IsImportant = IsAssignmentImportant;
+            CurrentAssignment.IsShared = IsAssignmentShared;
 
             _assignmentRepo.UpdateAssignment(CurrentAssignment);
+
+            if (CurrentAssignment.IsChecked && !CompletedAssignments.Contains(CurrentAssignment))
+            {
+                CompletedAssignments.Add(CurrentAssignment);
+                ToDoAssignments.Remove(CurrentAssignment);
+            }
+            else if (!CurrentAssignment.IsChecked && !ToDoAssignments.Contains(CurrentAssignment))
+            {
+                ToDoAssignments.Add(CurrentAssignment);
+                CompletedAssignments.Remove(CurrentAssignment);
+            }
+
+            CollectionViewSource.GetDefaultView(ToDoAssignments).Refresh();
+            CollectionViewSource.GetDefaultView(CompletedAssignments).Refresh();
         }
 
         //Delete Assignment:
@@ -412,13 +465,7 @@ namespace ToDoList.ViewModels
                 ToDoAssignments.Remove(CurrentAssignment);
             }
             AssignmentSteps.Clear();
-            //i czy CurrentAssignment jest nullem juz ???
-        }
-
-        //Share Assignment
-        private void ShareAssignment(object obj)
-        {
-            _assignmentRepo.ShareAssignment(CurrentAssignment!.Id);
+            CurrentAssignment = null;
         }
 
 
@@ -433,13 +480,13 @@ namespace ToDoList.ViewModels
             var assignmentStepWithIdDto = _assignmentStepRepo.AddAssignmentStep(newAssignmentStepDto, CurrentAssignment!.Id);
 
             AssignmentSteps.Add(assignmentStepWithIdDto);
+            CurrentAssignmentStep = assignmentStepWithIdDto;
         }
 
         //Update AssignmentStep:
         private void UpdateAssignmentStep(object obj)
         {
-            CurrentAssignmentStep!.Name = CurrentAssignmentStepName;
-            CurrentAssignmentStep.IsChecked = IsAssignmentChecked;
+            CurrentAssignmentStep!.IsChecked = IsAssignmentStepChecked;
             _assignmentStepRepo.UpdateAssignmentStep(CurrentAssignmentStep);
         }
 
@@ -448,15 +495,14 @@ namespace ToDoList.ViewModels
         {
             _assignmentStepRepo.DeleteAssignmentStep(CurrentAssignmentStep!.Id);
             AssignmentSteps.Remove(CurrentAssignmentStep);
-            //i czy tutaj już CurrentAssignmentStep bedzie null???
+
+            CurrentAssignmentStep = null;
         }
 
 
         //Category changed:
         private void DbCategoryChanged()
         {
-            _assignmentStepRepo.SaveAssignmentStepsChanges();
-
             if (CurrentCategory is not null)
             {
                 CurrentCategoryName = CurrentCategory.Name;
@@ -471,28 +517,67 @@ namespace ToDoList.ViewModels
         //AssignmentChanged:
         private void AssignmentChanged()
         {
-            _assignmentStepRepo.SaveAssignmentStepsChanges();
-
             if (CurrentAssignment is not null)
             {
-                AssignmentSteps = new(_assignmentStepRepo.GetAssignmentSteps(CurrentAssignment.Id));
+                if(_clickedAssignment is null)
+                {
+                    _clickedAssignment = CurrentAssignment;
+                    CurrentAssignment = null;
+                }
+
+                AssignmentSteps = new(_assignmentStepRepo.GetAssignmentSteps(CurrentAssignment!.Id));
+
+                _isCurrentlySetting = true;
+
+                IsAssignmentChecked = CurrentAssignment.IsChecked;
+                IsAssignmentImportant = CurrentAssignment.IsImportant;
+                IsAssignmentShared = CurrentAssignment.IsShared;
+                AssignmentDeadline = CurrentAssignment.Deadline.HasValue
+                    ? DateTime.Parse(CurrentAssignment.Deadline.Value.ToString())
+                    : null;
+
+                if (CurrentAssignment.Deadline is not null)
+                {
+                    IsDateEnabled = true;
+                }
+
+                IsAssignmentStepChecked = false;
+
+                _isCurrentlySetting = false;
+                _clickedAssignment = null;
+            }
+            else if(_clickedAssignment is not null)
+            {
+                CurrentAssignment = _clickedAssignment;
+            }
+        }
+
+        private void AssignmentStepChanged()
+        {
+            if (CurrentAssignmentStep is not null)
+            {
+                _isCurrentlySetting = true;
+
+                IsAssignmentStepChecked = CurrentAssignmentStep.IsChecked;
+
+                _isCurrentlySetting = false;
             }
         }
 
         //LostFocuses:       
-        private void AssignmentNameLostFocus(object obj)
-        {
-            MessageBox.Show("AssignmentNameLostFocus");
+        //private void AssignmentNameLostFocus(object obj)
+        //{
+        //    MessageBox.Show("AssignmentNameLostFocus");
 
-            //To do Xamla na LostFocus przy konkretnym TextBox.
-            /*
-                         <i:Interaction.Triggers>
-                <i:EventTrigger EventName="LostFocus">
-                    <i:InvokeCommandAction Command="{Binding AssignmentNameLostFocusCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-             */
-        }
+        //    //To do Xamla na LostFocus przy konkretnym TextBox.
+        //    /*
+        //                 <i:Interaction.Triggers>
+        //        <i:EventTrigger EventName="LostFocus">
+        //            <i:InvokeCommandAction Command="{Binding AssignmentNameLostFocusCommand}" />
+        //        </i:EventTrigger>
+        //    </i:Interaction.Triggers>
+        //     */
+        //}
 
         //Other (built-in or dynamic categories):
         private void MyDayCategoryClicked(object obj)
@@ -545,7 +630,6 @@ namespace ToDoList.ViewModels
         //Log out:
         private void LogOut(object obj)
         {
-            _assignmentStepRepo.SaveAssignmentStepsChanges();
             _userContextService.CurrentUser = null;
 
             NavigationService.NavigateTo<MainMenuViewModel>();
