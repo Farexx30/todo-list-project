@@ -9,7 +9,9 @@ namespace ToDoList.Models.Entities
     //Klasa spinajaca Category oraz Assignment.
     public class CategoryAssignment
     {
-        public int CategoryId { get; set; } 
+        public int CategoryId { get; set; }
+        public Category Category { get; set; } = null!;
         public int AssignmentId { get; set; }
+        public Assignment Assignment { get; set; } = null!;
     }
 }

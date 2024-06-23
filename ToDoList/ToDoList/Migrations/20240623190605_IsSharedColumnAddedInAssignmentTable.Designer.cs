@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Models;
 
@@ -11,9 +12,11 @@ using ToDoList.Models;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    partial class ToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240623190605_IsSharedColumnAddedInAssignmentTable")]
+    partial class IsSharedColumnAddedInAssignmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +33,8 @@ namespace ToDoList.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("Deadline")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly?>("Deadline")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsChecked")
                         .HasColumnType("bit");
@@ -125,9 +128,19 @@ namespace ToDoList.Migrations
                     b.Property<int>("AssignmentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AssignmentId1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId1")
+                        .HasColumnType("int");
+
                     b.HasKey("CategoryId", "AssignmentId");
 
                     b.HasIndex("AssignmentId");
+
+                    b.HasIndex("AssignmentId1");
+
+                    b.HasIndex("CategoryId1");
 
                     b.ToTable("CategoryAssignments");
                 });
@@ -186,16 +199,24 @@ namespace ToDoList.Migrations
             modelBuilder.Entity("ToDoList.Models.Entities.CategoryAssignment", b =>
                 {
                     b.HasOne("ToDoList.Models.Entities.Assignment", "Assignment")
-                        .WithMany("CategoryAssignments")
+                        .WithMany()
                         .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ToDoList.Models.Entities.Category", "Category")
+                    b.HasOne("ToDoList.Models.Entities.Assignment", null)
                         .WithMany("CategoryAssignments")
+                        .HasForeignKey("AssignmentId1");
+
+                    b.HasOne("ToDoList.Models.Entities.Category", "Category")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ToDoList.Models.Entities.Category", null)
+                        .WithMany("CategoryAssignments")
+                        .HasForeignKey("CategoryId1");
 
                     b.Navigation("Assignment");
 
