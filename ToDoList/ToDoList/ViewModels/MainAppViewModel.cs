@@ -463,7 +463,9 @@ namespace ToDoList.ViewModels
         //LostFocuses:
         private void CategoryNameLostFocus(object obj)
         {
-            MessageBox.Show("test1");
+            MessageBox.Show("CategoryNameLostFocus");
+
+            UpdateCategory(this);
 
             //To do Xamla na LostFocus przy konkretnym TextBox.
             /*
@@ -477,7 +479,7 @@ namespace ToDoList.ViewModels
         
         private void AssignmentNameLostFocus(object obj)
         {
-            MessageBox.Show("test2");
+            MessageBox.Show("AssignmentNameLostFocus");
 
             //To do Xamla na LostFocus przy konkretnym TextBox.
             /*

@@ -62,10 +62,6 @@ namespace ToDoList.Models.Repositories
             _dbContext.AssignmentSteps.Remove(assignmentStepToDelete);
         }
 
-        public void SaveAssignmentStepsChanges()
-        {
-            _dbContext.SaveChanges();
-            _dbContext.ChangeTracker.Clear();
-        }
+        public void SaveAssignmentStepsChanges() => _dbContext.SaveChanges();
     }
 }
