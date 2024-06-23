@@ -82,6 +82,7 @@ namespace ToDoList.ViewModels
         }
 
         private bool CanLogin(object obj) => !string.IsNullOrEmpty(Username.Trim())
-                                             && !string.IsNullOrEmpty(Password.Trim());
+                                             && !string.IsNullOrEmpty(Password.Trim())
+                                             && (Password.Trim().Length>=6);
     }
 }
