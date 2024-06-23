@@ -162,7 +162,8 @@
                     Margin="20,0,20,0"
                     VerticalAlignment="Bottom"/>
             <Button Grid.Row="4"
-                    Content="Pozostałe"
+                    Content="{Binding BuiltInCategory}"
+                    Command="{Binding BuiltInCategoryClickedCommand}"
                     Foreground="White"
                     FontSize="28"
                     

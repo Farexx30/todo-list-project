@@ -53,6 +53,7 @@ namespace ToDoList.ViewModels
 
 
         //Category bindings:
+
         private string _currentCategoryName = string.Empty;
         public string CurrentCategoryName
         {
@@ -95,6 +96,17 @@ namespace ToDoList.ViewModels
                 _currentCategory = value;
                 OnPropertyChanged();
                 DbCategoryChanged();
+            }
+        }
+
+        private CategoryDto? _builtInCategory;
+        public CategoryDto? BuiltInCategory
+        {
+            get => _builtInCategory;
+            set
+            {
+                _builtInCategory = value;
+                OnPropertyChanged();
             }
         }
 
@@ -261,6 +273,7 @@ namespace ToDoList.ViewModels
         public ICommand MyDayCategoryClickedCommand { get; set; }
         public ICommand PlannedCategoryClickedCommand { get; set; }
         public ICommand ImportantCategoryClickedCommand { get; set; }
+        public ICommand BuiltInCategoryClickedCommand { get; set; }
         public ICommand CategoryNameLostFocusCommand { get; set; }
         public ICommand AssignmentNameLostFocusCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
@@ -290,9 +303,10 @@ namespace ToDoList.ViewModels
             CategoryNameLostFocusCommand = new RelayCommand(CategoryNameLostFocus);
             AssignmentNameLostFocusCommand = new RelayCommand(AssignmentNameLostFocus);
 
-            MyDayCategoryClickedCommand = new RelayCommand(MyDayCategoryClicked);
-            PlannedCategoryClickedCommand = new RelayCommand(PlannedCategoryClicked);
-            ImportantCategoryClickedCommand = new RelayCommand(ImportantCategoryClicked);
+            MyDayCategoryClickedCommand = new RelayCommand(MyDayCategoryClicked, _ => true);
+            PlannedCategoryClickedCommand = new RelayCommand(PlannedCategoryClicked, _ => true);
+            ImportantCategoryClickedCommand = new RelayCommand(ImportantCategoryClicked, _ => true);
+            BuiltInCategoryClickedCommand = new RelayCommand(BuiltInCategoryClicked, _ => true);
             LogOutCommand = new RelayCommand(LogOut, _ => true);
 
             Initialize();
@@ -303,8 +317,9 @@ namespace ToDoList.ViewModels
             _currentUser = _userContextService.CurrentUser!;
 
             Username = _currentUser.Name;
+            BuiltInCategory = _categoryRepo.GetBuiltInCategory();
             Categories = new(_categoryRepo.GetCategories(_currentUser.Id));
-            
+            MyDayCategoryClicked(this);
         }
 
 
@@ -424,7 +439,7 @@ namespace ToDoList.ViewModels
             if (CurrentCategory is not null)
             {
                 CurrentCategoryName = CurrentCategory.Name;
-                _categoryMode = CategoryMode.Custom;
+                _categoryMode = CategoryMode.Database;
 
                 var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id, CurrentCategory.Id);
                 ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
@@ -480,7 +495,6 @@ namespace ToDoList.ViewModels
             var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
             ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
             CompletedAssignments = new(loadedAssignments.Where(a => a.IsChecked == true));
-
         }
 
         private void PlannedCategoryClicked(object obj)
@@ -503,6 +517,12 @@ namespace ToDoList.ViewModels
             var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
             ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
             CompletedAssignments = new(loadedAssignments.Where(a => a.IsChecked == true));
+        }
+        private void BuiltInCategoryClicked(object obj)
+        {
+            CurrentCategory = null;
+            CurrentCategory = BuiltInCategory;
+            DbCategoryChanged();
         }
 
         private void LogOut(object obj)

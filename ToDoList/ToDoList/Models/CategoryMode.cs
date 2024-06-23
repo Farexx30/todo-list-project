@@ -8,7 +8,7 @@ namespace ToDoList.Models
 {
     public enum CategoryMode
     {
-        Custom,
+        Database,
         MyDay,
         Planned,
         Important

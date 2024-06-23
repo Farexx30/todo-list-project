@@ -13,6 +13,7 @@ namespace ToDoList.Models.Repositories
 {
     public interface ICategoryRepository
     {
+        CategoryDto GetBuiltInCategory();
         List<CategoryDto> GetCategories(Guid userId);
         CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId);
         void UpdateCategory(CategoryDto updatedCategoryDto);
@@ -24,6 +25,14 @@ namespace ToDoList.Models.Repositories
         private readonly ToDoListDbContext _dbContext = dbContext;
         private readonly IMapper _mapper = mapper;
 
+        public CategoryDto GetBuiltInCategory()
+        {
+            var builtInCategory = _dbContext.Categories                
+                .First(c => c.IsBuiltIn == true);
+
+            var builtInCategoryDto = _mapper.Map<CategoryDto>(builtInCategory);
+            return builtInCategoryDto;
+        }
         public List<CategoryDto> GetCategories(Guid userId)
         {
             var categories = _dbContext.Categories
