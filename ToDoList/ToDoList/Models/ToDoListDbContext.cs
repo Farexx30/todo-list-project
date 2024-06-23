@@ -28,18 +28,7 @@ namespace ToDoList.Models
 
                 builder.HasMany(c => c.Categories)
                  .WithMany(a => a.Assignments)
-                 .UsingEntity<CategoryAssignment>(
-
-                    j => j.HasOne(c => c.Category)
-                          .WithMany()
-                          .HasForeignKey(fk => fk.CategoryId),
-
-                    j => j.HasOne(a => a.Assignment)
-                          .WithMany()
-                          .HasForeignKey(fk => fk.AssignmentId),
-
-                    j => j.HasKey(pk => new { pk.CategoryId, pk.AssignmentId })
-                 );
+                 .UsingEntity<CategoryAssignment>();
 
                 builder.HasMany(a => a.AssignmentSteps)
                 .WithOne(a => a.Assignment)
@@ -68,6 +57,9 @@ namespace ToDoList.Models
                 .Property(a => a.Name)
                 .HasColumnType("nvarchar(17)")
                 .HasMaxLength(17);
+
+            modelBuilder.Entity<CategoryAssignment>()
+                .HasKey(pk => new { pk.CategoryId, pk.AssignmentId });
         }
     }
 }

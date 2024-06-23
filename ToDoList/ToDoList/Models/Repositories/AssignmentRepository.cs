@@ -17,7 +17,6 @@ namespace ToDoList.Models.Repositories
         AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId);
         void UpdateAssignment(AssignmentDto updatedAssignmentDto);
         void DeleteAssignment(int assignmentId);
-        void ShareAssignment(int assignmentId);
     }
 
     public class AssignmentRepository : IAssignmentRepository
@@ -67,8 +66,9 @@ namespace ToDoList.Models.Repositories
         private List<Assignment> GetMyDayAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .Where(a => a.UserId == userId && a.Deadline == DateOnly.FromDateTime(DateTime.Now))
-                .ToList();
+                .Where(a => a.UserId == userId 
+                && a.Deadline.HasValue && a.Deadline.Value.Date == DateTime.Now.Date)
+                .ToList(); //nie dziala
 
             return assignments;
         }
@@ -120,7 +120,23 @@ namespace ToDoList.Models.Repositories
             assignmentToUpdate.IsChecked = updatedAssignmentDto.IsChecked;
             assignmentToUpdate.IsImportant = updatedAssignmentDto.IsImportant;
 
+            bool doesSharingChanged = false;
+            if (assignmentToUpdate.IsShared != updatedAssignmentDto.IsShared)
+            {
+                assignmentToUpdate.IsShared = updatedAssignmentDto.IsShared;
+                doesSharingChanged = true;
+            }
+
             _dbContext.SaveChanges();
+
+            if (assignmentToUpdate.IsShared && doesSharingChanged)
+            {
+                ShareAssignment(assignmentToUpdate.Id);
+            }
+            else if(doesSharingChanged)
+            {
+                StopSharingAssignment(assignmentToUpdate.Id);
+            }            
         }
 
         public void DeleteAssignment(int assignmentId)
@@ -133,22 +149,25 @@ namespace ToDoList.Models.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void ShareAssignment(int assignmentId)
+        private void ShareAssignment(int assignmentId)
         {
-            bool isAlreadyShared = _dbContext.CategoryAssignments
-                .Any(ca => ca.AssignmentId == assignmentId && ca.CategoryId == 1);
-
-            if (!isAlreadyShared)
+            var newCategoryAssignment = new CategoryAssignment
             {
-                var newCategoryAssignment = new CategoryAssignment
-                {
-                    AssignmentId = assignmentId,
-                    CategoryId = 1 //Wiemy, że "Zadania" mają Id = 1 - a raczej będą miały (możnaby też ręcznie znaleźć to Id).
-                };
-                _dbContext.CategoryAssignments.Add(newCategoryAssignment);
+                AssignmentId = assignmentId,
+                CategoryId = 1
+            };
+            _dbContext.CategoryAssignments.Add(newCategoryAssignment);
 
-                _dbContext.SaveChanges();
-            }
+            _dbContext.SaveChanges();
+        }
+
+        private void StopSharingAssignment(int assignmentId)
+        {
+           var categoryAssignmentToDelete = _dbContext.CategoryAssignments
+                .First(ca => ca.AssignmentId == assignmentId && ca.CategoryId == 1);
+
+           _dbContext.CategoryAssignments.Remove(categoryAssignmentToDelete);
+           _dbContext.SaveChanges();
         }
     }
 }

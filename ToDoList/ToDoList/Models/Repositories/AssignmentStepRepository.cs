@@ -17,7 +17,6 @@ namespace ToDoList.Models.Repositories
         AssignmentStepDto AddAssignmentStep(AssignmentStepDto newAssignmentStepDto, int assignmentId);
         void UpdateAssignmentStep(AssignmentStepDto updatedAssignmentStepDto);
         void DeleteAssignmentStep(int assignmentStepId);
-        void SaveAssignmentStepsChanges();
     }
 
     public class AssignmentStepRepository(ToDoListDbContext dbContext, IMapper mapper) : IAssignmentStepRepository
@@ -52,7 +51,9 @@ namespace ToDoList.Models.Repositories
             var assignmentStepToUpdate = _dbContext.AssignmentSteps
                 .First(aStep => aStep.Id == updatedAssignmentStepDto.Id);
 
-            assignmentStepToUpdate.Name = updatedAssignmentStepDto.Name;
+            assignmentStepToUpdate.IsChecked = updatedAssignmentStepDto.IsChecked;
+
+            _dbContext.SaveChanges();
         }
 
         public void DeleteAssignmentStep(int assignmentStepId)
@@ -61,8 +62,7 @@ namespace ToDoList.Models.Repositories
                 .First(aStep => aStep.Id == assignmentStepId);
 
             _dbContext.AssignmentSteps.Remove(assignmentStepToDelete);
+            _dbContext.SaveChanges();
         }
-
-        public void SaveAssignmentStepsChanges() => _dbContext.SaveChanges();
     }
 }

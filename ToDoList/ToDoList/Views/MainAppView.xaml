@@ -245,7 +245,7 @@
                     </RadialGradientBrush>
                 </Border.Background>
                 <TextBox Background="Transparent"
-                         Text="Treść zadania do znyalezienia"
+                         Text="{Binding SearchPhrase}"
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,10,0"
@@ -402,11 +402,6 @@
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock TextDecorations="Strikethrough"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
         <Grid Grid.Column="2">
@@ -441,8 +436,9 @@
                     Margin="8"
                     CornerRadius="20"/>
             <CheckBox VerticalAlignment="Center"
-                       Margin="20,0,380,0"
-                      BorderBrush="#152B7D">
+                      Margin="20,0,380,0"
+                      BorderBrush="#152B7D"
+                      IsChecked="{Binding IsAssignmentChecked}">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
                 </CheckBox.LayoutTransform>
@@ -462,7 +458,7 @@
                      IsReadOnly="false">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="LostFocus">
-                        <i:InvokeCommandAction Command="{Binding AssignmentNameLostFocusCommand}" />
+                        <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
@@ -551,7 +547,7 @@
                           HorizontalAlignment="Left"
                           Margin="-3,0,0,0"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="False"
+                          IsChecked="{Binding IsAssignmentStepChecked}"
                           Cursor="Hand"/>
                 <Label Grid.Column="2"
                        Content="Wykonano krok zadania"
@@ -585,7 +581,8 @@
                           Cursor="Hand"
                           VerticalAlignment="Center"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="False"/>
+                          IsChecked="{Binding IsAssignmentImportant}"/>
+
                 <Label Grid.Row="0"
                        Grid.Column="1"
                        Content="Oznacz jako ważne"
@@ -597,7 +594,7 @@
                           VerticalAlignment="Center"
                           Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="True"/>
+                          IsChecked="{Binding IsAssignmentShared}"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Foreground="White"
@@ -619,7 +616,7 @@
                           VerticalAlignment="Center"
                           Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="True"/>
+                          IsChecked="{Binding IsDateEnabled}"/>
                 <DatePicker Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="20,5,15,0" 
@@ -627,7 +624,13 @@
                             FontSize="22"
                             BorderThickness="0"
                             Cursor="Hand"
-                            SelectedDate="{Binding AssignmentDeadline}"/>
+                            SelectedDate="{Binding AssignmentDeadline}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="LostFocus">
+                            <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DatePicker>
             </Grid>
             <Button Grid.Row="8"
                     Content="Usuń zadanie"
