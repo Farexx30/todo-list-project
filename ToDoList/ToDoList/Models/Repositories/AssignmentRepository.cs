@@ -13,19 +13,43 @@ namespace ToDoList.Models.Repositories
 {
     public interface IAssignmentRepository
     {
-        List<AssignmentDto> GetAssignments(Guid userId, int categoryId);
+        List<AssignmentDto> GetAssignments(CategoryMode mode, Guid userId, int? categoryId = null);
         AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId);
         void UpdateAssignment(AssignmentDto updatedAssignmentDto);
         void DeleteAssignment(int assignmentId);
         void ShareAssignment(int assignmentId);
     }
 
-    public class AssignmentRepository(ToDoListDbContext dbContext, IMapper mapper) : IAssignmentRepository
+    public class AssignmentRepository : IAssignmentRepository
     {
-        private readonly ToDoListDbContext _dbContext = dbContext;
-        private readonly IMapper _mapper = mapper;
+        private readonly ToDoListDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public List<AssignmentDto> GetAssignments(Guid userId, int categoryId)
+        private readonly Dictionary<CategoryMode, Func<Guid, int?, List<Assignment>>> _assignmentsMethods = [];
+
+        public AssignmentRepository(ToDoListDbContext dbContext, IMapper mapper)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+
+            _assignmentsMethods.Add(CategoryMode.Custom, GetDbAssignments);
+            _assignmentsMethods.Add(CategoryMode.MyDay, GetMyDayAssignments);
+            _assignmentsMethods.Add(CategoryMode.Planned, GetPlannedAssignments);
+            _assignmentsMethods.Add(CategoryMode.Important, GetImportantAssignments);
+        }
+
+        public List<AssignmentDto> GetAssignments(CategoryMode mode, Guid userId, int? categoryId = null)
+        {
+            if(_assignmentsMethods.TryGetValue(mode, out var result))
+            {
+                var assignments = result(userId, categoryId);
+                var assignmentsDtos = _mapper.Map<List<AssignmentDto>>(assignments);
+                return assignmentsDtos;
+            }
+            return [];
+        }
+
+        private List<Assignment> GetDbAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
                 .AsNoTracking()
@@ -38,8 +62,37 @@ namespace ToDoList.Models.Repositories
                         .Select(result => result.Assignment)
                 .ToList();
 
-            var assignmentsDtos = _mapper.Map<List<AssignmentDto>>(assignments);
-            return assignmentsDtos;
+            return assignments;
+        }
+
+        private List<Assignment> GetMyDayAssignments(Guid userId, int? categoryId)
+        {
+            var assignments = _dbContext.Assignments
+                .AsNoTracking()
+                .Where(a => a.UserId == userId && a.Deadline == DateOnly.FromDateTime(DateTime.Now))
+                .ToList();
+
+            return assignments;
+        }
+
+        private List<Assignment> GetPlannedAssignments(Guid userId, int? categoryId)
+        {
+            var assignments = _dbContext.Assignments
+                .AsNoTracking()
+                .Where(a => a.UserId == userId && a.Deadline != null)
+                .ToList();
+
+            return assignments;
+        }
+
+        private List<Assignment> GetImportantAssignments(Guid userId, int? categoryId)
+        {
+            var assignments = _dbContext.Assignments
+                .AsNoTracking()
+                .Where(a => a.UserId == userId && a.IsImportant == true)
+                .ToList();
+
+            return assignments;
         }
 
         public AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId)

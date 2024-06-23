@@ -92,7 +92,8 @@
                     Foreground="White"
                     FontSize="28"
                     Margin="10,10,10,0"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    Command="{Binding MyDayCategoryClickedCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="Transparent"  
@@ -116,7 +117,8 @@
                     FontSize="28"
                     
                     Margin="10,5,10,5"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    Command="{Binding ImportantCategoryClickedCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="Transparent"  
@@ -140,7 +142,8 @@
                     FontSize="28"
                     
                     Margin="10,5,10,5"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    Command="{Binding PlannedCategoryClickedCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="Transparent"  
@@ -289,8 +292,7 @@
 
             <Label Grid.Row="1" 
                    Content="{Binding CurrentCategoryName}"
-                   Foreground="White"
-
+                   Foreground="White"                    
                    FontSize="22"
                    BorderThickness="0"
                    Margin="350,-5,15,-5"

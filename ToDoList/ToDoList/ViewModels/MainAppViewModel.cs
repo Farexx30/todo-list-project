@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ToDoList.Commands;
+using ToDoList.Models;
 using ToDoList.Models.Dtos;
 using ToDoList.Models.Entities;
 using ToDoList.Models.Repositories;
@@ -22,6 +23,7 @@ namespace ToDoList.ViewModels
         private readonly IAssignmentStepRepository _assignmentStepRepo;
 
         private UserDto _currentUser = null!;
+        private CategoryMode _categoryMode = CategoryMode.MyDay;
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -92,7 +94,7 @@ namespace ToDoList.ViewModels
             {
                 _currentCategory = value;
                 OnPropertyChanged();
-                CategoryChanged();
+                DbCategoryChanged();
             }
         }
 
@@ -256,6 +258,9 @@ namespace ToDoList.ViewModels
         public ICommand AddAssignmentStepCommand { get; set; }
         public ICommand UpdateAssignmentStepCommand { get; set; }
         public ICommand DeleteAssignmentStepCommand { get; set; }
+        public ICommand MyDayCategoryClickedCommand { get; set; }
+        public ICommand PlannedCategoryClickedCommand { get; set; }
+        public ICommand ImportantCategoryClickedCommand { get; set; }
         public ICommand CategoryNameLostFocusCommand { get; set; }
         public ICommand AssignmentNameLostFocusCommand { get; set; }
         public ICommand LogOutCommand { get; set; }
@@ -284,6 +289,10 @@ namespace ToDoList.ViewModels
 
             CategoryNameLostFocusCommand = new RelayCommand(CategoryNameLostFocus);
             AssignmentNameLostFocusCommand = new RelayCommand(AssignmentNameLostFocus);
+
+            MyDayCategoryClickedCommand = new RelayCommand(MyDayCategoryClicked);
+            PlannedCategoryClickedCommand = new RelayCommand(PlannedCategoryClicked);
+            ImportantCategoryClickedCommand = new RelayCommand(ImportantCategoryClicked);
             LogOutCommand = new RelayCommand(LogOut, _ => true);
 
             Initialize();
@@ -295,6 +304,7 @@ namespace ToDoList.ViewModels
 
             Username = _currentUser.Name;
             Categories = new(_categoryRepo.GetCategories(_currentUser.Id));
+            
         }
 
 
@@ -407,22 +417,29 @@ namespace ToDoList.ViewModels
 
 
         //Eventy, albo cos w tym rodzaju, zobaczy sie.
-        private void CategoryChanged()
+        private void DbCategoryChanged()
         {
             _assignmentStepRepo.SaveAssignmentStepsChanges();
 
-            CurrentCategoryName = CurrentCategory!.Name;
+            if (CurrentCategory is not null)
+            {
+                CurrentCategoryName = CurrentCategory.Name;
+                _categoryMode = CategoryMode.Custom;
 
-            var allAssignments = _assignmentRepo.GetAssignments(_currentUser.Id, CurrentCategory.Id);
-            ToDoAssignments = new(allAssignments.Where(a => a.IsChecked == false));
-            CompletedAssignments = new(allAssignments.Where(a => a.IsChecked == true));
+                var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id, CurrentCategory.Id);
+                ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
+                CompletedAssignments = new(loadedAssignments.Where(a => a.IsChecked == true));
+            }
         }
 
         private void AssignmentChanged()
         {
             _assignmentStepRepo.SaveAssignmentStepsChanges();
 
-            AssignmentSteps = new(_assignmentStepRepo.GetAssignmentSteps(CurrentAssignment!.Id));
+            if (CurrentAssignment is not null)
+            {
+                AssignmentSteps = new(_assignmentStepRepo.GetAssignmentSteps(CurrentAssignment.Id));
+            }
         }
 
 
@@ -452,6 +469,40 @@ namespace ToDoList.ViewModels
                 </i:EventTrigger>
             </i:Interaction.Triggers>
              */
+        }
+
+        private void MyDayCategoryClicked(object obj)
+        {
+            if (CurrentCategory is not null) CurrentCategory = null;
+            CurrentCategoryName = "Mój dzień";
+            _categoryMode = CategoryMode.MyDay;
+
+            var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
+            ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
+            CompletedAssignments = new(loadedAssignments.Where(a => a.IsChecked == true));
+
+        }
+
+        private void PlannedCategoryClicked(object obj)
+        {
+            if (CurrentCategory is not null) CurrentCategory = null;
+            CurrentCategoryName = "Zaplanowane";
+            _categoryMode = CategoryMode.Planned;
+
+            var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
+            ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
+            CompletedAssignments = new(loadedAssignments.Where(a => a.IsChecked == true));
+        }
+
+        private void ImportantCategoryClicked(object obj)
+        {
+            if (CurrentCategory is not null) CurrentCategory = null;
+            CurrentCategoryName = "Ważne";
+            _categoryMode = CategoryMode.Important;
+
+            var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
+            ToDoAssignments = new(loadedAssignments.Where(a => a.IsChecked == false));
+            CompletedAssignments = new(loadedAssignments.Where(a => a.IsChecked == true));
         }
 
         private void LogOut(object obj)
