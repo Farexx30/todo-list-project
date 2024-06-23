@@ -6,7 +6,13 @@
              xmlns:local="clr-namespace:ToDoList.Views" xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainMenuViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1440">
-
+    <UserControl.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Styles.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.Background>
         <RadialGradientBrush GradientOrigin="1,1"  
                              Center="1,1" 
@@ -55,21 +61,9 @@
                 Foreground="#101728"
                 FontWeight="Bold"
                 FontFamily="Bahnschrift Bold"
-                Command="{Binding Path=NavigateToLoginCommand}">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                    <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="80">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>        
+                Cursor="Hand"
+                Command="{Binding Path=NavigateToLoginCommand}"
+                Style="{StaticResource RainbowButton80}"/>
         <Button Grid.Column="1"
                 Grid.Row="5"
                 Grid.ColumnSpan="2"
@@ -79,21 +73,9 @@
                 Foreground="#101728"
                 FontWeight="Bold"
                 FontFamily="Bahnschrift Bold"
-                Command="{Binding Path=NavigateToRegisterCommand}">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                    <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="80">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+                Command="{Binding Path=NavigateToRegisterCommand}"
+                Cursor="Hand"
+                Style="{StaticResource RainbowButton80}"/>
 
     </Grid>
 </UserControl>
