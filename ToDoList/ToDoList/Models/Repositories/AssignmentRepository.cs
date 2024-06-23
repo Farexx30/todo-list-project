@@ -52,7 +52,6 @@ namespace ToDoList.Models.Repositories
         private List<Assignment> GetDbAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .AsNoTracking()
                 .Where(a => a.UserId == userId)
                 .Join(_dbContext.CategoryAssignments,
                       assignment => assignment.Id,
@@ -68,7 +67,6 @@ namespace ToDoList.Models.Repositories
         private List<Assignment> GetMyDayAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .AsNoTracking()
                 .Where(a => a.UserId == userId && a.Deadline == DateOnly.FromDateTime(DateTime.Now))
                 .ToList();
 
@@ -78,7 +76,6 @@ namespace ToDoList.Models.Repositories
         private List<Assignment> GetPlannedAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .AsNoTracking()
                 .Where(a => a.UserId == userId && a.Deadline != null)
                 .ToList();
 
@@ -88,7 +85,6 @@ namespace ToDoList.Models.Repositories
         private List<Assignment> GetImportantAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .AsNoTracking()
                 .Where(a => a.UserId == userId && a.IsImportant == true)
                 .ToList();
 
@@ -116,20 +112,25 @@ namespace ToDoList.Models.Repositories
 
         public void UpdateAssignment(AssignmentDto updatedAssignmentDto)
         {
-            _dbContext.Assignments
-                .Where(a => a.Id == updatedAssignmentDto.Id)
-                .ExecuteUpdate(p =>
-                 p.SetProperty(a => a.Name, updatedAssignmentDto.Name)
-                 .SetProperty(a => a.Deadline, updatedAssignmentDto.Deadline)
-                 .SetProperty(a => a.IsChecked, updatedAssignmentDto.IsChecked)
-                 .SetProperty(a => a.IsImportant, updatedAssignmentDto.IsImportant));
+            var assignmentToUpdate = _dbContext.Assignments
+                .First(a => a.Id == updatedAssignmentDto.Id);
+
+            assignmentToUpdate.Name = updatedAssignmentDto.Name;
+            assignmentToUpdate.Deadline = updatedAssignmentDto.Deadline;
+            assignmentToUpdate.IsChecked = updatedAssignmentDto.IsChecked;
+            assignmentToUpdate.IsImportant = updatedAssignmentDto.IsImportant;
+
+            _dbContext.SaveChanges();
         }
 
         public void DeleteAssignment(int assignmentId)
         {
-            _dbContext.Assignments
-                .Where(a => a.Id == assignmentId)
-                .ExecuteDelete();
+            var assignmentToDelete = _dbContext.Assignments
+                .First(a => a.Id == assignmentId);
+
+            _dbContext.Assignments.Remove(assignmentToDelete);
+
+            _dbContext.SaveChanges();
         }
 
         public void ShareAssignment(int assignmentId)
