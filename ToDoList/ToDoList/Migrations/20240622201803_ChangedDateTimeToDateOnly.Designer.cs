@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Models;
 
@@ -11,9 +12,11 @@ using ToDoList.Models;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    partial class ToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240622201803_ChangedDateTimeToDateOnly")]
+    partial class ChangedDateTimeToDateOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,16 +33,13 @@ namespace ToDoList.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("Deadline")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly?>("Deadline")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsChecked")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsImportant")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsShared")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -96,8 +96,8 @@ namespace ToDoList.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -185,21 +185,17 @@ namespace ToDoList.Migrations
 
             modelBuilder.Entity("ToDoList.Models.Entities.CategoryAssignment", b =>
                 {
-                    b.HasOne("ToDoList.Models.Entities.Assignment", "Assignment")
+                    b.HasOne("ToDoList.Models.Entities.Assignment", null)
                         .WithMany("CategoryAssignments")
                         .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ToDoList.Models.Entities.Category", "Category")
+                    b.HasOne("ToDoList.Models.Entities.Category", null)
                         .WithMany("CategoryAssignments")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Assignment");
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.Assignment", b =>

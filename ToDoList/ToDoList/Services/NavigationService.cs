@@ -29,7 +29,7 @@ namespace ToDoList.Services
          public void NavigateTo<T>() where T : BaseViewModel
          {
              BaseViewModel newViewModel = _viewModelFactory.Invoke(typeof(T));
-
+                
              CurrentViewModel = newViewModel;
          }
     }

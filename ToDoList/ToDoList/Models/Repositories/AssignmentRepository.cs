@@ -13,22 +13,44 @@ namespace ToDoList.Models.Repositories
 {
     public interface IAssignmentRepository
     {
-        List<AssignmentDto> GetAssignments(Guid userId, int categoryId);
+        List<AssignmentDto> GetAssignments(CategoryMode mode, Guid userId, int? categoryId = null);
         AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId);
         void UpdateAssignment(AssignmentDto updatedAssignmentDto);
         void DeleteAssignment(int assignmentId);
-        void ShareAssignment(int assignmentId);
     }
 
-    public class AssignmentRepository(ToDoListDbContext dbContext, IMapper mapper) : IAssignmentRepository
+    public class AssignmentRepository : IAssignmentRepository
     {
-        private readonly ToDoListDbContext _dbContext = dbContext;
-        private readonly IMapper _mapper = mapper;
+        private readonly ToDoListDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public List<AssignmentDto> GetAssignments(Guid userId, int categoryId)
+        private readonly Dictionary<CategoryMode, Func<Guid, int?, List<Assignment>>> _assignmentsMethods = [];
+
+        public AssignmentRepository(ToDoListDbContext dbContext, IMapper mapper)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+
+            _assignmentsMethods.Add(CategoryMode.Database, GetDbAssignments);
+            _assignmentsMethods.Add(CategoryMode.MyDay, GetMyDayAssignments);
+            _assignmentsMethods.Add(CategoryMode.Planned, GetPlannedAssignments);
+            _assignmentsMethods.Add(CategoryMode.Important, GetImportantAssignments);
+        }
+
+        public List<AssignmentDto> GetAssignments(CategoryMode mode, Guid userId, int? categoryId = null)
+        {
+            if(_assignmentsMethods.TryGetValue(mode, out var result))
+            {
+                var assignments = result(userId, categoryId);
+                var assignmentsDtos = _mapper.Map<List<AssignmentDto>>(assignments);
+                return assignmentsDtos;
+            }
+            return [];
+        }
+
+        private List<Assignment> GetDbAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .AsNoTracking()
                 .Where(a => a.UserId == userId)
                 .Join(_dbContext.CategoryAssignments,
                       assignment => assignment.Id,
@@ -38,8 +60,35 @@ namespace ToDoList.Models.Repositories
                         .Select(result => result.Assignment)
                 .ToList();
 
-            var assignmentsDtos = _mapper.Map<List<AssignmentDto>>(assignments);
-            return assignmentsDtos;
+            return assignments;
+        }
+
+        private List<Assignment> GetMyDayAssignments(Guid userId, int? categoryId)
+        {
+            var assignments = _dbContext.Assignments
+                .Where(a => a.UserId == userId 
+                && a.Deadline.HasValue && a.Deadline.Value.Date == DateTime.Now.Date)
+                .ToList(); //nie dziala
+
+            return assignments;
+        }
+
+        private List<Assignment> GetPlannedAssignments(Guid userId, int? categoryId)
+        {
+            var assignments = _dbContext.Assignments
+                .Where(a => a.UserId == userId && a.Deadline != null)
+                .ToList();
+
+            return assignments;
+        }
+
+        private List<Assignment> GetImportantAssignments(Guid userId, int? categoryId)
+        {
+            var assignments = _dbContext.Assignments
+                .Where(a => a.UserId == userId && a.IsImportant == true)
+                .ToList();
+
+            return assignments;
         }
 
         public AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId)
@@ -47,6 +96,7 @@ namespace ToDoList.Models.Repositories
             var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
             newAssignment.UserId = userId;
             _dbContext.Assignments.Add(newAssignment);
+            _dbContext.SaveChanges();
 
             var newCategoryAssignment = new CategoryAssignment
             {
@@ -54,7 +104,6 @@ namespace ToDoList.Models.Repositories
                 CategoryId = categoryId
             };
             _dbContext.CategoryAssignments.Add(newCategoryAssignment);
-
             _dbContext.SaveChanges();
 
             var justAddedAssignmentDto = _mapper.Map<AssignmentDto>(newAssignment);
@@ -63,38 +112,62 @@ namespace ToDoList.Models.Repositories
 
         public void UpdateAssignment(AssignmentDto updatedAssignmentDto)
         {
-            _dbContext.Assignments
-                .Where(a => a.Id == updatedAssignmentDto.Id)
-                .ExecuteUpdate(p =>
-                 p.SetProperty(a => a.Name, updatedAssignmentDto.Name)
-                 .SetProperty(a => a.Deadline, updatedAssignmentDto.Deadline)
-                 .SetProperty(a => a.IsChecked, updatedAssignmentDto.IsChecked)
-                 .SetProperty(a => a.IsImportant, updatedAssignmentDto.IsImportant));
+            var assignmentToUpdate = _dbContext.Assignments
+                .First(a => a.Id == updatedAssignmentDto.Id);
+
+            assignmentToUpdate.Name = updatedAssignmentDto.Name;
+            assignmentToUpdate.Deadline = updatedAssignmentDto.Deadline;
+            assignmentToUpdate.IsChecked = updatedAssignmentDto.IsChecked;
+            assignmentToUpdate.IsImportant = updatedAssignmentDto.IsImportant;
+
+            bool doesSharingChanged = false;
+            if (assignmentToUpdate.IsShared != updatedAssignmentDto.IsShared)
+            {
+                assignmentToUpdate.IsShared = updatedAssignmentDto.IsShared;
+                doesSharingChanged = true;
+            }
+
+            _dbContext.SaveChanges();
+
+            if (assignmentToUpdate.IsShared && doesSharingChanged)
+            {
+                ShareAssignment(assignmentToUpdate.Id);
+            }
+            else if(doesSharingChanged)
+            {
+                StopSharingAssignment(assignmentToUpdate.Id);
+            }            
         }
 
         public void DeleteAssignment(int assignmentId)
         {
-            _dbContext.Assignments
-                .Where(a => a.Id == assignmentId)
-                .ExecuteDelete();
+            var assignmentToDelete = _dbContext.Assignments
+                .First(a => a.Id == assignmentId);
+
+            _dbContext.Assignments.Remove(assignmentToDelete);
+
+            _dbContext.SaveChanges();
         }
 
-        public void ShareAssignment(int assignmentId)
+        private void ShareAssignment(int assignmentId)
         {
-            bool isAlreadyShared = _dbContext.CategoryAssignments
-                .Any(ca => ca.AssignmentId == assignmentId && ca.CategoryId == 1);
-
-            if (!isAlreadyShared)
+            var newCategoryAssignment = new CategoryAssignment
             {
-                var newCategoryAssignment = new CategoryAssignment
-                {
-                    AssignmentId = assignmentId,
-                    CategoryId = 1 //Wiemy, że "Zadania" mają Id = 1 - a raczej będą miały (możnaby też ręcznie znaleźć to Id).
-                };
-                _dbContext.CategoryAssignments.Add(newCategoryAssignment);
+                AssignmentId = assignmentId,
+                CategoryId = 1
+            };
+            _dbContext.CategoryAssignments.Add(newCategoryAssignment);
 
-                _dbContext.SaveChanges();
-            }
+            _dbContext.SaveChanges();
+        }
+
+        private void StopSharingAssignment(int assignmentId)
+        {
+           var categoryAssignmentToDelete = _dbContext.CategoryAssignments
+                .First(ca => ca.AssignmentId == assignmentId && ca.CategoryId == 1);
+
+           _dbContext.CategoryAssignments.Remove(categoryAssignmentToDelete);
+           _dbContext.SaveChanges();
         }
     }
 }
