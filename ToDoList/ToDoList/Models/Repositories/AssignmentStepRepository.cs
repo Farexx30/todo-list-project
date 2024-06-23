@@ -41,6 +41,7 @@ namespace ToDoList.Models.Repositories
             newAssignmentStep.AssignmentId = assignmentId;
 
             _dbContext.AssignmentSteps.Add(newAssignmentStep);
+            _dbContext.SaveChanges();
 
             var justAddedAssignmentStep = _mapper.Map<AssignmentStepDto>(newAssignmentStep);
             return justAddedAssignmentStep;
