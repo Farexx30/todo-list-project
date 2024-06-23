@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ToDoList.Views"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainAppViewModel}"
              mc:Ignorable="d"
          d:DesignHeight="800" 
          d:DesignWidth="1440">
@@ -164,17 +164,6 @@
                         <Style TargetType="{x:Type ScrollBar}" 
                                BasedOn="{StaticResource ScrollBarStyle}"/>
                     </ListBox.Resources>
-                    <ListBoxItem>Przykład 1</ListBoxItem>
-                    <ListBoxItem>Przykład 2</ListBoxItem>
-                    <ListBoxItem>Przykład 3</ListBoxItem>
-                    <ListBoxItem>Przykład 4</ListBoxItem>
-                    <ListBoxItem>Przykład 5</ListBoxItem>
-                    <ListBoxItem>Przykład 6</ListBoxItem>
-                    <ListBoxItem>Przykład 7</ListBoxItem>
-                    <ListBoxItem>Przykład 8</ListBoxItem>
-                    <ListBoxItem>Przykład 9</ListBoxItem>
-                    <ListBoxItem>Przykład 10</ListBoxItem>
-                    <ListBoxItem>Przykład 11</ListBoxItem>
                 </ListBox>
             </Border>
             <Button Grid.Row="6"
@@ -237,7 +226,8 @@
                      Margin="105, 15, 60, 10"
                      BorderThickness="0"
                      Cursor="IBeam"
-                     VerticalContentAlignment="Center"/>
+                     VerticalContentAlignment="Center"
+                     IsReadOnly="false"/>
 
             <Border Grid.Row="1"
                     Margin="15,5,15,10"
@@ -288,7 +278,8 @@
                      Cursor="IBeam"
                      Background="Transparent"
                      HorizontalContentAlignment="Right"
-                     VerticalContentAlignment="Center"/>
+                     VerticalContentAlignment="Center"
+                     IsReadOnly="false"/>
             <Label Grid.Row="2"
                    FontFamily="Segoe UI Symbol" 
                    Content="&#xE104;"
@@ -328,13 +319,6 @@
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
-                <ListBoxItem Content="WWWWWWWWWWWWWWWWWWWWWWWWWWWW"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem8"/>
             </ListBox>
 
             <Border Grid.Row="4"
@@ -417,11 +401,6 @@
                         <TextBlock TextDecorations="Strikethrough"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                <ListBoxItem>w</ListBoxItem>
-                <ListBoxItem>w</ListBoxItem>
-                <ListBoxItem>w</ListBoxItem>
-                <ListBoxItem>w</ListBoxItem>
-                <ListBoxItem>w</ListBoxItem>
             </ListBox>
         </Grid>
         <Grid Grid.Column="2">
@@ -474,7 +453,7 @@
                      Cursor="IBeam"
                      VerticalContentAlignment="Center"
                      VerticalAlignment="Center"
-                     />
+                     IsReadOnly="false"/>
 
             <Border Background="White"
                     Height="2"
@@ -493,13 +472,6 @@
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
-                <ListBoxItem Content="CheckListBoxItem1"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem2"/>
-                <ListBoxItem Content="CheckListBoxItem8"/>
             </ListBox>
             <Border Grid.Row="2"
                     Margin="15,5,15,15"
