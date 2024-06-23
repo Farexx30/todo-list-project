@@ -27,8 +27,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.6" />
-    <PackageReference Include="Syncfusion.Shared.WPF" Version="26.1.35" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="26.1.35" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,10 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ToDoList.Views"
+             xmlns:local="clr-namespace:ToDoList.Views" xmlns:components="clr-namespace:ToDoList.Components"
              mc:Ignorable="d"
              d:DesignHeight="800" 
              d:DesignWidth="1440">
+
+    <UserControl.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Styles.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    </UserControl.Resources>
 
     <UserControl.Background>
         <RadialGradientBrush GradientOrigin="1,1"  
@@ -99,10 +107,22 @@
                 </RadialGradientBrush>
             </Border.Background>
         </Border>
+        <Button Grid.Column="2"
+                Grid.Row="1"
+                Margin="10,10,-40,0"
+                Background="Transparent"
+                BorderThickness="0"
+                FontFamily="Segoe UI Symbol"
+                Content="&#xE112;"
+                FontSize="50"
+                FontWeight="UltraLight"
+                Foreground="White"
+                Style="{StaticResource TransparentButton}"
+                Cursor="Hand"/>
         <Image Grid.Column="3"
                Grid.Row="1"
                Grid.RowSpan="2"
-               Margin="10" 
+               Margin="100,10,100,10" 
                Source="Images\UserIcon.png"/>
         <Label Grid.Row="4"
                Grid.Column="3"
@@ -122,9 +142,11 @@
                  Foreground="White"
                  VerticalAlignment="Center"
                  FontSize="32"
+                 MaxLength="20"
                  FontFamily="Bahnschrift SemiLight"
                  BorderThickness="0"
-                 Margin="15,0,0,10"/>
+                 Margin="15,0,0,10"
+                 Cursor="IBeam"/>
         <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="4"
@@ -142,16 +164,17 @@
                Grid.Row="7"
                Source="Images\PasswordIcon.png"
                Margin="5"/>
-        <TextBox Grid.Row="7"
-                 Grid.Column="3"
-                 Background="Transparent"
-                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                 Foreground="White"
-                 VerticalAlignment="Center"
-                 FontSize="32"
-                 FontFamily="Bahnschrift SemiLight"
-                 BorderThickness="0"
-                 Margin="15,0,0,10"/>
+        <components:BindablePasswordBox Grid.Row="7"
+                                         Grid.Column="3"
+                                         Background="Transparent"
+                                         Password="{Binding Password}"
+                                         Foreground="White"
+                                         VerticalAlignment="Center"
+                                         FontSize="32"
+                                         FontFamily="Bahnschrift SemiLight"
+                                         BorderThickness="0"
+                                         Margin="15,0,0,10"
+                                         Cursor="IBeam"/>
         <Border Grid.Row="7"
                 Grid.Column="3"
                 Height="4"
@@ -192,22 +215,9 @@
                     FontWeight="Bold"
                     FontFamily="Bahnschrift Bold"
                     Margin="0,-7,0,-7"
-                    Command="{Binding Path=LoginCommand}">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="{StaticResource ButtonPink}" Offset="0.0" />
-                        <GradientStop Color="{StaticResource ButtonPurple}" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"  BorderThickness="0" CornerRadius="50">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-
+                    Command="{Binding Path=LoginCommand}" 
+                    Cursor="Hand"
+                    Style="{StaticResource RainbowButton50}"/>
         </Grid>
     </Grid>
 </UserControl>
