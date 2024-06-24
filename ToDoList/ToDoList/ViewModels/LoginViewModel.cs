@@ -51,6 +51,7 @@ namespace ToDoList.ViewModels
         }
 
         public ICommand LoginCommand { get; set; }
+        public ICommand GoBackToMenuCommand { get; set; }
 
         public LoginViewModel(INavigationService navigationService, ILoginUserRepository loginUserRepo, IUserContextService userContextService)
         {
@@ -59,6 +60,12 @@ namespace ToDoList.ViewModels
             _userContextService = userContextService;
 
             LoginCommand = new RelayCommand(Login, CanLogin);
+            GoBackToMenuCommand = new RelayCommand(GoBackToMenu, _ => true);
+        }
+
+        private void GoBackToMenu(object obj)
+        {
+            NavigationService.NavigateTo<MainMenuViewModel>();
         }
 
         private void Login(object obj)

@@ -63,6 +63,7 @@ namespace ToDoList.ViewModels
         }
 
         public ICommand RegisterCommand { get; set; }
+        public ICommand GoBackToMenuCommand { get; set; }  
 
         public RegisterViewModel(INavigationService navigationService, IRegisterUserRepository registerUserRepo, IUserContextService userContextService)
         {
@@ -71,6 +72,12 @@ namespace ToDoList.ViewModels
             _userContextService = userContextService;
 
             RegisterCommand = new RelayCommand(Register, CanRegister);
+            GoBackToMenuCommand = new RelayCommand(GoBackToMenu, _ => true);
+        }
+
+        private void GoBackToMenu(object obj)
+        {
+            NavigationService.NavigateTo<MainMenuViewModel>();
         }
 
         private void Register(object obj)
