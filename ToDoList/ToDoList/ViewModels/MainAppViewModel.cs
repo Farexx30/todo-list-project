@@ -27,7 +27,7 @@ namespace ToDoList.ViewModels
         private readonly IAssignmentStepRepository _assignmentStepRepo;
 
         private UserDto _currentUser = null!;
-        private List<AssignmentDto> _toDoAssignments = [];
+        private readonly List<AssignmentDto> _toDoAssignments = [];
         private CategoryMode _categoryMode = CategoryMode.MyDay;
         AssignmentDto? _clickedAssignment = null;
         bool _isCurrentlySetting = false;
@@ -510,6 +510,7 @@ namespace ToDoList.ViewModels
                 SearchPhraseChanged();
             }
             AssignmentSteps.Clear();
+            SetDefaultAssignmentsValues();
             CurrentAssignment = null;
         }
 
