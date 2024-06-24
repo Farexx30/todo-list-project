@@ -245,7 +245,7 @@
                     </RadialGradientBrush>
                 </Border.Background>
                 <TextBox Background="Transparent"
-                         Text="{Binding SearchPhrase}"
+                         Text="{Binding SearchPhrase, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,10,0"
@@ -320,7 +320,7 @@
                     FontWeight="Light"
                     Background="Transparent"
                     Cursor="Hand"
-                    ItemsSource="{Binding ToDoAssignments}"  
+                    ItemsSource="{Binding FilteredToDoAssignments}"  
                     SelectedItem="{Binding CurrentAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
@@ -624,7 +624,8 @@
                             FontSize="22"
                             BorderThickness="0"
                             Cursor="Hand"
-                            SelectedDate="{Binding AssignmentDeadline}">
+                            SelectedDate="{Binding AssignmentDeadline}"
+                            IsEnabled="{Binding IsDateEnabled}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
                             <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
