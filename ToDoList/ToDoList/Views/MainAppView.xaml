@@ -4,7 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ToDoList.Views"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=viewmodels:MainAppViewModel}"
+             xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:MainAppViewModel}"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
          d:DesignHeight="800" 
          d:DesignWidth="1440">
@@ -75,13 +78,14 @@
                    VerticalAlignment="Center"
                    Margin="70,0,150,0"
                    FontWeight="Bold"/>
-            <Label Content="12-06-2024"
+            <Label Content="{x:Static sys:DateTime.Now}"
                    Foreground="White"
                    FontSize="24"
                    VerticalAlignment="Center"
                    HorizontalContentAlignment="Center"
                    Margin="115,0,14,0"
-                   FontWeight="Light"/>
+                   FontWeight="Light"
+                   ContentStringFormat="dd-MM-yyyy"/>
             <Border Grid.Row="1"
                     Grid.RowSpan="4"
                     Background="#101728"
@@ -211,14 +215,7 @@
                    FontSize="29"
                    Margin="15,15,610,10"
                    VerticalContentAlignment="Center"/>
-            <Label Grid.Row="0"
-                   FontFamily="Segoe UI Symbol" 
-                   Content="&#xE104;"
-                   Foreground="White"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center"
-                   FontSize="22"
-                   Margin="0,0,20,0"/>
+            
             <TextBox Text="{Binding Username}"
                      Foreground="White"
                      Background="Transparent"
@@ -227,7 +224,7 @@
                      BorderThickness="0"
                      Cursor="IBeam"
                      VerticalContentAlignment="Center"
-                     IsReadOnly="false"/>
+                     IsReadOnly="True"/>
 
             <Border Grid.Row="1"
                     Margin="15,5,15,10"
@@ -345,7 +342,7 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="{Binding NewAssignmentName}"
+                         Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="White"
                          MaxLength="28"
                          FontWeight="Light"
@@ -365,7 +362,7 @@
                     VerticalContentAlignment="Top" 
                     Cursor="Hand"
                     Style="{StaticResource RainbowButton34}"
-                    Command="{Binding AddAssignmentCommand}"/>
+                    Command="{Binding AddAssignmentCommand, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Row="5" 
                    Content="Wykonane zadania: "
                    Foreground="White"
@@ -500,7 +497,7 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="{Binding NewAssignmentStepName}"
+                         Text="{Binding NewAssignmentStepName, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,0,0"
@@ -520,7 +517,7 @@
                     VerticalContentAlignment="Center"
                     Style="{StaticResource RainbowButton34}"
                     Cursor="Hand"
-                    Command="{Binding AddAssignmentStepCommand}"/>
+                    Command="{Binding AddAssignmentStepCommand, UpdateSourceTrigger=PropertyChanged}"/>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.2*"/>
@@ -631,7 +628,10 @@
                             BorderThickness="0"
                             Cursor="Hand"
                             SelectedDate="{Binding AssignmentDeadline}"
-                            IsEnabled="{Binding IsEnabledDatePicker}">
+                            IsEnabled="{Binding IsEnabledDatePicker, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateStart="{x:Static sys:DateTime.Now}"
+                            DisplayDateEnd="01.01.2124"
+                            >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
                             <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
