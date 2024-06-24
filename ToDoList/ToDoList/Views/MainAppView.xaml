@@ -283,7 +283,8 @@
                      Background="Transparent"
                      HorizontalContentAlignment="Right"
                      VerticalContentAlignment="Center"
-                     IsReadOnly="false">
+                     IsReadOnly="false"
+                     IsEnabled="{Binding IsEnabledCategoryName}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="LostFocus">
                         <i:InvokeCommandAction Command="{Binding UpdateCategoryCommand}" />
@@ -348,7 +349,7 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="{Binding NewAssignmentName}"
+                         Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="White"
                          MaxLength="28"
                          FontWeight="Light"
@@ -442,7 +443,8 @@
             <CheckBox VerticalAlignment="Center"
                       Margin="20,0,380,0"
                       BorderBrush="#152B7D"
-                      IsChecked="{Binding IsAssignmentChecked}">
+                      IsChecked="{Binding IsAssignmentChecked}"
+                      IsEnabled="{Binding IsEnabledCheckBox}">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
                 </CheckBox.LayoutTransform>
@@ -552,7 +554,8 @@
                           Margin="-3,0,0,0"
                           Style="{StaticResource CheckBoxToSwitch}"
                           IsChecked="{Binding IsAssignmentStepChecked}"
-                          Cursor="Hand"/>
+                          Cursor="Hand"
+                          IsEnabled="{Binding IsEnabledCheckBoxStep}"/>
                 <Label Grid.Column="2"
                        Content="Wykonano krok zadania"
                        Foreground="White"
@@ -581,11 +584,13 @@
                         Margin="8,0,8,0"
                         CornerRadius="20"/>
                 <CheckBox Grid.Row="0"
+                          Name="CheckBoxIsImportant"
                           Margin="15,0,0,0"
                           Cursor="Hand"
                           VerticalAlignment="Center"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="{Binding IsAssignmentImportant}"/>
+                          IsChecked="{Binding IsAssignmentImportant}"
+                          IsEnabled="{Binding IsEnabledSwitch}"/>
 
                 <Label Grid.Row="0"
                        Grid.Column="1"
@@ -598,7 +603,8 @@
                           VerticalAlignment="Center"
                           Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="{Binding IsAssignmentShared}"/>
+                          IsChecked="{Binding IsAssignmentShared}"
+                          IsEnabled="{Binding IsEnabledSwitchOthers}"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Foreground="White"
@@ -620,7 +626,8 @@
                           VerticalAlignment="Center"
                           Cursor="Hand"
                           Style="{StaticResource CheckBoxToSwitch}"
-                          IsChecked="{Binding IsDateEnabled}"/>
+                          IsChecked="{Binding IsDateEnabled}"
+                          IsEnabled="{Binding IsEnabledSwitch}"/>
                 <DatePicker Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="20,5,15,0" 
@@ -630,7 +637,8 @@
                             Cursor="Hand"
                             SelectedDate="{Binding AssignmentDeadline}"
                             DisplayDateStart="{x:Static sys:DateTime.Now}"
-                            DisplayDateEnd="01.01.2124">
+                            DisplayDateEnd="01.01.2124"
+                            IsEnabled="{Binding IsEnabledDatePicker}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
                             <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
