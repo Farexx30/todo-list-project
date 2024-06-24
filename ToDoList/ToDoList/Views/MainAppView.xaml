@@ -4,10 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ToDoList.Views"
-             xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" 
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             d:DataContext="{d:DesignInstance Type=viewmodels:MainAppViewModel}"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:viewmodels="clr-namespace:ToDoList.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=viewmodels:MainAppViewModel}"
              mc:Ignorable="d"
          d:DesignHeight="800" 
          d:DesignWidth="1440">
@@ -78,15 +75,14 @@
                    VerticalAlignment="Center"
                    Margin="70,0,150,0"
                    FontWeight="Bold"/>
-                <Label Content="{x:Static sys:DateTime.Now}"
+            <Label Content="12-06-2024"
                    Foreground="White"
                    FontSize="24"
                    VerticalAlignment="Center"
                    HorizontalContentAlignment="Center"
                    Margin="115,0,14,0"
-                   FontWeight="Light"
-                   ContentStringFormat="dd-MM-yyyy"/>
-                <Border Grid.Row="1"
+                   FontWeight="Light"/>
+            <Border Grid.Row="1"
                     Grid.RowSpan="4"
                     Background="#101728"
                     Margin="5,0,5,0"
@@ -249,7 +245,7 @@
                     </RadialGradientBrush>
                 </Border.Background>
                 <TextBox Background="Transparent"
-                         Text="{Binding SearchPhrase}"
+                         Text="{Binding SearchPhrase, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="White"
                          FontWeight="Light"
                          Margin="50,0,10,0"
@@ -325,7 +321,7 @@
                     FontWeight="Light"
                     Background="Transparent"
                     Cursor="Hand"
-                    ItemsSource="{Binding ToDoAssignments}"  
+                    ItemsSource="{Binding FilteredToDoAssignments}"  
                     SelectedItem="{Binding CurrentAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
@@ -349,7 +345,7 @@
                 </Border.Background>
                 <TextBox Background="Transparent"
                          Padding="10"
-                         Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding NewAssignmentName}"
                          Foreground="White"
                          MaxLength="28"
                          FontWeight="Light"
@@ -584,7 +580,6 @@
                         Margin="8,0,8,0"
                         CornerRadius="20"/>
                 <CheckBox Grid.Row="0"
-                          Name="CheckBoxIsImportant"
                           Margin="15,0,0,0"
                           Cursor="Hand"
                           VerticalAlignment="Center"
@@ -636,8 +631,6 @@
                             BorderThickness="0"
                             Cursor="Hand"
                             SelectedDate="{Binding AssignmentDeadline}"
-                            DisplayDateStart="{x:Static sys:DateTime.Now}"
-                            DisplayDateEnd="01.01.2124"
                             IsEnabled="{Binding IsEnabledDatePicker}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
