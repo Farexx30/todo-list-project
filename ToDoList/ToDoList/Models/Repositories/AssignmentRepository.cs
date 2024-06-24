@@ -80,7 +80,9 @@ namespace ToDoList.Models.Repositories
         private List<Assignment> GetPlannedAssignments(Guid userId, int? categoryId)
         {
             var assignments = _dbContext.Assignments
-                .Where(a => a.UserId == userId && a.Deadline != null)
+                .Where(a => a.UserId == userId 
+                && a.Deadline != null
+                && a.Deadline.Value >= DateTime.Today.AddDays(1))
                 .ToList();
 
             return assignments;
