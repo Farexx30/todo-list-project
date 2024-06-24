@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ToDoList.Models;
 using ToDoList.Models.Dtos;
 using ToDoList.Models.Entities;
@@ -65,12 +66,15 @@ namespace ToDoList.Models.Repositories
 
         private List<Assignment> GetMyDayAssignments(Guid userId, int? categoryId)
         {
-            var assignments = _dbContext.Assignments
-                .Where(a => a.UserId == userId 
-                && a.Deadline.HasValue && a.Deadline.Value.Date == DateTime.Now.Date)
-                .ToList(); //nie dziala
+            var allUserAssingments = _dbContext.Assignments
+                .Where(a => a.UserId == userId)
+                .ToList();
 
-            return assignments;
+            var todaysAssignments = allUserAssingments
+                .Where(a => a.Deadline.HasValue && a.Deadline.Value == DateTime.Today)
+                .ToList();
+
+            return todaysAssignments;
         }
 
         private List<Assignment> GetPlannedAssignments(Guid userId, int? categoryId)
@@ -95,6 +99,7 @@ namespace ToDoList.Models.Repositories
         {
             var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
             newAssignment.UserId = userId;
+            if (categoryId == 1) newAssignment.IsShared = true;
             _dbContext.Assignments.Add(newAssignment);
             _dbContext.SaveChanges();
 
