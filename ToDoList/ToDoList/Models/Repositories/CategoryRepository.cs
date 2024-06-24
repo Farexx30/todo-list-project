@@ -68,7 +68,6 @@ namespace ToDoList.Models.Repositories
         {
             if (IsCategoryExist(updatedCategoryDto.Name, userId, updatedCategoryDto.Id))
             {
-                MessageBox.Show("Taka kategoria już istnieje");
                 return false;
             }
             
