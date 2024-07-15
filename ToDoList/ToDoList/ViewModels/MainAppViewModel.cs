@@ -387,7 +387,7 @@ namespace ToDoList.ViewModels
             CurrentCategory.Name = CurrentCategoryName;
             var updateResult = _categoryRepo.UpdateCategory(CurrentCategory, _currentUser.Id);
 
-            if(updateResult == UpdatingCategoryResult.Success)
+            if (updateResult == UpdatingCategoryResult.Success)
             {
                 CollectionViewSource.GetDefaultView(Categories).Refresh();
             }
@@ -405,15 +405,19 @@ namespace ToDoList.ViewModels
             GetConnectedAssignments(out var connectedAssignmentsIds);
             _categoryRepo.DeleteCategory(CurrentCategory!.Id, connectedAssignmentsIds);
 
-            Categories.Remove(CurrentCategory);
             _toDoAssignments.Clear();
-            SearchPhraseChanged();
             CompletedAssignments.Clear();
+            Categories.Remove(CurrentCategory);
+
+            SearchPhrase = string.Empty;
+            SearchPhraseChanged();
 
             MyDayCategoryClicked(this);
         }
 
-        bool CanDeleteCategory(object obj) => CurrentCategory != null && CurrentCategory.Id != 1;
+        bool CanDeleteCategory(object obj) 
+            => CurrentCategory != null 
+            && CurrentCategory.Id != 1;
 
 
         private List<int> GetConnectedAssignments(out List<int> connectedAssignmentsIds)
