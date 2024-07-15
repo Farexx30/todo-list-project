@@ -414,12 +414,6 @@ namespace ToDoList.ViewModels
 
             MyDayCategoryClicked(this);
         }
-
-        bool CanDeleteCategory(object obj) 
-            => CurrentCategory != null 
-            && CurrentCategory.Id != 1;
-
-
         private List<int> GetConnectedAssignments(out List<int> connectedAssignmentsIds)
         {
             var connectedAssignments = new List<AssignmentDto>();
@@ -431,6 +425,11 @@ namespace ToDoList.ViewModels
 
             return connectedAssignmentsIds;
         }
+
+        bool CanDeleteCategory(object obj) 
+            => CurrentCategory != null 
+            && CurrentCategory.Id != 1;
+
 
 
         //Add Assignment:
