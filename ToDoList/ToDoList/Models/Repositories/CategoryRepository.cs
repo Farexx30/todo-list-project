@@ -18,7 +18,7 @@ namespace ToDoList.Models.Repositories
         CategoryDto GetBuiltInCategory();
         List<CategoryDto> GetCategories(Guid userId);
         CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId);
-        bool UpdateCategory(CategoryDto updatedCategoryDto, Guid userId);
+        UpdatingCategoryResult UpdateCategory(CategoryDto updatedCategoryDto, Guid userId);
         void DeleteCategory(int categoryId, List<int> connectedAssignmentsToDeleteDto);
     }
 
@@ -64,11 +64,11 @@ namespace ToDoList.Models.Repositories
             return justAddedCategoryDto;
         }
 
-        public bool UpdateCategory(CategoryDto updatedCategoryDto, Guid userId)
+        public UpdatingCategoryResult UpdateCategory(CategoryDto updatedCategoryDto, Guid userId)
         {
             if (IsCategoryExist(updatedCategoryDto.Name, userId, updatedCategoryDto.Id))
             {
-                return false;
+                return UpdatingCategoryResult.Failed;
             }
             
             var categoryToUpdate = _dbContext.Categories
@@ -78,7 +78,7 @@ namespace ToDoList.Models.Repositories
 
             _dbContext.SaveChanges();
 
-            return true;           
+            return UpdatingCategoryResult.Success;           
         }
 
         public void DeleteCategory(int categoryId, List<int> connectedAssignmentsToDeleteIds)

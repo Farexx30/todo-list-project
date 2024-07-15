@@ -362,8 +362,8 @@ namespace ToDoList.ViewModels
                 Name = "Category",
                 IsBuiltIn = false
             };
-            var newCategoryWithIdDto = _categoryRepo.AddCategory(newCategoryDto, _currentUser.Id);
 
+            var newCategoryWithIdDto = _categoryRepo.AddCategory(newCategoryDto, _currentUser.Id);
             VerifyNewCategory(newCategoryWithIdDto);
         }
 
@@ -385,9 +385,9 @@ namespace ToDoList.ViewModels
         {
             var originalCategoryName = CurrentCategory!.Name;
             CurrentCategory.Name = CurrentCategoryName;
-            bool result = _categoryRepo.UpdateCategory(CurrentCategory, _currentUser.Id);
+            var updateResult = _categoryRepo.UpdateCategory(CurrentCategory, _currentUser.Id);
 
-            if (result)
+            if(updateResult == UpdatingCategoryResult.Success)
             {
                 CollectionViewSource.GetDefaultView(Categories).Refresh();
             }
