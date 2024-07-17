@@ -333,6 +333,88 @@ namespace ToDoList.ViewModels
         }
 
 
+        //Checkboxy etc:
+        private bool _isEnabledDatePicker;
+        public bool IsEnabledDatePicker
+        {
+            get => _isEnabledDatePicker;
+            set
+            {
+                _isEnabledDatePicker = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isEnabledCategoryName;
+        public bool IsEnabledCategoryName
+        {
+            get => _isEnabledCategoryName;
+            set
+            {
+                if (_isEnabledCategoryName != value)
+                {
+                    _isEnabledCategoryName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _isEnabledCheckBox;
+        public bool IsEnabledCheckBox
+        {
+            get => _isEnabledCheckBox;
+            set
+            {
+                if (_isEnabledCheckBox != value)
+                {
+                    _isEnabledCheckBox = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _isEnabledCheckBoxStep;
+        public bool IsEnabledCheckBoxStep
+        {
+            get => _isEnabledCheckBoxStep;
+            set
+            {
+                if (_isEnabledCheckBoxStep != value)
+                {
+                    _isEnabledCheckBoxStep = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _isEnabledSwitchOthers;
+        public bool IsEnabledSwitchOthers
+        {
+            get => _isEnabledSwitchOthers;
+            set
+            {
+                if (_isEnabledSwitchOthers != value)
+                {
+                    _isEnabledSwitchOthers = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _isEnabledSwitch;
+        public bool IsEnabledSwitch
+        {
+            get => _isEnabledSwitch;
+            set
+            {
+                if (_isEnabledSwitch != value)
+                {
+                    _isEnabledSwitch = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         //Commands:
         public ICommand AddCategoryCommand { get; set; }
         public ICommand UpdateCategoryCommand { get; set; }
@@ -469,7 +551,9 @@ namespace ToDoList.ViewModels
             => CurrentCategory != null 
                 && CurrentCategory.Id != 1;
 
-
+        private void UpdateIsEnabledCategoryName()
+            => IsEnabledCategoryName = CurrentCategory is not null 
+                && CurrentCategory.Id != 1;
 
         //Add Assignment:
         private void AddAssignment(object obj)
@@ -492,7 +576,7 @@ namespace ToDoList.ViewModels
 
         private bool CanAddAssignment(object obj) 
             => !string.IsNullOrEmpty(NewAssignmentName.Trim())
-                    && CurrentCategory != null;
+                && CurrentCategory != null;
 
         //Update Assignment:
         private void UpdateAssignmentName(object obj)
@@ -555,11 +639,31 @@ namespace ToDoList.ViewModels
 
         private void AssignmentDeadlineChanged()
             => AssignmentDeadline = _isDateEnabled
-                    ? AssignmentDeadline
-                    : null;
+                ? AssignmentDeadline
+                : null;
 
         private void IsAssignmentNameEnabledChanged() 
             => IsAssignmentNameEnabled = CurrentAssignment is not null;
+
+
+        //Updaty checkboxów etc:
+        private void UpdateIsEnabledCheckBox()
+            => IsEnabledCheckBox = CurrentAssignment is not null;
+
+        private void UpdateIsEnabledDatePicker()
+            => IsEnabledDatePicker = IsDateEnabled
+                && CurrentCategory is not null;
+
+        private void UpdateIsEnabledSwitch()
+            => IsEnabledSwitch = CurrentAssignment is not null && CurrentCategory is not null;
+
+        private void UpdateIsEnabledSwitchOthers()
+            => IsEnabledSwitchOthers = CurrentAssignment is not null && CurrentCategory is not null && CurrentCategory.Id != 1;
+
+        private void UpdateIsEnabledCheckBoxStep()
+            => IsEnabledCheckBoxStep = CurrentAssignment is not null && CurrentAssignmentStep is not null;
+
+
 
         //Delete Assignment:
         private void DeleteAssignment(object obj)
@@ -602,6 +706,7 @@ namespace ToDoList.ViewModels
         private bool CanAddAssignmentStep(object obj) 
             => CurrentAssignment != null
                && !string.IsNullOrEmpty(NewAssignmentStepName.Trim());
+
 
         //Update AssignmentStep:
         private void UpdateAssignmentStep(object obj)
@@ -787,113 +892,7 @@ namespace ToDoList.ViewModels
             NavigationService.NavigateTo<MainMenuViewModel>();
         }
         
-        private bool _isEnabledSwitch;
-        public bool IsEnabledSwitch
-        {
-            get => _isEnabledSwitch;
-            set
-            {
-                if (_isEnabledSwitch != value)
-                {
-                    _isEnabledSwitch = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private void UpdateIsEnabledSwitch()
-        {
-            IsEnabledSwitch = CurrentAssignment != null && CurrentCategory != null;
-        }      
-        
-        private bool _isEnabledSwitchOthers;
-        public bool IsEnabledSwitchOthers
-        {
-            get => _isEnabledSwitchOthers;
-            set
-            {
-                if (_isEnabledSwitchOthers != value)
-                {
-                    _isEnabledSwitchOthers = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private void UpdateIsEnabledSwitchOthers()
-        {
-            IsEnabledSwitchOthers = CurrentAssignment is not null && CurrentCategory is not null && CurrentCategoryName != "Pozostałe";
-        }
 
-        private bool _isEnabledCheckBox;
-        public bool IsEnabledCheckBox
-        {
-            get => _isEnabledCheckBox;
-            set
-            {
-                if (_isEnabledCheckBox != value)
-                {
-                    _isEnabledCheckBox = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private void UpdateIsEnabledCheckBox()
-        {
-            IsEnabledCheckBox = CurrentAssignment != null;
-        }
-
-        private bool _isEnabledCheckBoxStep;
-        public bool IsEnabledCheckBoxStep
-        {
-            get => _isEnabledCheckBoxStep;
-            set
-            {
-                if (_isEnabledCheckBoxStep != value)
-                {
-                    _isEnabledCheckBoxStep = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private void UpdateIsEnabledCheckBoxStep()
-        {
-            IsEnabledCheckBoxStep = CurrentAssignment != null && CurrentAssignmentStep !=null;
-        }
-
-
-        private bool _isEnabledDatePicker;
-        public bool IsEnabledDatePicker
-        {
-            get => _isEnabledDatePicker;
-            set
-            {
-                _isEnabledDatePicker = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void UpdateIsEnabledDatePicker()
-        {
-            IsEnabledDatePicker = IsDateEnabled && CurrentCategory != null;
-        }
-
-
-        private bool _isEnabledCategoryName;
-        public bool IsEnabledCategoryName
-        { 
-            get => _isEnabledCategoryName;
-            set
-            {
-                if (_isEnabledCategoryName != value)
-                {
-                    _isEnabledCategoryName = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private void UpdateIsEnabledCategoryName()
-        {
-            IsEnabledCategoryName = CurrentCategoryName != "Mój dzień" && CurrentCategoryName != "Ważne" && CurrentCategoryName != "Zaplanowane" && CurrentCategoryName != "Pozostałe";
-        }
 
     }
 }
