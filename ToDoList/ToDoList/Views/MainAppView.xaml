@@ -319,7 +319,7 @@
                     Background="Transparent"
                     Cursor="Hand"
                     ItemsSource="{Binding FilteredToDoAssignments}"  
-                    SelectedItem="{Binding CurrentAssignment}">
+                    SelectedItem="{Binding CurrentToDoAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
@@ -396,7 +396,7 @@
                      Cursor="Hand"
                      Background="Transparent"
                      ItemsSource="{Binding CompletedAssignments}"  
-                     SelectedItem="{Binding CurrentAssignment}">
+                     SelectedItem="{Binding CurrentCompletedAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
