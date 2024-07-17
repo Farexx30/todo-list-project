@@ -16,7 +16,11 @@ namespace ToDoList.Models.Repositories
     {
         List<AssignmentDto> GetAssignments(CategoryMode mode, Guid userId, int? categoryId = null);
         AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId);
-        void UpdateAssignment(AssignmentDto updatedAssignmentDto);
+        void UpdateAssignmentName(string newAssignmentName, int assignmentId);
+        void UpdateAssignmentDeadline(DateTime? newAssignmentDeadline, int assignmentId);
+        void UpdateAssignmentCheck(bool newAssignmentCheck, int assignmentId);
+        void UpdateAssignmentImportance(bool newAssignmentImportance, int assignmentId);
+        void UpdateAssignmentSharing(bool newAssignmentSharing, int assignmentId);
         void DeleteAssignment(int assignmentId);
     }
 
@@ -102,6 +106,7 @@ namespace ToDoList.Models.Repositories
             var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
             newAssignment.UserId = userId;
             if (categoryId == 1) newAssignment.IsShared = true;
+
             _dbContext.Assignments.Add(newAssignment);
             _dbContext.SaveChanges();
 
@@ -117,44 +122,57 @@ namespace ToDoList.Models.Repositories
             return justAddedAssignmentDto;
         }
 
-        public void UpdateAssignment(AssignmentDto updatedAssignmentDto)
+        //Update:
+        public void UpdateAssignmentName(string newAssignmentName, int assignmentId)
         {
-            var assignmentToUpdate = _dbContext.Assignments
-                .First(a => a.Id == updatedAssignmentDto.Id);
+            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
 
-            assignmentToUpdate.Name = updatedAssignmentDto.Name;
-            assignmentToUpdate.Deadline = updatedAssignmentDto.Deadline;
-            assignmentToUpdate.IsChecked = updatedAssignmentDto.IsChecked;
-            assignmentToUpdate.IsImportant = updatedAssignmentDto.IsImportant;
-
-            bool doesSharingChanged = false;
-            if (assignmentToUpdate.IsShared != updatedAssignmentDto.IsShared)
-            {
-                assignmentToUpdate.IsShared = updatedAssignmentDto.IsShared;
-                doesSharingChanged = true;
-            }
-
+            assignmentToUpdate.Name = newAssignmentName;
             _dbContext.SaveChanges();
-
-            if (assignmentToUpdate.IsShared && doesSharingChanged)
-            {
-                ShareAssignment(assignmentToUpdate.Id);
-            }
-            else if(doesSharingChanged)
-            {
-                StopSharingAssignment(assignmentToUpdate.Id);
-            }            
         }
 
-        public void DeleteAssignment(int assignmentId)
+        public void UpdateAssignmentDeadline(DateTime? newAssignmentDeadline, int assignmentId)
         {
-            var assignmentToDelete = _dbContext.Assignments
+            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+
+            assignmentToUpdate.Deadline = newAssignmentDeadline;
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateAssignmentCheck(bool newAssignmentCheck, int assignmentId)
+        {
+            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+
+            assignmentToUpdate.IsChecked = newAssignmentCheck;
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateAssignmentImportance(bool newAssignmentImportance, int assignmentId)
+        {
+            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+
+            assignmentToUpdate.IsImportant = newAssignmentImportance;
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateAssignmentSharing(bool newAssignmentSharing, int assignmentId)
+        {
+            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+
+            assignmentToUpdate.IsShared = newAssignmentSharing;
+            if (newAssignmentSharing) 
+            {
+                ShareAssignment(assignmentId);
+            }
+            else
+            {
+                StopSharingAssignment(assignmentId);
+            }
+        }
+
+        private Assignment GetAssignmentToUpdate(int assignmentId) 
+            => _dbContext.Assignments
                 .First(a => a.Id == assignmentId);
-
-            _dbContext.Assignments.Remove(assignmentToDelete);
-
-            _dbContext.SaveChanges();
-        }
 
         private void ShareAssignment(int assignmentId)
         {
@@ -175,6 +193,16 @@ namespace ToDoList.Models.Repositories
 
            _dbContext.CategoryAssignments.Remove(categoryAssignmentToDelete);
            _dbContext.SaveChanges();
+        }
+
+        //Delete:
+        public void DeleteAssignment(int assignmentId)
+        {
+            var assignmentToDelete = _dbContext.Assignments
+                .First(a => a.Id == assignmentId);
+
+            _dbContext.Assignments.Remove(assignmentToDelete);
+            _dbContext.SaveChanges();
         }
     }
 }
