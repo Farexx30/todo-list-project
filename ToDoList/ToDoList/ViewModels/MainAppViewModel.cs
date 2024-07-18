@@ -249,13 +249,11 @@ namespace ToDoList.ViewModels
                 OnPropertyChanged();
 
                 AssignmentDeadlineChanged();
-
+                IsAssignmentDatePickerEnabledChanged();
                 if (!value && !_isCurrentlySetting)
                 {
                     UpdateAssignmentDeadline(this);
                 }
-
-                IsAssignmentDatePickerEnabledChanged();
             }
         }
 
@@ -279,12 +277,12 @@ namespace ToDoList.ViewModels
                 _currentToDoAssignment = value;
                 OnPropertyChanged();
 
+                IsAssignmentNameEnabledChanged();
+                IsAssignmentCheckedCheckBoxEnabledChanged();
                 if (value is not null)
                 {
                     ToDoAssignmentChanged();
                 }
-                IsAssignmentNameEnabledChanged();
-                IsAssignmentCheckedCheckBoxEnabledChanged();
             }
         }
 
@@ -308,12 +306,12 @@ namespace ToDoList.ViewModels
                 _currentCompletedAssignment = value;
                 OnPropertyChanged();
 
+                IsAssignmentNameEnabledChanged();
+                IsAssignmentCheckedCheckBoxEnabledChanged();
                 if (value is not null)
                 {
                     CompletedAssignmentChanged();
                 }
-                IsAssignmentNameEnabledChanged();
-                IsAssignmentCheckedCheckBoxEnabledChanged();
             }
         }
 
@@ -518,7 +516,6 @@ namespace ToDoList.ViewModels
                 Name = "Category",
                 IsBuiltIn = false
             };
-
             var newCategoryWithIdDto = _categoryRepo.AddCategory(newCategoryDto, _currentUser.Id);
             VerifyNewCategory(newCategoryWithIdDto);
         }
@@ -570,6 +567,7 @@ namespace ToDoList.ViewModels
 
             MyDayCategoryClicked(this);
         }
+
         private List<int> GetConnectedAssignments(out List<int> connectedAssignmentsIds)
         {
             var connectedAssignments = new List<AssignmentDto>();
@@ -763,17 +761,20 @@ namespace ToDoList.ViewModels
 
                 var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id, CurrentCategory.Id);
                 SetAssignmentsCollections(loadedAssignments);
-            }
 
-            IsCategoryNameEnabledChanged();
-            IsAssignmentNameEnabledChanged();
-            IsAssignmentStepCheckedCheckBoxEnabledChanged();
+                IsCategoryNameEnabledChanged();
+                IsAssignmentNameEnabledChanged();
+                IsAssignmentStepCheckedCheckBoxEnabledChanged();
+            }
         }
 
         //Other (built-in or dynamic categories):
         private void MyDayCategoryClicked(object obj)
         {
-            if (CurrentCategory is not null) CurrentCategory = null;
+            if (CurrentCategory is not null)
+            {
+                CurrentCategory = null;
+            }
             CurrentCategoryName = "Mój dzień";
             _categoryMode = CategoryMode.MyDay;
 
@@ -790,7 +791,10 @@ namespace ToDoList.ViewModels
 
         private void ImportantCategoryClicked(object obj)
         {
-            if (CurrentCategory is not null) CurrentCategory = null;
+            if (CurrentCategory is not null)
+            {
+                CurrentCategory = null;
+            }
             CurrentCategoryName = "Ważne";
             _categoryMode = CategoryMode.Important;
             AssignmentSteps.Clear();
@@ -806,7 +810,10 @@ namespace ToDoList.ViewModels
 
         private void PlannedCategoryClicked(object obj)
         {
-            if (CurrentCategory is not null) CurrentCategory = null;
+            if (CurrentCategory is not null)
+            {
+                CurrentCategory = null;
+            }
             CurrentCategoryName = "Zaplanowane";
             _categoryMode = CategoryMode.Planned;
             AssignmentSteps.Clear();
@@ -940,7 +947,7 @@ namespace ToDoList.ViewModels
                 && CurrentCategory.Id != 1;
 
         private void AssignmentDeadlineChanged()
-            => AssignmentDeadline = _isDateEnabled
+            => AssignmentDeadline = IsDateEnabled
                 ? AssignmentDeadline
                 : null;
 
