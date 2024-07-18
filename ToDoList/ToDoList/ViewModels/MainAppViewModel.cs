@@ -202,7 +202,7 @@ namespace ToDoList.ViewModels
                 {
                     UpdateAssignmentCheck();
                     IsAssignmentNameEnabledChanged();
-                    IsAssignmentCheckBoxEnabledChanged();
+                    IsAssignmentCheckedCheckBoxEnabledChanged();
                 }
             }
         }
@@ -255,7 +255,7 @@ namespace ToDoList.ViewModels
                     UpdateAssignmentDeadline(this);
                 }
 
-                UpdateIsEnabledDatePicker();
+                IsAssignmentDatePickerEnabledChanged();
             }
         }
 
@@ -284,7 +284,7 @@ namespace ToDoList.ViewModels
                     ToDoAssignmentChanged();
                 }
                 IsAssignmentNameEnabledChanged();
-                IsAssignmentCheckBoxEnabledChanged();
+                IsAssignmentCheckedCheckBoxEnabledChanged();
             }
         }
 
@@ -313,7 +313,7 @@ namespace ToDoList.ViewModels
                     CompletedAssignmentChanged();
                 }
                 IsAssignmentNameEnabledChanged();
-                IsAssignmentCheckBoxEnabledChanged();
+                IsAssignmentCheckedCheckBoxEnabledChanged();
             }
         }
 
@@ -391,7 +391,6 @@ namespace ToDoList.ViewModels
             {
                 _isEnabledCategoryName = value;
                 OnPropertyChanged();
-
             }
         }
 
@@ -766,7 +765,9 @@ namespace ToDoList.ViewModels
                 SetAssignmentsCollections(loadedAssignments);
             }
 
-            UpdateIsEnabledCategoryName();
+            IsCategoryNameEnabledChanged();
+            IsAssignmentNameEnabledChanged();
+            IsAssignmentStepCheckedCheckBoxEnabledChanged();
         }
 
         //Other (built-in or dynamic categories):
@@ -781,7 +782,10 @@ namespace ToDoList.ViewModels
 
             var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
             SetAssignmentsCollections(loadedAssignments);
-            UpdateIsEnabledCategoryName();
+
+            IsCategoryNameEnabledChanged();
+            IsAssignmentNameEnabledChanged();
+            IsAssignmentStepCheckedCheckBoxEnabledChanged();
         }
 
         private void ImportantCategoryClicked(object obj)
@@ -794,7 +798,10 @@ namespace ToDoList.ViewModels
 
             var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
             SetAssignmentsCollections(loadedAssignments);
-            UpdateIsEnabledCategoryName();
+
+            IsCategoryNameEnabledChanged();
+            IsAssignmentNameEnabledChanged();
+            IsAssignmentStepCheckedCheckBoxEnabledChanged();
         }
 
         private void PlannedCategoryClicked(object obj)
@@ -807,7 +814,10 @@ namespace ToDoList.ViewModels
 
             var loadedAssignments = _assignmentRepo.GetAssignments(_categoryMode, _currentUser.Id);
             SetAssignmentsCollections(loadedAssignments);
-            UpdateIsEnabledCategoryName();
+
+            IsCategoryNameEnabledChanged();
+            IsAssignmentNameEnabledChanged();
+            IsAssignmentStepCheckedCheckBoxEnabledChanged();
         }
 
         private void BuiltInCategoryClicked(object obj)
@@ -815,7 +825,6 @@ namespace ToDoList.ViewModels
             CurrentCategory = null;
             CurrentCategory = BuiltInCategory;
             DbCategoryChanged();
-            UpdateIsEnabledCategoryName();
         }
 
 
@@ -863,8 +872,8 @@ namespace ToDoList.ViewModels
 
                 _isCurrentlySetting = false;
 
-                UpdateIsEnabledSwitch();
-                UpdateIsEnabledSwitchOthers();
+                IsAssignmentImportantSwitchboxEnabledChanged();
+                IsAssignmentVisibleSwitchboxEnabledChanged();
             }
         }
 
@@ -881,7 +890,7 @@ namespace ToDoList.ViewModels
                 _isCurrentlySetting = false;
             }
 
-            UpdateIsEnabledCheckBoxStep();
+            IsAssignmentStepCheckedCheckBoxEnabledChanged();
         }
 
 
@@ -912,6 +921,7 @@ namespace ToDoList.ViewModels
         {
             _isCurrentlySetting = true;
 
+            _currentAssignment = null;
             CurrentAssignmentName = string.Empty;
             IsAssignmentChecked = false;
             IsAssignmentImportant = false;
@@ -924,9 +934,8 @@ namespace ToDoList.ViewModels
         }
 
 
-        //Switchboxes/Checkboxes/TextBoxes enabling updates:
-      
-        private void UpdateIsEnabledCategoryName()
+        //Switchboxes/Checkboxes/TextBoxes enabling/updates:      
+        private void IsCategoryNameEnabledChanged()
             => IsEnabledCategoryName = CurrentCategory is not null
                 && CurrentCategory.Id != 1;
 
@@ -938,21 +947,24 @@ namespace ToDoList.ViewModels
         private void IsAssignmentNameEnabledChanged()
             => IsAssignmentNameEnabled = _currentAssignment is not null;
 
-        private void IsAssignmentCheckBoxEnabledChanged()
+        private void IsAssignmentCheckedCheckBoxEnabledChanged()
             => IsEnabledCheckBox = _currentAssignment is not null;
 
-        private void UpdateIsEnabledDatePicker()
+        private void IsAssignmentDatePickerEnabledChanged()
             => IsEnabledDatePicker = IsDateEnabled
                 && CurrentCategory is not null;
 
-        private void UpdateIsEnabledSwitch()
-            => IsEnabledSwitch = _currentAssignment is not null && CurrentCategory is not null;
+        private void IsAssignmentImportantSwitchboxEnabledChanged()
+            => IsEnabledSwitch = _currentAssignment is not null 
+                && CurrentCategory is not null;
 
-        private void UpdateIsEnabledSwitchOthers()
-            => IsEnabledSwitchOthers = _currentAssignment is not null && CurrentCategory is not null && CurrentCategory.Id != 1;
+        private void IsAssignmentVisibleSwitchboxEnabledChanged()
+            => IsEnabledSwitchOthers = _currentAssignment is not null 
+                && CurrentCategory is not null && CurrentCategory.Id != 1;
 
-        private void UpdateIsEnabledCheckBoxStep()
-            => IsEnabledCheckBoxStep = _currentAssignment is not null && CurrentAssignmentStep is not null;
+        private void IsAssignmentStepCheckedCheckBoxEnabledChanged()
+            => IsEnabledCheckBoxStep = _currentAssignment is not null 
+                && CurrentAssignmentStep is not null;
 
 
 
