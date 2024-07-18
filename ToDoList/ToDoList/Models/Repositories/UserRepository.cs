@@ -52,7 +52,8 @@ namespace ToDoList.Models.Repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception occured: {ex.Message}");
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
                 return null;
             }    
         }
@@ -80,7 +81,8 @@ namespace ToDoList.Models.Repositories
             }           
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception occured: {ex.Message}");
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
                 return null;
             }
         }

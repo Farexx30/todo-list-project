@@ -27,73 +27,125 @@ namespace ToDoList.Models.Repositories
         private readonly ToDoListDbContext _dbContext = dbContext;
         private readonly IMapper _mapper = mapper;
 
+
+        //Get:
         public CategoryDto GetBuiltInCategory()
         {
-            var builtInCategory = _dbContext.Categories
-                .AsNoTracking()
-                .First(c => c.IsBuiltIn == true);
+            try
+            {
+                var builtInCategory = _dbContext.Categories
+                    .AsNoTracking()
+                    .First(c => c.IsBuiltIn == true);
 
-            var builtInCategoryDto = _mapper.Map<CategoryDto>(builtInCategory);
-            return builtInCategoryDto;
+                var builtInCategoryDto = _mapper.Map<CategoryDto>(builtInCategory);
+                return builtInCategoryDto;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+                return null!;
+            }
         }
 
         public List<CategoryDto> GetCategories(Guid userId)
         {
-            var categories = _dbContext.Categories
-                .Where(u => u.UserId == userId)
-                .ToList();
+            try
+            {
+                var categories = _dbContext.Categories
+                    .Where(u => u.UserId == userId)
+                    .ToList();
 
-            var categoriesDtos = _mapper.Map<List<CategoryDto>>(categories);
-            return categoriesDtos;
+                var categoriesDtos = _mapper.Map<List<CategoryDto>>(categories);
+                return categoriesDtos;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+                return null!;
+            }
         }
 
+
+        //Add:
         public CategoryDto? AddCategory(CategoryDto newCategoryDto, Guid userId)
         {
-            if (IsCategoryExist(newCategoryDto.Name, userId))
+            try
             {
+                if (IsCategoryExist(newCategoryDto.Name, userId))
+                {
+                    return null;
+                }
+
+                var newCategory = _mapper.Map<Category>(newCategoryDto);
+                newCategory.UserId = userId;
+
+                _dbContext.Categories.Add(newCategory);
+                _dbContext.SaveChanges();
+
+                var justAddedCategoryDto = _mapper.Map<CategoryDto>(newCategory);
+                return justAddedCategoryDto;
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
                 return null;
             }
-
-            var newCategory = _mapper.Map<Category>(newCategoryDto);
-            newCategory.UserId = userId;
-
-            _dbContext.Categories.Add(newCategory);
-            _dbContext.SaveChanges();
-
-            var justAddedCategoryDto = _mapper.Map<CategoryDto>(newCategory);
-            return justAddedCategoryDto;
         }
 
+
+        //Update:
         public UpdatingCategoryResult UpdateCategory(CategoryDto updatedCategoryDto, Guid userId)
         {
-            if (IsCategoryExist(updatedCategoryDto.Name, userId, updatedCategoryDto.Id))
+            try
             {
+                if (IsCategoryExist(updatedCategoryDto.Name, userId, updatedCategoryDto.Id))
+                {
+                    return UpdatingCategoryResult.Failed;
+                }
+
+                var categoryToUpdate = _dbContext.Categories
+                    .First(c => c.Id == updatedCategoryDto.Id);
+
+                categoryToUpdate.Name = updatedCategoryDto.Name;
+
+                _dbContext.SaveChanges();
+
+                return UpdatingCategoryResult.Success;
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
                 return UpdatingCategoryResult.Failed;
             }
-            
-            var categoryToUpdate = _dbContext.Categories
-                .First(c => c.Id == updatedCategoryDto.Id);
-
-            categoryToUpdate.Name = updatedCategoryDto.Name;
-
-            _dbContext.SaveChanges();
-
-            return UpdatingCategoryResult.Success;           
         }
 
+
+        //Delete:
         public void DeleteCategory(int categoryId, List<int> connectedAssignmentsToDeleteIds)
         {
-            var categoryToDelete = _dbContext.Categories
-                .First(c => c.Id == categoryId);
+            try
+            {
+                var categoryToDelete = _dbContext.Categories
+                    .First(c => c.Id == categoryId);
 
-            var connectedAssignmentsToDelete = _dbContext.Assignments
-                .Where(a => connectedAssignmentsToDeleteIds.Contains(a.Id))
-                .ToList();
+                var connectedAssignmentsToDelete = _dbContext.Assignments
+                    .Where(a => connectedAssignmentsToDeleteIds.Contains(a.Id))
+                    .ToList();
 
-            _dbContext.Categories.Remove(categoryToDelete);
-            _dbContext.Assignments.RemoveRange(connectedAssignmentsToDelete);
+                _dbContext.Categories.Remove(categoryToDelete);
+                _dbContext.Assignments.RemoveRange(connectedAssignmentsToDelete);
 
-            _dbContext.SaveChanges();
+                _dbContext.SaveChanges();
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();                
+            }
         }
 
         private bool IsCategoryExist(string name, Guid userId, int? categoryId = null) 

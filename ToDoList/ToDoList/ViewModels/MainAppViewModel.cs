@@ -201,6 +201,8 @@ namespace ToDoList.ViewModels
                 if (!_isCurrentlySetting)
                 {
                     UpdateAssignmentCheck();
+                    IsAssignmentNameEnabledChanged();
+                    IsAssignmentCheckBoxEnabledChanged();
                 }
             }
         }
@@ -282,6 +284,7 @@ namespace ToDoList.ViewModels
                     ToDoAssignmentChanged();
                 }
                 IsAssignmentNameEnabledChanged();
+                IsAssignmentCheckBoxEnabledChanged();
             }
         }
 
@@ -310,6 +313,7 @@ namespace ToDoList.ViewModels
                     CompletedAssignmentChanged();
                 }
                 IsAssignmentNameEnabledChanged();
+                IsAssignmentCheckBoxEnabledChanged();
             }
         }
 
@@ -658,6 +662,7 @@ namespace ToDoList.ViewModels
             SearchPhraseChanged();
             SetDefaultAssignmentsValues();
             AssignmentSteps.Clear();
+            _currentAssignment = null;
         }
 
         private void UpdateAssignmentImportance()
@@ -668,18 +673,8 @@ namespace ToDoList.ViewModels
 
         private void UpdateAssignmentSharing()
         {
-            _currentAssignment!.IsShared = IsAssignmentShared;
-            _assignmentRepo.UpdateAssignmentSharing(IsAssignmentShared, _currentAssignment.Id);
+            _assignmentRepo.UpdateAssignmentSharing(IsAssignmentShared, _currentAssignment!.Id);
         }
-
-        private void AssignmentDeadlineChanged()
-            => AssignmentDeadline = _isDateEnabled
-                ? AssignmentDeadline
-                : null;
-
-        private void IsAssignmentNameEnabledChanged() 
-            => IsAssignmentNameEnabled = _currentAssignment is not null;
-
 
         //Delete Assignment:
         private void DeleteAssignment(object obj)
@@ -858,7 +853,7 @@ namespace ToDoList.ViewModels
                 CurrentAssignmentName = _currentAssignment.Name;
                 IsAssignmentChecked = _currentAssignment.IsChecked;
                 IsAssignmentImportant = _currentAssignment.IsImportant;
-                IsAssignmentShared = _currentAssignment.IsShared;
+                IsAssignmentShared = _assignmentRepo.IsAssignmentBeingShared(_currentAssignment.Id);
                 AssignmentDeadline = _currentAssignment.Deadline.HasValue
                     ? DateTime.Parse(_currentAssignment.Deadline.Value.ToString())
                     : null;
@@ -869,7 +864,6 @@ namespace ToDoList.ViewModels
                 _isCurrentlySetting = false;
 
                 UpdateIsEnabledSwitch();
-                UpdateIsEnabledCheckBox();
                 UpdateIsEnabledSwitchOthers();
             }
         }
@@ -931,11 +925,20 @@ namespace ToDoList.ViewModels
 
 
         //Switchboxes/Checkboxes/TextBoxes enabling updates:
+      
         private void UpdateIsEnabledCategoryName()
             => IsEnabledCategoryName = CurrentCategory is not null
                 && CurrentCategory.Id != 1;
 
-        private void UpdateIsEnabledCheckBox()
+        private void AssignmentDeadlineChanged()
+            => AssignmentDeadline = _isDateEnabled
+                ? AssignmentDeadline
+                : null;
+
+        private void IsAssignmentNameEnabledChanged()
+            => IsAssignmentNameEnabled = _currentAssignment is not null;
+
+        private void IsAssignmentCheckBoxEnabledChanged()
             => IsEnabledCheckBox = _currentAssignment is not null;
 
         private void UpdateIsEnabledDatePicker()

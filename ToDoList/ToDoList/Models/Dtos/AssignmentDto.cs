@@ -14,7 +14,6 @@ namespace ToDoList.Models.Dtos
         public DateTime? Deadline { get; set; }
         public bool IsChecked { get; set; }
         public bool IsImportant { get; set; }
-        public bool IsShared { get; set; }
 
         public List<CategoryDto> Categories { get; set; } = [];
         public List<AssignmentStepDto> AssignmentSteps { get; set; } = [];

@@ -21,6 +21,7 @@ namespace ToDoList.Models.Repositories
         void UpdateAssignmentCheck(bool newAssignmentCheck, int assignmentId);
         void UpdateAssignmentImportance(bool newAssignmentImportance, int assignmentId);
         void UpdateAssignmentSharing(bool newAssignmentSharing, int assignmentId);
+        bool IsAssignmentBeingShared(int assignmentId);
         void DeleteAssignment(int assignmentId);
     }
 
@@ -42,13 +43,24 @@ namespace ToDoList.Models.Repositories
             _assignmentsMethods.Add(CategoryMode.Important, GetImportantAssignments);
         }
 
+
+        //Get:
         public List<AssignmentDto> GetAssignments(CategoryMode mode, Guid userId, int? categoryId = null)
         {
-            if(_assignmentsMethods.TryGetValue(mode, out var result))
+            if (_assignmentsMethods.TryGetValue(mode, out var result))
             {
-                var assignments = result(userId, categoryId);
-                var assignmentsDtos = _mapper.Map<List<AssignmentDto>>(assignments);
-                return assignmentsDtos;
+                try
+                {
+                    var assignments = result(userId, categoryId);
+                    var assignmentsDtos = _mapper.Map<List<AssignmentDto>>(assignments);
+                    return assignmentsDtos;
+                }                
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                    Application.Current.Shutdown();
+                    return null!;
+                }
             }
             return [];
         }
@@ -101,72 +113,121 @@ namespace ToDoList.Models.Repositories
             return assignments;
         }
 
+
+        //Add:
         public AssignmentDto AddAssignment(AssignmentDto newAssignmentDto, Guid userId, int categoryId)
         {
-            var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
-            newAssignment.UserId = userId;
-            if (categoryId == 1) newAssignment.IsShared = true;
-
-            _dbContext.Assignments.Add(newAssignment);
-            _dbContext.SaveChanges();
-
-            var newCategoryAssignment = new CategoryAssignment
+            try
             {
-                AssignmentId = newAssignment.Id,
-                CategoryId = categoryId
-            };
-            _dbContext.CategoryAssignments.Add(newCategoryAssignment);
-            _dbContext.SaveChanges();
+                var newAssignment = _mapper.Map<Assignment>(newAssignmentDto);
+                newAssignment.UserId = userId;
+                _dbContext.Assignments.Add(newAssignment);
+                _dbContext.SaveChanges();
 
-            var justAddedAssignmentDto = _mapper.Map<AssignmentDto>(newAssignment);
-            return justAddedAssignmentDto;
+                var newCategoryAssignment = new CategoryAssignment
+                {
+                    AssignmentId = newAssignment.Id,
+                    CategoryId = categoryId
+                };
+                _dbContext.CategoryAssignments.Add(newCategoryAssignment);
+                _dbContext.SaveChanges();
+
+                var justAddedAssignmentDto = _mapper.Map<AssignmentDto>(newAssignment);
+                return justAddedAssignmentDto;
+            }            
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+                return null!;
+            }
         }
+
 
         //Update:
         public void UpdateAssignmentName(string newAssignmentName, int assignmentId)
         {
-            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+            try
+            {
+                var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
 
-            assignmentToUpdate.Name = newAssignmentName;
-            _dbContext.SaveChanges();
+                assignmentToUpdate.Name = newAssignmentName;
+                _dbContext.SaveChanges();
+            }            
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
 
         public void UpdateAssignmentDeadline(DateTime? newAssignmentDeadline, int assignmentId)
         {
-            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+            try
+            {
+                var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
 
-            assignmentToUpdate.Deadline = newAssignmentDeadline;
-            _dbContext.SaveChanges();
+                assignmentToUpdate.Deadline = newAssignmentDeadline;
+                _dbContext.SaveChanges();
+            }            
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
 
         public void UpdateAssignmentCheck(bool newAssignmentCheck, int assignmentId)
         {
-            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+            try
+            {
+                var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
 
-            assignmentToUpdate.IsChecked = newAssignmentCheck;
-            _dbContext.SaveChanges();
+                assignmentToUpdate.IsChecked = newAssignmentCheck;
+                _dbContext.SaveChanges();
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
 
         public void UpdateAssignmentImportance(bool newAssignmentImportance, int assignmentId)
         {
-            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+            try
+            {
+                var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
 
-            assignmentToUpdate.IsImportant = newAssignmentImportance;
-            _dbContext.SaveChanges();
+                assignmentToUpdate.IsImportant = newAssignmentImportance;
+                _dbContext.SaveChanges();
+            }          
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
 
         public void UpdateAssignmentSharing(bool newAssignmentSharing, int assignmentId)
         {
-            var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
+            try
+            {
+                var assignmentToUpdate = GetAssignmentToUpdate(assignmentId);
 
-            assignmentToUpdate.IsShared = newAssignmentSharing;
-            if (newAssignmentSharing) 
+                if (newAssignmentSharing)
+                {
+                    ShareAssignment(assignmentId);
+                }
+                else
+                {
+                    StopSharingAssignment(assignmentId);
+                }
+            }           
+            catch (Exception ex)
             {
-                ShareAssignment(assignmentId);
-            }
-            else
-            {
-                StopSharingAssignment(assignmentId);
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
             }
         }
 
@@ -195,14 +256,27 @@ namespace ToDoList.Models.Repositories
            _dbContext.SaveChanges();
         }
 
+        public bool IsAssignmentBeingShared(int assignmentId)
+            => _dbContext.CategoryAssignments
+                .Any(ca => ca.AssignmentId == assignmentId && ca.CategoryId == 1);
+
+
         //Delete:
         public void DeleteAssignment(int assignmentId)
         {
-            var assignmentToDelete = _dbContext.Assignments
-                .First(a => a.Id == assignmentId);
+            try
+            {
+                var assignmentToDelete = _dbContext.Assignments
+                    .First(a => a.Id == assignmentId);
 
-            _dbContext.Assignments.Remove(assignmentToDelete);
-            _dbContext.SaveChanges();
+                _dbContext.Assignments.Remove(assignmentToDelete);
+                _dbContext.SaveChanges();
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
     }
 }

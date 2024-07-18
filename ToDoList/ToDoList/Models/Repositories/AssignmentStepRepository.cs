@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ToDoList.Models;
 using ToDoList.Models.Dtos;
 using ToDoList.Models.Entities;
@@ -26,43 +27,76 @@ namespace ToDoList.Models.Repositories
 
         public List<AssignmentStepDto> GetAssignmentSteps(int assignmentId)
         {
-            var assignmentSteps = _dbContext.AssignmentSteps
-                .Where(aStep => aStep.AssignmentId == assignmentId)
-                .ToList();
+            try
+            {
+                var assignmentSteps = _dbContext.AssignmentSteps
+                    .Where(aStep => aStep.AssignmentId == assignmentId)
+                    .ToList();
 
-            var assignmentStepsDtos = _mapper.Map<List<AssignmentStepDto>>(assignmentSteps);
-            return assignmentStepsDtos;
+                var assignmentStepsDtos = _mapper.Map<List<AssignmentStepDto>>(assignmentSteps);
+                return assignmentStepsDtos;
+            }            
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+                return null!;
+            }
         }
 
         public AssignmentStepDto AddAssignmentStep(AssignmentStepDto newAssignmentStepDto, int assignmentId)
-        {
-            var newAssignmentStep = _mapper.Map<AssignmentStep>(newAssignmentStepDto);
-            newAssignmentStep.AssignmentId = assignmentId;
+        { 
+            try
+            {
+                var newAssignmentStep = _mapper.Map<AssignmentStep>(newAssignmentStepDto);
+                newAssignmentStep.AssignmentId = assignmentId;
 
-            _dbContext.AssignmentSteps.Add(newAssignmentStep);
-            _dbContext.SaveChanges();
+                _dbContext.AssignmentSteps.Add(newAssignmentStep);
+                _dbContext.SaveChanges();
 
-            var justAddedAssignmentStep = _mapper.Map<AssignmentStepDto>(newAssignmentStep);
-            return justAddedAssignmentStep;
+                var justAddedAssignmentStep = _mapper.Map<AssignmentStepDto>(newAssignmentStep);
+                return justAddedAssignmentStep;
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+                return null!;
+            }
         }
 
         public void UpdateAssignmentStep(AssignmentStepDto updatedAssignmentStepDto)
         {
-            var assignmentStepToUpdate = _dbContext.AssignmentSteps
-                .First(aStep => aStep.Id == updatedAssignmentStepDto.Id);
+            try
+            {
+                var assignmentStepToUpdate = _dbContext.AssignmentSteps
+                    .First(aStep => aStep.Id == updatedAssignmentStepDto.Id);
 
-            assignmentStepToUpdate.IsChecked = updatedAssignmentStepDto.IsChecked;
-
-            _dbContext.SaveChanges();
+                assignmentStepToUpdate.IsChecked = updatedAssignmentStepDto.IsChecked;
+                _dbContext.SaveChanges();
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
 
         public void DeleteAssignmentStep(int assignmentStepId)
         {
-            var assignmentStepToDelete = _dbContext.AssignmentSteps
-                .First(aStep => aStep.Id == assignmentStepId);
+            try
+            {
+                var assignmentStepToDelete = _dbContext.AssignmentSteps
+                    .First(aStep => aStep.Id == assignmentStepId);
 
-            _dbContext.AssignmentSteps.Remove(assignmentStepToDelete);
-            _dbContext.SaveChanges();
+                _dbContext.AssignmentSteps.Remove(assignmentStepToDelete);
+                _dbContext.SaveChanges();
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
+            }
         }
     }
 }
