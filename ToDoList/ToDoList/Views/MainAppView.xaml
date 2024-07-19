@@ -319,7 +319,7 @@
                     Background="Transparent"
                     Cursor="Hand"
                     ItemsSource="{Binding FilteredToDoAssignments}"  
-                    SelectedItem="{Binding CurrentAssignment}">
+                    SelectedItem="{Binding CurrentToDoAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
@@ -396,7 +396,7 @@
                      Cursor="Hand"
                      Background="Transparent"
                      ItemsSource="{Binding CompletedAssignments}"  
-                     SelectedItem="{Binding CurrentAssignment}">
+                     SelectedItem="{Binding CurrentCompletedAssignment}">
                 <ListBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarStyle}"/>
                 </ListBox.Resources>
@@ -442,7 +442,7 @@
                     <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
                 </CheckBox.LayoutTransform>
             </CheckBox>
-            <TextBox Text="{Binding CurrentAssignment.Name}"
+            <TextBox Text="{Binding CurrentAssignmentName}"
                      Background="Transparent"
                      Foreground="White"
                      FontSize="24"
@@ -454,10 +454,11 @@
                      Cursor="IBeam"
                      VerticalContentAlignment="Center"
                      VerticalAlignment="Center"
-                     IsReadOnly="false">
+                     IsEnabled="{Binding IsAssignmentNameEnabled}"
+                     MaxLength="28">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="LostFocus">
-                        <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
+                        <i:InvokeCommandAction Command="{Binding UpdateAssignmentNameCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
@@ -630,11 +631,16 @@
                             SelectedDate="{Binding AssignmentDeadline}"
                             IsEnabled="{Binding IsEnabledDatePicker, UpdateSourceTrigger=PropertyChanged}"
                             DisplayDateStart="{x:Static sys:DateTime.Now}"
-                            DisplayDateEnd="01.01.2124"
-                            >
+                            DisplayDateEnd="01.01.2124">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Style>
+                    </DatePicker.Resources>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
-                            <i:InvokeCommandAction Command="{Binding UpdateAssignmentCommand}" />
+                            <i:InvokeCommandAction Command="{Binding UpdateAssignmentDeadlineCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DatePicker>

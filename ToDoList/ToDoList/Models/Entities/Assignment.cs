@@ -13,7 +13,6 @@ namespace ToDoList.Models.Entities
         public DateTime? Deadline { get; set; }
         public bool IsChecked { get; set; }
         public bool IsImportant { get; set; }
-        public bool IsShared { get; set; }
 
         //Relacje:
 

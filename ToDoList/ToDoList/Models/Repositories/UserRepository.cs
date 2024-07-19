@@ -31,42 +31,60 @@ namespace ToDoList.Models.Repositories
 
         public UserDto? LoginUser(RegisterOrLoginUserDto loginUserDto)
         {
-            var user = _dbContext.Users
-                .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower());
-
-            if (user == null)
+            try
             {
-                return null;
-            }
+                var user = _dbContext.Users
+                                .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower());
 
-            var isPasswordCorrect = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginUserDto.Password);
-            if (isPasswordCorrect == PasswordVerificationResult.Failed)
+                if (user == null)
+                {
+                    return null;
+                }
+
+                var isPasswordCorrect = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginUserDto.Password);
+                if (isPasswordCorrect == PasswordVerificationResult.Failed)
+                {
+                    return null;
+                }
+
+                var userDto = _mapper.Map<UserDto>(user);
+                return userDto;
+            }
+            catch (Exception ex)
             {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
                 return null;
-            }
-
-            var userDto = _mapper.Map<UserDto>(user);
-            return userDto;
+            }    
         }
 
         public UserDto? RegisterUser(RegisterOrLoginUserDto newUserDto)
         {
-            bool isUsernameInUse = _dbContext.Users
-                .Any(u => u.Name == newUserDto.Name);
-
-            if (isUsernameInUse)
+            try
             {
+                bool isUsernameInUse = _dbContext.Users
+                                .Any(u => u.Name == newUserDto.Name);
+
+                if (isUsernameInUse)
+                {
+                    return null;
+                }
+
+                var newUser = _mapper.Map<User>(newUserDto);
+                newUser.PasswordHash = _passwordHasher.HashPassword(newUser, newUserDto.Password);
+
+                _dbContext.Users.Add(newUser);
+                _dbContext.SaveChanges();
+
+                var userDto = _mapper.Map<UserDto>(newUser);
+                return userDto;
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occured: {ex.Message}.\n\nThe application will shutdown.");
+                Application.Current.Shutdown();
                 return null;
             }
-
-            var newUser = _mapper.Map<User>(newUserDto);
-            newUser.PasswordHash = _passwordHasher.HashPassword(newUser, newUserDto.Password);
-
-            _dbContext.Users.Add(newUser);
-            _dbContext.SaveChanges();
-
-            var userDto = _mapper.Map<UserDto>(newUser);
-            return userDto;
         }
     }
 }
