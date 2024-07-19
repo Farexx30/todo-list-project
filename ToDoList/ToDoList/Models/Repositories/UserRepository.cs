@@ -34,7 +34,7 @@ namespace ToDoList.Models.Repositories
             try
             {
                 var user = _dbContext.Users
-                                .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower());
+                    .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower().Trim());
 
                 if (user == null)
                 {
@@ -63,7 +63,7 @@ namespace ToDoList.Models.Repositories
             try
             {
                 bool isUsernameInUse = _dbContext.Users
-                                .Any(u => u.Name == newUserDto.Name);
+                    .Any(u => u.Name == newUserDto.Name);
 
                 if (isUsernameInUse)
                 {
