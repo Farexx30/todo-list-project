@@ -34,7 +34,7 @@ namespace ToDoList.Models.Repositories
             try
             {
                 var user = _dbContext.Users
-                    .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower().Trim());
+                    .FirstOrDefault(u => u.Name.ToLower() == loginUserDto.Name.ToLower());
 
                 if (user == null)
                 {

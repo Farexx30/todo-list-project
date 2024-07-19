@@ -84,12 +84,12 @@ namespace ToDoList.ViewModels
             }
             else
             {
-                MessageBox.Show("Niepoprawny username lub hasło");
+                MessageBox.Show("Niepoprawna nazwa użytkownika lub hasło");
             }
         }
 
         private bool CanLogin(object obj) => !string.IsNullOrEmpty(Username.Trim())
                                              && !string.IsNullOrEmpty(Password.Trim())
-                                             && (Password.Trim().Length>=6);
+                                             && (Password.Trim().Length >= 6);
     }
 }
