@@ -80,6 +80,7 @@ namespace ToDoList.ViewModels
                 OnPropertyChanged();
 
                 SearchPhraseChanged();
+                SetCurrentToDoAssignmentIfItIsToDoAssignment();
             }
         }
 
@@ -921,8 +922,6 @@ namespace ToDoList.ViewModels
         {
             FilteredToDoAssignments = new(_toDoAssignments
                 .Where(a => a.Name.ToLower().Trim().Contains(SearchPhrase.ToLower().Trim())));
-
-            //SetCurrentToDoAssignmentIfItIsToDoAssignment();
         }
 
 
