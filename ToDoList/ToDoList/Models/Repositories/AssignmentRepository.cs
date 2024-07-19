@@ -101,7 +101,11 @@ namespace ToDoList.Models.Repositories
                 && a.Deadline.Value >= DateTime.Today.AddDays(1))
                 .ToList();
 
-            return assignments;
+            var sortedAssignments = assignments
+                .OrderBy(d => d.Deadline)
+                .ToList();
+
+            return sortedAssignments;
         }
 
         private List<Assignment> GetImportantAssignments(Guid userId, int? categoryId)
