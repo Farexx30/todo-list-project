@@ -631,8 +631,13 @@
                             SelectedDate="{Binding AssignmentDeadline}"
                             IsEnabled="{Binding IsEnabledDatePicker, UpdateSourceTrigger=PropertyChanged}"
                             DisplayDateStart="{x:Static sys:DateTime.Now}"
-                            DisplayDateEnd="01.01.2124"
-                            >
+                            DisplayDateEnd="01.01.2124">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Style>
+                    </DatePicker.Resources>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
                             <i:InvokeCommandAction Command="{Binding UpdateAssignmentDeadlineCommand}" />
