@@ -96,13 +96,13 @@ namespace ToDoList.ViewModels
             }
             else
             {
-                MessageBox.Show("Taki uzytkownik juz istnieje");
+                MessageBox.Show("Taki użytkownik już istnieje.");
             }
         }
 
         private bool CanRegister(object obj) => !string.IsNullOrEmpty(Username.Trim())
                                              && !string.IsNullOrEmpty(Password.Trim())
-                                             && Password.Trim().Length>6
+                                             && Password.Trim().Length >= 6
                                              && Password.Trim() == PasswordConfirmation.Trim()
                                              && Password.Length == PasswordConfirmation.Length;
     }
