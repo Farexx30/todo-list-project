@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Models;
 
@@ -11,9 +12,11 @@ using ToDoList.Models;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    partial class ToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240624082539_AddingLostBuiltInCategoryPart1")]
+    partial class AddingLostBuiltInCategoryPart1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,9 @@ namespace ToDoList.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsImportant")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsShared")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -104,14 +110,6 @@ namespace ToDoList.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsBuiltIn = true,
-                            Name = "Pozostałe"
-                        });
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.CategoryAssignment", b =>
