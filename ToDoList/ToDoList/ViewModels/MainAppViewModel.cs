@@ -477,7 +477,7 @@ namespace ToDoList.ViewModels
             _assignmentStepRepo = assignmentStepRepo;
 
             AddCategoryCommand = new RelayCommand(AddCategory, _ => true);
-            UpdateCategoryCommand = new RelayCommand(UpdateCategory);
+            UpdateCategoryCommand = new RelayCommand(UpdateCategory, CanUpdateCategory);
             DeleteCategoryCommand = new RelayCommand(DeleteCategory, CanDeleteCategory);
 
             AddAssignmentCommand = new RelayCommand(AddAssignment, CanAddAssignment);
@@ -558,6 +558,19 @@ namespace ToDoList.ViewModels
             }
         }
 
+        private bool CanUpdateCategory(object obj)
+        {
+            bool result = !string.IsNullOrEmpty(CurrentCategoryName.Trim());
+
+            if (!result)
+            {
+                MessageBox.Show("Nazwa kategorii nie może być pusta.");
+                CurrentCategoryName = CurrentCategory!.Name;
+            }
+
+            return result;
+        }
+
         //Delete Category:
         private void DeleteCategory(object obj)
         {
@@ -636,6 +649,7 @@ namespace ToDoList.ViewModels
 
             if (!result)
             {
+                MessageBox.Show("Nazwa zadania nie może być pusta.");
                 CurrentAssignmentName = _currentAssignment!.Name;
             }
 
@@ -977,7 +991,7 @@ namespace ToDoList.ViewModels
         private void IsAssignmentDatePickerEnabledChanged()
             => IsEnabledDatePicker = IsDateEnabled
                 && CurrentCategory is not null;
-
+        
         private void IsAssignmentImportantAndHasAssignmentDateSwitchboxEnabledChanged()
             => IsEnabledSwitch = _currentAssignment is not null 
                 && CurrentCategory is not null;
