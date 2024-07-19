@@ -104,7 +104,7 @@ namespace ToDoList.Models.Repositories
             var sortedAssignments = assignments
                 .OrderBy(d => d.Deadline)
                 .ToList();
-
+            
             return sortedAssignments;
         }
 
