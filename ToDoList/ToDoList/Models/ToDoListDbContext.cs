@@ -11,11 +11,11 @@ namespace ToDoList.Models
 {
     public class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : DbContext(options)
     {
-        public DbSet<Entities.User> Users { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Assignment> Assignments { get; set; }
-        public DbSet<AssignmentStep> AssignmentSteps { get; set; }
-        public DbSet<CategoryAssignment> CategoryAssignments { get; set; }
+        public DbSet<Entities.User> Users { get; set; } = default!;
+        public DbSet<Category> Categories { get; set; } = default!;
+        public DbSet<Assignment> Assignments { get; set; } = default!;
+        public DbSet<AssignmentStep> AssignmentSteps { get; set; } = default!;
+        public DbSet<CategoryAssignment> CategoryAssignments { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
